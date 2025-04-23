@@ -1,0 +1,7 @@
+export enum Location {
+  JAKARTA = "JAKARTA",
+  BANDUNG = "BANDUNG",
+  SURABAYA = "SURABAYA",
+  YOGYAKARTA = "YOGYAKARTA",
+  SEMARANG = "SEMARANG",
+}

@@ -1,19 +1,8 @@
-import {
-  be_Vietnam_Pro,
-  dm_sans,
-  lato,
-  lexend,
-  manrope,
-  montserrat,
-  poppins,
-  raleway,
-  roboto,
-  rubik,
-  urbanist,
-} from "@/assets/fonts";
+import { lexend } from "@/assets/fonts";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import type { Metadata } from "next";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Eventure",
@@ -29,6 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={` ${lexend.className} bg-[#F9FAFB] antialiased`}>
         <ReactQueryProvider>{children}</ReactQueryProvider>
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );

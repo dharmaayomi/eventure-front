@@ -1,7 +1,5 @@
 "use client";
-import EventCard from "@/features/event/EventCard";
-import CategoriesEvent from "../../features/_components/EventCategory";
-import { CarouselSlider } from "@/features/_components/CarouselSlider";
+
 import LandingPage from "@/features/(root)";
 
 export default function Page() {

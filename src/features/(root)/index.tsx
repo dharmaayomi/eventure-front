@@ -1,12 +1,10 @@
 import React from "react";
-import { CarouselSlider } from "../_components/CarouselSlider";
-import EventCard from "../event/EventCard";
-import CategoriesEvent from "../_components/EventCategory";
-import LocationEvent from "../_components/LocationEvent";
-import TopUpcomingEvent from "../_components/TopUpcomingEvent";
-import RecommendedEvent from "../_components/RecommendedEvent";
-import EventCategory from "../_components/EventCategory";
-import BannerOrganizer from "../_components/BannerOrganizer";
+import { CarouselSlider } from "./_components/CarouselSlider";
+import TopUpcomingEvent from "./_components/TopUpcomingEvent";
+import BannerOrganizer from "./_components/BannerOrganizer";
+import EventCategory from "./_components/EventCategory";
+import RecommendedEvent from "./_components/RecommendedEvent";
+import LocationEvent from "./_components/LocationEvent";
 
 const LandingPage = () => {
   return (

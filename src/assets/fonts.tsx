@@ -1,18 +1,15 @@
 import {
+  Be_Vietnam_Pro,
+  DM_Sans,
   Geist,
   Geist_Mono,
-  Poppins,
-  Montserrat,
-  Roboto,
-  Potta_One,
-  Rubik,
   Lexend,
-  Raleway,
-  Lato,
-  Bebas_Neue,
-  DM_Sans,
-  Be_Vietnam_Pro,
   Manrope,
+  Montserrat,
+  Poppins,
+  Raleway,
+  Roboto,
+  Rubik,
   Urbanist,
 } from "next/font/google";
 
@@ -33,10 +30,6 @@ export const poppins = Poppins({
 export const lexend = Lexend({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600"],
-});
-export const potta_one = Potta_One({
-  subsets: ["latin"],
-  weight: ["400"],
 });
 
 export const urbanist = Urbanist({
@@ -62,16 +55,6 @@ export const rubik = Rubik({
 export const raleway = Raleway({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600"],
-});
-
-export const lato = Lato({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "700", "900"],
-});
-
-export const bebas_Neue = Bebas_Neue({
-  subsets: ["latin"],
-  weight: ["400"],
 });
 
 export const dm_sans = DM_Sans({

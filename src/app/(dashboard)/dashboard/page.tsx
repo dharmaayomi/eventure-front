@@ -1,6 +1,6 @@
 "use client";
 
-import { PopoverDemo } from "../_components/try-popover";
+import { PopoverDemo } from "../../../features/(dashboard)/_components/try-popover";
 
 export default function Page() {
   return (

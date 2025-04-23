@@ -1,6 +1,6 @@
+import Footer from "@/features/(root)/_components/Footer";
+import Navbar from "@/features/(root)/_components/Navbar";
 import React from "react";
-import Footer from "../../features/_components/Footer";
-import Navbar from "../../features/_components/Navbar";
 
 const rootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
