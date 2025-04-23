@@ -32,7 +32,7 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 z-50 w-full ${
         isScrolled
-          ? "border-b bg-[#ffffff] shadow-sm backdrop-blur-lg"
+          ? "border-b bg-[#ffffff]/70 shadow-sm backdrop-blur-lg"
           : "border-b bg-[#ffffff]"
       }`}
     >
@@ -96,19 +96,19 @@ const Navbar = () => {
             </Button>
           </div>
           <Link
-            className="pointer-events-auto text-base font-medium hover:text-[#004DE8] hover:underline"
+            className="pointer-events-auto text-sm font-medium hover:text-[#004DE8] hover:underline"
             href="/"
           >
-            <div className="flex gap-1">
+            <div className="flex items-center gap-1">
               <Compass size={26} />
               Discover
             </div>
           </Link>
           <Link
-            className="pointer-events-auto font-medium hover:text-[#004DE8] hover:underline"
+            className="pointer-events-auto text-sm font-medium hover:text-[#004DE8] hover:underline"
             href="/about"
           >
-            <div className="flex gap-1">
+            <div className="flex items-center gap-1">
               <CalendarPlus size={24} />
               Create event
             </div>
@@ -120,7 +120,7 @@ const Navbar = () => {
             </Button>
           </Link>
           <Link href="/contact">
-            <Button className="w-full bg-[#083ca3] font-semibold hover:bg-[#7ba7ff]">
+            <Button className="w-full bg-[#FF7F00] font-semibold hover:bg-[#7ba7ff]">
               Sign in
             </Button>
           </Link>

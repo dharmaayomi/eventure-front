@@ -6,6 +6,7 @@ import {
   Roboto,
   Potta_One,
   Rubik,
+  Lexend,
   Raleway,
   Lato,
   Bebas_Neue,
@@ -26,6 +27,10 @@ export const geistMono = Geist_Mono({
 });
 
 export const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600"],
+});
+export const lexend = Lexend({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600"],
 });
