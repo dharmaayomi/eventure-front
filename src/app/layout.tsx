@@ -2,6 +2,7 @@ import {
   be_Vietnam_Pro,
   dm_sans,
   lato,
+  lexend,
   manrope,
   montserrat,
   poppins,
@@ -26,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${roboto.className} antialiased`}>
+      <body className={` ${lexend.className} bg-[#F9FAFB] antialiased`}>
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>

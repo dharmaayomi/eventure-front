@@ -1,11 +1,14 @@
+"use client";
+import EventCard from "@/features/event/EventCard";
+import CategoriesEvent from "../../features/_components/EventCategory";
+import { CarouselSlider } from "@/features/_components/CarouselSlider";
+import LandingPage from "@/features/(root)";
+
 export default function Page() {
   return (
-    <main>
-      {/* <Jumbotron /> */}
-
-      <div className="mt-20 p-8 text-3xl font-bold">
-        <h2>Our Events</h2>
-        {/* <EventCard /> */}
+    <main className="container mx-auto">
+      <div className="mt-30">
+        <LandingPage />
       </div>
     </main>
   );
