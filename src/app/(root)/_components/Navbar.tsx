@@ -84,7 +84,7 @@ const Navbar = () => {
         </Link>
 
         {/* Menu navigasi di kanan */}
-        <div className="ml-auto hidden w-full max-w-5xl items-center space-x-4 text-[#083ca3] md:flex">
+        <div className="ml-auto hidden w-full max-w-5xl items-center justify-end space-x-4 text-[#083ca3] md:flex">
           <div className="flex w-full max-w-xl items-center space-x-2">
             <Input
               type="email"
@@ -96,7 +96,7 @@ const Navbar = () => {
             </Button>
           </div>
           <Link
-            className="pointer-events-auto font-semibold hover:text-[#004DE8] hover:underline"
+            className="pointer-events-auto text-base font-medium hover:text-[#004DE8] hover:underline"
             href="/"
           >
             <div className="flex gap-1">
@@ -105,7 +105,7 @@ const Navbar = () => {
             </div>
           </Link>
           <Link
-            className="pointer-events-auto font-semibold hover:text-[#004DE8] hover:underline"
+            className="pointer-events-auto font-medium hover:text-[#004DE8] hover:underline"
             href="/about"
           >
             <div className="flex gap-1">

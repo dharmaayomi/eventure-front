@@ -3,10 +3,15 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 
 import {
+  FacebookIcon,
   GithubIcon,
+  InstagramIcon,
   LinkedinIcon,
+  LucideLinkedin,
   MailCheckIcon,
   TwitterIcon,
+  Youtube,
+  YoutubeIcon,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -46,7 +51,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="pb-8` bg-gradient-to-b from-[#fafafa] via-gray-50 to-gray-100 pt-8">
       <div id="footer" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <h3 className={`mb-4 text-2xl font-bold text-gray-900`}>
               Stay Connected
@@ -97,10 +102,10 @@ const Footer: React.FC = () => {
             </form>
           </div>
           <div className="pl-0 md:pl-28">
-            <h4 className="mb-4 text-lg font-semibold text-gray-900">
+            <h4 className="mb-4 text-lg font-medium text-gray-900">
               Quick Links
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-1">
               <li>
                 <Link
                   href="/"
@@ -137,14 +142,52 @@ const Footer: React.FC = () => {
             </ul>
           </div>
           <div className="pl-none md:pl-16">
-            <h4 className="mb-4 text-lg font-semibold text-gray-900">Legal</h4>
-            <ul className="space-y-3">
+            <h4 className="mb-4 text-lg font-medium text-gray-900">Category</h4>
+            <ul className="space-y-1">
+              <li>
+                <Link
+                  href="/category/food"
+                  className="text-gray-600 transition duration-200 hover:text-[#272727]"
+                >
+                  Makan Event
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/category/music"
+                  className="text-gray-600 transition duration-200 hover:text-[#272727]"
+                >
+                  Music Festival
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/category/workshop"
+                  className="text-gray-600 transition duration-200 hover:text-[#272727]"
+                >
+                  Workshop & Talkshow
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/category/community"
+                  className="text-gray-600 transition duration-200 hover:text-[#272727]"
+                >
+                  Community Meetups
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="pl-none md:pl-16">
+            <h4 className="mb-4 text-lg font-medium text-gray-900">Location</h4>
+            <ul className="space-y-1">
               <li>
                 <a
                   href="#"
                   className="text-gray-600 transition duration-200 hover:text-[#272727]"
                 >
-                  Privacy Policy
+                  Surabaya
                 </a>
               </li>
               <li>
@@ -152,7 +195,7 @@ const Footer: React.FC = () => {
                   href="#"
                   className="text-gray-600 transition duration-200 hover:text-[#272727]"
                 >
-                  Terms of Service
+                  Yogyakarta
                 </a>
               </li>
               <li>
@@ -160,7 +203,7 @@ const Footer: React.FC = () => {
                   href="#"
                   className="text-gray-600 transition duration-200 hover:text-[#272727]"
                 >
-                  Cookie Policy
+                  Jakarta
                 </a>
               </li>
             </ul>
@@ -169,30 +212,44 @@ const Footer: React.FC = () => {
         <div className="border-t border-gray-200 p-4">
           <div className="flex flex-col items-center justify-between md:flex-row">
             <p className="text-sm text-gray-600">
-              © {new Date().getFullYear()} DailyMuse. All rights reserved.
+              © {new Date().getFullYear()} Eventure. All rights reserved.
             </p>
             <div className="mt-4 flex space-x-6 md:mt-0">
-              <a
+              <Link
                 href="#"
                 className="text-gray-400 transition duration-200 hover:text-[#272727]"
                 aria-label="Twitter"
               >
                 <TwitterIcon className="text-xl" />
-              </a>
-              <a
+              </Link>
+              <Link
+                href="#"
+                className="text-gray-400 transition duration-200 hover:text-[#272727]"
+                aria-label="Twitter"
+              >
+                <YoutubeIcon size={27} className="text-xl" />
+              </Link>
+              <Link
                 href="#"
                 className="text-gray-400 transition duration-200 hover:text-[#272727]"
                 aria-label="GitHub"
               >
-                <GithubIcon className="text-xl" />
-              </a>
-              <a
+                <InstagramIcon className="text-xl" />
+              </Link>
+              <Link
                 href="#"
                 className="text-gray-400 transition duration-200 hover:text-[#272727]"
                 aria-label="LinkedIn"
               >
-                <LinkedinIcon className="text-xl" />
-              </a>
+                <FacebookIcon className="text-xl" />
+              </Link>
+              <Link
+                href="#"
+                className="text-gray-400 transition duration-200 hover:text-[#272727]"
+                aria-label="LinkedIn"
+              >
+                <LucideLinkedin className="text-xl" />
+              </Link>
             </div>
           </div>
         </div>

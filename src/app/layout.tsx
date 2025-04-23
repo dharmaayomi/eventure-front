@@ -3,9 +3,11 @@ import {
   dm_sans,
   lato,
   manrope,
+  montserrat,
   poppins,
   raleway,
   roboto,
+  rubik,
   urbanist,
 } from "@/assets/fonts";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";

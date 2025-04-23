@@ -4,6 +4,7 @@ import {
   Poppins,
   Montserrat,
   Roboto,
+  Potta_One,
   Rubik,
   Raleway,
   Lato,
@@ -27,6 +28,10 @@ export const geistMono = Geist_Mono({
 export const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600"],
+});
+export const potta_one = Potta_One({
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const urbanist = Urbanist({
