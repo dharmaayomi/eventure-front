@@ -1,4 +1,4 @@
-import RegisterPage from "@/features/(root)/register";
+import RegisterPage from "@/features/(root)/auth/register";
 import React from "react";
 
 const Register = () => {
