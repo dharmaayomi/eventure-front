@@ -1,25 +1,25 @@
 "use client";
 
 import { axiosInstance } from "@/lib/axios";
+import { useAuthStore } from "@/store/auth";
 import { User } from "@/types/user";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const useRegister = () => {
+const useLogin = () => {
   const router = useRouter();
-
+  const { onAuthSuccess } = useAuthStore();
   return useMutation({
-    mutationFn: async (
-      payload: Pick<User, "fullName" | "userName" | "email" | "password">,
-    ) => {
-      const { data } = await axiosInstance.post("/auth/register", payload);
+    mutationFn: async (payload: Pick<User, "email" | "password">) => {
+      const { data } = await axiosInstance.post("/auth/login", payload);
       return data;
     },
-    onSuccess: () => {
-      toast.success("Registration successful");
-      router.push("/login");
+    onSuccess: (data) => {
+      toast.success("Login success");
+      onAuthSuccess({ user: data, accessToken: data.accessToken });
+      router.push("/");
     },
     onError: (error: AxiosError<any>) => {
       toast.error(error.response?.data.message);
@@ -27,4 +27,4 @@ const useRegister = () => {
   });
 };
 
-export default useRegister;
+export default useLogin;

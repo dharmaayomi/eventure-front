@@ -10,14 +10,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { useAuthStore } from "@/store/auth";
 import { CalendarPlus, Compass, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const router = useRouter();
 
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { user, clearAuth } = useAuthStore();
+
+  const logout = () => {
+    clearAuth();
+    router.push("/login");
+  };
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
