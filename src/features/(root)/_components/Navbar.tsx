@@ -114,12 +114,12 @@ const Navbar = () => {
             </div>
           </Link>
 
-          <Link href="/Daftar">
+          <Link href="/register">
             <Button className="border border-[#083ca3] bg-transparent font-semibold text-[#083ca3] hover:bg-[#7ba7ff]">
               Sign Up
             </Button>
           </Link>
-          <Link href="/contact">
+          <Link href="/login">
             <Button className="w-full bg-[#FF7F00] font-semibold hover:bg-[#7ba7ff]">
               Sign in
             </Button>

@@ -5,9 +5,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import EventCard from "@/features/event/EventCard";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import EventCard from "../event/EventCard";
 
 const LocationEvent = () => {
   return (

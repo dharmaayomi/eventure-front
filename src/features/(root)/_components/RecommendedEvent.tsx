@@ -1,5 +1,5 @@
+import EventCard from "@/features/event/EventCard";
 import React from "react";
-import EventCard from "../event/EventCard";
 
 const RecommendedEvent = () => {
   return (
