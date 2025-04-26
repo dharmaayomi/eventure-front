@@ -1,5 +1,11 @@
+import DashboardTry from "../_components/DashboardTry";
+
 const DashboardPage = () => {
-  return <div></div>;
+  return (
+    <div>
+      <DashboardTry />
+    </div>
+  );
 };
 
 export default DashboardPage;
