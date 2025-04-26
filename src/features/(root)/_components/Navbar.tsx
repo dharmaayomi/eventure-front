@@ -16,27 +16,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import AvatarNav from "./AvatarNav";
 
 const Navbar = () => {
   const router = useRouter();
-
   const [isScrolled, setIsScrolled] = useState(false);
   const { user, clearAuth } = useAuthStore();
 
-  const logout = () => {
-    clearAuth();
-    router.push("/login");
-  };
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   return (
     <nav
       className={`fixed top-0 left-0 z-50 w-full ${
@@ -45,30 +41,30 @@ const Navbar = () => {
           : "border-b bg-[#ffffff]"
       }`}
     >
+      {/* Top bar */}
       <div className="relative items-center bg-[#083ca3] p-1">
         <div className="container mx-auto flex items-center gap-2">
-          {" "}
           <div className="ml-auto hidden items-center space-x-4 px-4 py-1 text-sm md:flex">
             <Link
-              className="pointer-events-auto text-white hover:text-[#004DE8] hover:underline"
+              className="pointer-events-auto text-white hover:text-[#7ba7ff]"
               href="/"
             >
               About Eventure
             </Link>
             <Link
-              className="pointer-events-auto text-white hover:text-[#004DE8] hover:underline"
+              className="pointer-events-auto text-white hover:text-[#7ba7ff]"
               href="/"
             >
               Blog
             </Link>
             <Link
-              className="pointer-events-auto text-white hover:text-[#004DE8] hover:underline"
+              className="pointer-events-auto text-white hover:text-[#7ba7ff]"
               href="/"
             >
               Become an Event Creator
             </Link>
             <Link
-              className="pointer-events-auto text-white hover:text-[#004DE8] hover:underline"
+              className="pointer-events-auto text-white hover:text-[#7ba7ff]"
               href="/"
             >
               Pricing
@@ -76,6 +72,8 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Main Navbar */}
       <div
         id="navbar"
         className="relative container mx-auto flex items-center p-4"
@@ -92,18 +90,21 @@ const Navbar = () => {
           />
         </Link>
 
-        {/* Menu navigasi di kanan */}
+        {/* Right side */}
         <div className="ml-auto hidden w-full max-w-5xl items-center justify-end space-x-4 text-[#083ca3] md:flex">
+          {/* Search bar */}
           <div className="flex w-full max-w-xl items-center space-x-2">
             <Input
-              type="email"
-              placeholder="Search your exiting event here!"
+              type="text"
+              placeholder="Search your exciting event here!"
               className="flex-1"
             />
             <Button type="submit" className="bg-[#083ca3]">
               <SearchIcon />
             </Button>
           </div>
+
+          {/* Navigation Links */}
           <Link
             className="pointer-events-auto text-sm font-medium hover:text-[#004DE8] hover:underline"
             href="/"
@@ -123,17 +124,25 @@ const Navbar = () => {
             </div>
           </Link>
 
-          <Link href="/register">
-            <Button className="border border-[#083ca3] bg-transparent font-semibold text-[#083ca3] hover:bg-[#7ba7ff]">
-              Sign Up
-            </Button>
-          </Link>
-          <Link href="/login">
-            <Button className="w-full bg-[#FF7F00] font-semibold hover:bg-[#7ba7ff]">
-              Sign in
-            </Button>
-          </Link>
+          {!user ? (
+            <>
+              <Link href="/register">
+                <Button className="border border-[#083ca3] bg-transparent font-semibold text-[#083ca3] hover:border-transparent hover:bg-[#7ba7ff] hover:text-white">
+                  Sign Up
+                </Button>
+              </Link>
+              <Link href="/login">
+                <Button className="w-full bg-[#FF7F00] font-semibold hover:bg-[#7ba7ff]">
+                  Sign In
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <AvatarNav />
+          )}
         </div>
+
+        {/* Mobile version (Dropdown) */}
         <div className="ml-auto md:hidden">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
