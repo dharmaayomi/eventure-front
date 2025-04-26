@@ -1,12 +1,10 @@
 "use client";
 
 import { useSidebar } from "@/context/SidebarContext";
-import { ThemeToggleButton } from "@/features/(dashboard)/_components/common/ThemeToggleButton";
-import NotificationDropdown from "@/features/(dashboard)/_components/header/NotificationDropdown";
 import UserDropdown from "@/features/(dashboard)/_components/header/UserDropdown";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -163,7 +161,9 @@ const AppHeader: React.FC = () => {
           } shadow-theme-md w-full items-center justify-between gap-4 px-5 py-4 lg:flex lg:justify-end lg:px-0 lg:shadow-none`}
         >
           {/* <!-- User Area --> */}
-          <UserDropdown />
+          <div className="ml-auto">
+            <UserDropdown />
+          </div>
         </div>
       </div>
     </header>
