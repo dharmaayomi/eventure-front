@@ -44,17 +44,17 @@ const AppSidebar: React.FC = () => {
             <Image
               src="/eventureLogo.webp"
               alt="logo"
-              width={150}
-              height={70}
+              width={180}
+              height={100}
               loading="lazy"
               style={{ objectFit: "contain" }}
             />
           ) : (
             <Image
-              src="/eventureLogo.webp"
+              src="/eventureLogoOnly.webp"
               alt="logo"
-              width={180}
-              height={100}
+              width={70}
+              height={70}
               loading="lazy"
               style={{ objectFit: "contain" }}
             />
