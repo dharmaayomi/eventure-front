@@ -80,7 +80,14 @@ export function LoginForm({
 
                   {/* Password */}
                   <div className="grid gap-2">
-                    <Label htmlFor="password">Password</Label>
+                    <div className="flex justify-between">
+                      <Label htmlFor="password">Password</Label>
+                      <Link href="/forgot-password">
+                        <p className="text-muted-foreground pointer text-sm hover:underline">
+                          forgot password
+                        </p>
+                      </Link>
+                    </div>
                     <Input
                       id="password"
                       type="password"

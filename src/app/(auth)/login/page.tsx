@@ -1,4 +1,4 @@
-import LoginPage from "@/features/(root)/auth/login";
+import LoginPage from "@/features/auth/login";
 import React from "react";
 
 const Login = () => {
