@@ -23,15 +23,10 @@ export default function UserDropdown() {
         className="dropdown-toggle flex items-center text-gray-700 dark:text-gray-400"
       >
         <span className="mr-3 h-11 w-11 overflow-hidden rounded-full">
-          <Image
-            width={44}
-            height={44}
-            src="/images/user/owner.jpg"
-            alt="User"
-          />
+          <Image width={44} height={44} src="/jendeuk.webp" alt="User" />
         </span>
 
-        <span className="text-theme-sm mr-1 block font-medium">Musharof</span>
+        <span className="text-theme-sm mr-1 block font-medium">Jennie</span>
 
         <svg
           className={`stroke-gray-500 transition-transform duration-200 dark:stroke-gray-400 ${
@@ -60,10 +55,10 @@ export default function UserDropdown() {
       >
         <div>
           <span className="text-theme-sm block font-medium text-gray-700 dark:text-gray-400">
-            Musharof Chowdhury
+            Jennie Kim
           </span>
           <span className="text-theme-xs mt-0.5 block text-gray-500 dark:text-gray-400">
-            randomuser@pimjo.com
+            jenniekim@mail.com
           </span>
         </div>
 

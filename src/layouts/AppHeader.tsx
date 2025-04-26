@@ -1,12 +1,10 @@
 "use client";
 
 import { useSidebar } from "@/context/SidebarContext";
-import { ThemeToggleButton } from "@/features/(dashboard)/_components/common/ThemeToggleButton";
-import NotificationDropdown from "@/features/(dashboard)/_components/header/NotificationDropdown";
 import UserDropdown from "@/features/(dashboard)/_components/header/UserDropdown";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
