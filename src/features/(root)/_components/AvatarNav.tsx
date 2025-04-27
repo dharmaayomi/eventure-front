@@ -83,10 +83,10 @@ export default function AvatarNav() {
       >
         <div>
           <span className="text-theme-sm block font-medium text-gray-700 dark:text-gray-400">
-            Jennie Kim
+            {user?.fullName}
           </span>
           <span className="text-theme-xs mt-0.5 block text-gray-500 dark:text-gray-400">
-            jenniekim@mail.com
+            {user?.email}
           </span>
         </div>
         <ul className="flex flex-col gap-1 border-b border-gray-200 pt-4 pb-3 dark:border-gray-800">

@@ -14,9 +14,14 @@ import {
   FileTextIcon,
   BanknoteIcon,
   Ticket,
+  Search,
+  CalendarFold,
 } from "lucide-react";
+import { useAuthStore } from "@/store/auth";
 
 const AppSidebar: React.FC = () => {
+  const { user, clearAuth, isAdmin, isUser } = useAuthStore();
+
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
 
@@ -81,34 +86,74 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               <ul className="text-md flex flex-col gap-2">
-                <li>
-                  <Link
-                    href="/dashboard"
-                    className={`menu-item flex items-center gap-2 ${
-                      isActive("/") ? "menu-item-active" : "menu-item-inactive"
-                    } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
-                  >
-                    <GridIcon />
-                    {(isExpanded || isHovered || isMobileOpen) && (
-                      <span>Dashboard</span>
-                    )}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/dashboard/my-event"
-                    className={`menu-item flex items-center gap-2 ${
-                      isActive("/my-event")
-                        ? "menu-item-active"
-                        : "menu-item-inactive"
-                    } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
-                  >
-                    <Ticket />
-                    {(isExpanded || isHovered || isMobileOpen) && (
-                      <span>My Event</span>
-                    )}
-                  </Link>
-                </li>
+                {!!user && !!isAdmin() && (
+                  <>
+                    <li>
+                      <Link
+                        href="/dashboard"
+                        className={`menu-item flex items-center gap-2 ${
+                          isActive("/dashboard")
+                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                            : "p-2"
+                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
+                      >
+                        <GridIcon />
+                        {(isExpanded || isHovered || isMobileOpen) && (
+                          <span>Dashboard</span>
+                        )}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/dashboard/my-event"
+                        className={`menu-item flex items-center gap-2 ${
+                          isActive("/dashboard/my-event")
+                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                            : "p-2"
+                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
+                      >
+                        <CalendarFold />
+                        {(isExpanded || isHovered || isMobileOpen) && (
+                          <span>My Event</span>
+                        )}
+                      </Link>
+                    </li>
+                  </>
+                )}
+                {!!user && !!isUser() && (
+                  <>
+                    <li>
+                      <Link
+                        href="/dashboard/my-ticket"
+                        className={`menu-item flex items-center gap-2 ${
+                          isActive("/dashboard/my-ticket")
+                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                            : "p-2"
+                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
+                      >
+                        <Ticket />
+                        {(isExpanded || isHovered || isMobileOpen) && (
+                          <span>My Ticket</span>
+                        )}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/dashboard/my-event"
+                        className={`menu-item flex items-center gap-2 ${
+                          isActive("/my-event")
+                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                            : "p-2"
+                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
+                      >
+                        <Search />
+                        {(isExpanded || isHovered || isMobileOpen) && (
+                          <span>Discover</span>
+                        )}
+                      </Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
 
@@ -132,9 +177,9 @@ const AppSidebar: React.FC = () => {
                   <Link
                     href="/dashboard/profile"
                     className={`menu-item flex items-center gap-2 ${
-                      isActive("/profile")
-                        ? "menu-item-active"
-                        : "menu-item-inactive"
+                      isActive("/dashboard/profile")
+                        ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                        : "p-2"
                     } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
                   >
                     <UserCircleIcon />
@@ -147,9 +192,9 @@ const AppSidebar: React.FC = () => {
                   <Link
                     href="/dashboard/settings"
                     className={`menu-item flex items-center gap-2 ${
-                      isActive("/settings")
-                        ? "menu-item-active"
-                        : "menu-item-inactive"
+                      isActive("/dashboard/settings")
+                        ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                        : "p-2"
                     } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
                   >
                     <SettingsIcon />
@@ -162,9 +207,9 @@ const AppSidebar: React.FC = () => {
                   <Link
                     href="/dashboard/legal"
                     className={`menu-item flex items-center gap-2 ${
-                      isActive("/legal")
-                        ? "menu-item-active"
-                        : "menu-item-inactive"
+                      isActive("/dashboard/legal")
+                        ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                        : "p-2"
                     } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
                   >
                     <FileTextIcon />
@@ -177,9 +222,9 @@ const AppSidebar: React.FC = () => {
                   <Link
                     href="/dashboard/bank-account"
                     className={`menu-item flex items-center gap-2 ${
-                      isActive("/bank")
-                        ? "menu-item-active"
-                        : "menu-item-inactive"
+                      isActive("/dashboard/bank-account")
+                        ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                        : "p-2"
                     } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
                   >
                     <BanknoteIcon />

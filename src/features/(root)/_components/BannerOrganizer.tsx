@@ -5,12 +5,12 @@ const BannerOrganizer = () => {
   return (
     <section className="container mx-auto">
       <Image
-        src="/mock-banner-1.webp"
+        src="/banner4.webp"
         alt="logo"
         loading="lazy"
-        width={500}
+        width={1200}
         height={213}
-        className="h-[213px] w-full rounded-sm object-cover shadow-sm"
+        className="h-70 w-full rounded-sm object-cover shadow-sm"
       />
     </section>
   );
