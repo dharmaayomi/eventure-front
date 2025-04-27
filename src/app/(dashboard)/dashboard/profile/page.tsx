@@ -1,7 +1,12 @@
+import ProfilePage from "@/features/(dashboard)/profile";
 import React from "react";
 
-const ProfilePage = () => {
-  return <div>ProfilePage</div>;
+const Profile = () => {
+  return (
+    <div>
+      <ProfilePage />
+    </div>
+  );
 };
 
-export default ProfilePage;
+export default Profile;
