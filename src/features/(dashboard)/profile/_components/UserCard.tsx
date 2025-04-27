@@ -37,6 +37,8 @@ const UserCard = () => {
       closeModal();
     },
   });
+  console.log(user);
+
   return (
     <section>
       <div className="rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-800">
@@ -46,17 +48,18 @@ const UserCard = () => {
               <Image
                 width={80}
                 height={80}
-                src="/images/user/owner.jpg"
+                src={user?.profilePic || ""}
                 alt="user"
               />
             </div>
+
             <div className="order-3 xl:order-2">
               <h4 className="mb-2 text-center text-lg font-semibold text-gray-800 xl:text-left dark:text-white/90">
-                Jennie Kim
+                {user?.fullName}
               </h4>
               <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Jennie@mail.com
+                  {user?.email}
                 </p>
               </div>
             </div>
