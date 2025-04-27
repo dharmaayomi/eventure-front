@@ -16,7 +16,12 @@ const LocationEvent = () => {
         <h3>Popular in</h3>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className="flex items-center gap-2 text-[#FF7F00]">
+            <div
+              aria-haspopup="menu"
+              aria-expanded="false"
+              className="flex items-center gap-2 text-[#FF7F00]"
+              data-state="closed"
+            >
               Yogyakarta <ChevronDown />
             </div>
           </DropdownMenuTrigger>

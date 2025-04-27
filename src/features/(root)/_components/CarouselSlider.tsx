@@ -159,7 +159,7 @@ export const CarouselSlider: React.FC = () => {
   return (
     <div className="relative w-full overflow-hidden">
       {/* Carousel wrapper */}
-      <div className="relative h-40 overflow-hidden rounded-lg shadow-md md:h-70">
+      <div className="relative h-30 overflow-hidden rounded-lg shadow-lg md:h-70">
         {slides.map((slide, index) => (
           <div
             key={index}

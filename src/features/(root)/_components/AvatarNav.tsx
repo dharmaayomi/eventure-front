@@ -28,9 +28,9 @@ export default function AvatarNav() {
   const { user, clearAuth, isAdmin, isUser } = useAuthStore();
   const role = useRole();
 
-  console.log("apakah ini admin", isAdmin());
-  console.log("apakah ini user", isUser());
-  console.log("user", user);
+  // console.log("apakah ini admin", isAdmin());
+  // console.log("apakah ini user", isUser());
+  // console.log("user", user);
 
   const logout = () => {
     clearAuth();

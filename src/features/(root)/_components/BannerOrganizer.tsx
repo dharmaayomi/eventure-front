@@ -10,7 +10,7 @@ const BannerOrganizer = () => {
         loading="lazy"
         width={1200}
         height={213}
-        className="h-70 w-full rounded-sm object-cover shadow-sm"
+        className="h-30 w-full rounded-sm object-cover shadow-sm md:h-70"
       />
     </section>
   );
