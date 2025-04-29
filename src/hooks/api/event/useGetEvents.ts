@@ -1,14 +1,14 @@
 import { Event } from "@/types/event";
-import { PageableResponse } from "@/types/pagination";
+import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const useGetEvents = () => {
+const useGetEvents = (queries?: PaginationQueries) => {
   return useQuery<PageableResponse<Event>>({
     queryKey: ["events"],
     queryFn: async () => {
       const response = await axios.get<PageableResponse<Event>>(
-        "http://localhost:8000/events",
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}/events`,
       );
       return response.data;
     },
