@@ -33,11 +33,11 @@ export default function UserDropdown() {
         className="dropdown-toggle flex items-center text-gray-700 dark:text-gray-400"
       >
         <span className="mr-3 h-11 w-11 overflow-hidden rounded-full">
-          <Image width={44} height={44} src="/jendeuk.webp" alt="User" />
+          <img width={44} height={44} src={user?.profilePic} alt="User" />
         </span>
 
         <span className="text-theme-sm mr-1 block font-medium">
-          {user?.fullName}
+          {user?.userName}
         </span>
 
         <svg

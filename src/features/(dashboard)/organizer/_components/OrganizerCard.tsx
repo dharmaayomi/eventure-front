@@ -2,22 +2,18 @@
 
 import { Modal } from "@/components/modal";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import useUpdateProfile from "@/hooks/api/auth/useUpdateProfile";
+import { FileUpload } from "@/components/ui/file-upload";
+import useUploadProfile from "@/hooks/api/auth/useUploadProfile";
 import { useModal } from "@/hooks/useModal";
 import { useAuthStore } from "@/store/auth";
-import { profile } from "console";
 import { useFormik } from "formik";
 import Image from "next/image";
-import React, { useState } from "react";
-import { UploadProfilePicSchema } from "../schema";
-import useUploadProfile from "@/hooks/api/auth/useUploadProfile";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
-import { FileUpload } from "@/components/ui/file-upload";
+import { UploadProfilePicSchema } from "../../profile/schema";
 
-const UserCard = () => {
+const OrganizerCard = () => {
   const router = useRouter();
 
   const { mutateAsync: uploadProfilePic, isPending } = useUploadProfile();
@@ -66,7 +62,7 @@ const UserCard = () => {
               <Image
                 width={100}
                 height={100}
-                src={user?.profilePic || ""}
+                src={user?.organizer?.profilePic || ""}
                 alt="user"
                 className="object-cover"
               />
@@ -74,7 +70,7 @@ const UserCard = () => {
 
             <div className="order-3 xl:order-2">
               <h4 className="mb-2 text-center text-lg font-semibold text-gray-800 xl:text-left dark:text-white/90">
-                {user?.fullName}
+                {user?.organizer?.name}
               </h4>
               <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
                 <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -162,4 +158,4 @@ const UserCard = () => {
   );
 };
 
-export default UserCard;
+export default OrganizerCard;

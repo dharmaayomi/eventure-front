@@ -124,12 +124,12 @@ export function LoginForm({
       </Card>
       {/* Sign In Link */}
       <div className="text-center text-sm">
-        Already have an account?{" "}
+        don&apos;t have an account?
         <Link
-          href="/login"
+          href="/register"
           className="text-[#004DE8] underline underline-offset-4"
         >
-          Sign In
+          Sign Up
         </Link>
       </div>
 

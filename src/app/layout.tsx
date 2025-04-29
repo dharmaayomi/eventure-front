@@ -17,12 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={` ${lexend.className} bg-[#F9FAFB] antialiased`}>
         <ReactQueryProvider>
-          <ThemeProvider>
-            <SidebarProvider>{children}</SidebarProvider>
-          </ThemeProvider>
+          {/* <ThemeProvider> */}
+          <SidebarProvider>{children}</SidebarProvider>
+          {/* </ThemeProvider> */}
         </ReactQueryProvider>
         <Toaster richColors position="top-center" />
       </body>
