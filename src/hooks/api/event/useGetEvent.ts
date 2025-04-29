@@ -7,7 +7,7 @@ const useGetEvent = (slug: string) => {
     queryKey: ["event", slug],
     queryFn: async () => {
       const { data } = await axios.get<Event>(
-        `http://localhost:8000/events/${slug}`,
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}/events/${slug}`,
       );
       return data;
     },

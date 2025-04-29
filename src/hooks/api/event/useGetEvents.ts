@@ -8,7 +8,7 @@ const useGetEvents = (queries?: PaginationQueries) => {
     queryKey: ["events"],
     queryFn: async () => {
       const response = await axios.get<PageableResponse<Event>>(
-        "http://localhost:8000/events",
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}/events`,
       );
       return response.data;
     },
