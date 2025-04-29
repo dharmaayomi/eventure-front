@@ -4,7 +4,13 @@ import useGetEvents from "@/hooks/api/event/useGetEvents";
 import EventCard from "./EventCard";
 
 const EventList = () => {
-  const { data: eventsResponse, isPending, error } = useGetEvents();
+  const {
+    data: eventsResponse,
+    isPending,
+    error,
+  } = useGetEvents({
+    take: 6,
+  });
 
   if (isPending) return <div>Loading...</div>;
   if (error) return <div>Something went wrong!</div>;
@@ -16,7 +22,7 @@ const EventList = () => {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="flex flex-row gap-6">
       {events.map((event) => (
         <EventCard key={event.id} event={event} />
       ))}
