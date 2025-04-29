@@ -1,10 +1,10 @@
 import { lexend } from "@/assets/fonts";
-import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import type { Metadata } from "next";
-import "./globals.css";
-import { Toaster } from "sonner";
 import { SidebarProvider } from "@/context/SidebarContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import type { Metadata } from "next";
+import { Toaster } from "sonner";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Eventure",

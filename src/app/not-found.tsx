@@ -1,8 +1,7 @@
-import { potta_one, rubik } from "@/assets/fonts";
-import { ExternalLinkIcon, Home, Undo2 } from "lucide-react";
+import { rubik } from "@/assets/fonts";
+import { Undo2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 export default function NotFound() {
   return (
