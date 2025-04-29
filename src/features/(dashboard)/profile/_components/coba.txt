@@ -10,12 +10,11 @@ import { useAuthStore } from "@/store/auth";
 import { profile } from "console";
 import { useFormik } from "formik";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { UploadProfilePicSchema } from "../schema";
 import useUploadProfile from "@/hooks/api/auth/useUploadProfile";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { FileUpload } from "@/components/ui/file-upload";
 
 const UserCard = () => {
   const router = useRouter();
@@ -52,11 +51,7 @@ const UserCard = () => {
     },
   });
   // console.log(user);
-  const [files, setFiles] = useState<File[]>([]);
-  const handleUploadChange = (files: File[]) => {
-    const file = files?.[0] ?? null;
-    formik.setFieldValue("profilePic", file);
-  };
+
   return (
     <section>
       <div className="rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-800">
@@ -64,11 +59,10 @@ const UserCard = () => {
           <div className="flex w-full flex-col items-center gap-6 xl:flex-row">
             <div className="h-20 w-20 overflow-hidden rounded-full border border-gray-200 dark:border-gray-800">
               <Image
-                width={100}
-                height={100}
+                width={80}
+                height={80}
                 src={user?.profilePic || ""}
                 alt="user"
-                className="object-cover"
               />
             </div>
 
@@ -110,7 +104,7 @@ const UserCard = () => {
           onClose={closeModal}
           className="m-4 max-w-[700px]"
         >
-          <div className="no-scrollbar relative h-[100vh] w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 lg:p-11 dark:bg-gray-900">
+          <div className="no-scrollbar relative h-[80vh] w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 lg:p-11 dark:bg-gray-900">
             <div className="px-2 pr-14">
               <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
                 Edit Profile Picture
@@ -122,13 +116,13 @@ const UserCard = () => {
 
             {!!user && (
               <form className="flex flex-col" onSubmit={formik.handleSubmit}>
-                <div className="custom-scrollbar h-[400px] overflow-y-auto px-2 pb-3">
+                <div className="custom-scrollbar h-[200px] overflow-y-auto px-2 pb-3">
                   <div className="mt-7">
-                    <div className="mx-auto min-h-90 w-full max-w-4xl rounded-lg border border-dashed border-neutral-200 bg-white dark:border-neutral-800 dark:bg-black">
-                      <FileUpload onChange={handleUploadChange} />
-                    </div>
+                    <h5 className="mb-5 text-lg font-medium text-gray-800 lg:mb-6 dark:text-white/90">
+                      Update here!
+                    </h5>
 
-                    {/* <div className="grid grid-cols-1 gap-x-6 gap-y-5">
+                    <div className="grid grid-cols-1 gap-x-6 gap-y-5">
                       <div className="col-span-2 space-y-2 lg:col-span-1">
                         <Label htmlFor="profilePic">Profile Picture</Label>
                         <Input
@@ -142,7 +136,7 @@ const UserCard = () => {
                           className="border-gray-300"
                         />
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 </div>
                 <div className="mt-3 flex items-center gap-3 px-2 lg:justify-end">

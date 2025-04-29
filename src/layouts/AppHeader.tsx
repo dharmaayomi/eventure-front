@@ -1,6 +1,7 @@
 "use client";
 
 import { useSidebar } from "@/context/SidebarContext";
+import { ThemeToggleButton } from "@/features/(dashboard)/_components/common/ThemeToggleButton";
 import UserDropdown from "@/features/(dashboard)/_components/header/UserDropdown";
 import Image from "next/image";
 import Link from "next/link";
@@ -161,7 +162,8 @@ const AppHeader: React.FC = () => {
           } shadow-theme-md w-full items-center justify-between gap-4 px-5 py-4 lg:flex lg:justify-end lg:px-0 lg:shadow-none`}
         >
           {/* <!-- User Area --> */}
-          <div className="ml-auto">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* <ThemeToggleButton /> */}
             <UserDropdown />
           </div>
         </div>

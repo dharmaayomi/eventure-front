@@ -45,6 +45,9 @@ export default function AvatarNav() {
   function closeDropdown() {
     setIsOpen(false);
   }
+
+  console.log(user);
+
   return (
     <div className="relative">
       <button
@@ -52,7 +55,7 @@ export default function AvatarNav() {
         className="dropdown-toggle flex items-center text-gray-700 dark:text-gray-400"
       >
         <span className="mr-3 h-11 w-11 overflow-hidden rounded-full">
-          <Image width={44} height={44} src="/jendeuk.webp" alt="User" />
+          <img width={44} height={44} src={user?.profilePic || ""} alt="User" />
         </span>
 
         <svg
@@ -151,7 +154,9 @@ export default function AvatarNav() {
                 <DropdownItem
                   onItemClick={closeDropdown}
                   tag="a"
-                  href="/dashboard/profile"
+                  href={
+                    isAdmin() ? "/dashboard/organizer" : "/dashboard/profile"
+                  }
                   className="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
                 >
                   <UserRoundPen />

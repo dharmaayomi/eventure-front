@@ -8,11 +8,8 @@ import { useModal } from "@/hooks/useModal";
 import { useAuthStore } from "@/store/auth";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import React, { FC } from "react";
-import { UpdateProfileSchema } from "../schema";
-import CopyComponent from "@/components/CopyComponents";
 
-export const UserInfoCard = () => {
+export const OrganizerInfoCard = () => {
   const router = useRouter();
   const { mutateAsync: updateProfile, isPending } = useUpdateProfile();
   const { user, clearAuth, isAdmin, isUser } = useAuthStore();
@@ -24,7 +21,7 @@ export const UserInfoCard = () => {
       userName: user?.userName || "",
     },
     enableReinitialize: true, // <-- ini penting banget!
-    validationSchema: UpdateProfileSchema,
+    // validationSchema: UpdateProfileSchema,
     onSubmit: async (values) => {
       await updateProfile(values);
 
@@ -39,87 +36,67 @@ export const UserInfoCard = () => {
     },
   });
 
+  // console.log(user);
+
   return (
     <div className="rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-800">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <h4 className="text-lg font-semibold text-gray-800 lg:mb-6 dark:text-white/90">
-            Profile Information
+            Organizer Information
           </h4>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
-            <div className="space-y-2">
+            <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Full Name
+                Organizer Name
               </p>
-              <div className="rounded-md border-2 p-2">
-                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  {user?.fullName}
-                </p>
-              </div>
-              <p className="text-xs font-light text-gray-500 dark:text-gray-400">
-                This is the name that will be displayed on your profile and in
-                emails.
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {user?.organizer?.name}
               </p>
             </div>
 
-            <div className="space-y-2">
+            <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Username
+                Since
               </p>
-              <div className="rounded-md border-2 p-2">
-                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  {user?.userName}
-                </p>
-              </div>
-              <p className="text-xs font-light text-gray-500 dark:text-gray-400">
-                This is your public display name. It can be your real name or a
-                pseudonym
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {user?.organizer?.createdAt &&
+                  new Date(user.organizer.createdAt).toLocaleDateString(
+                    "id-ID",
+                    {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    },
+                  )}
               </p>
             </div>
 
-            <div className="space-y-2">
+            <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
                 Email address
               </p>
-              <div className="rounded-md border-2 p-2">
-                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  {user?.email}
-                </p>
-              </div>
-              <p className="text-xs font-light text-gray-500 dark:text-gray-400">
-                This field can not be changed
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {user?.email}
               </p>
             </div>
-            <div className="space-y-2">
+            <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
                 Role
               </p>
-              <div className="rounded-md border-2 p-2">
-                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  {user?.role}
-                </p>
-              </div>
-              <p className="text-xs font-light text-gray-500 dark:text-gray-400">
-                This field can not be changed
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {user?.role}
               </p>
             </div>
-
-            <div className="space-y-2">
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Referral Code
-              </p>
-              <div className="flex items-center gap-4">
-                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  {user?.referralNumber}
-                </p>
-                <CopyComponent textToCopy={user?.referralNumber || ""} />{" "}
-                {/* Pass referralNumber to CopyComponent */}
-              </div>
-              <p className="text-xs font-light text-gray-500 dark:text-gray-400">
-                Share this code with your friends and earn rewards!
-              </p>
-            </div>
+          </div>
+          <div className="py-6">
+            <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+              About Organizer
+            </p>
+            <p className="text-sm font-light text-gray-800 dark:text-white/90">
+              {user?.organizer?.aboutUs}
+            </p>
           </div>
         </div>
 

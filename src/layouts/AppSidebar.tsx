@@ -16,6 +16,9 @@ import {
   Ticket,
   Search,
   CalendarFold,
+  LayoutDashboard,
+  UserRound,
+  UserCog,
 } from "lucide-react";
 import { useAuthStore } from "@/store/auth";
 
@@ -40,7 +43,7 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`flex py-8 ${
+        className={`flex py-6 ${
           !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
         }`}
       >
@@ -49,10 +52,10 @@ const AppSidebar: React.FC = () => {
             <Image
               src="/eventureLogo.webp"
               alt="logo"
-              width={180}
-              height={100}
+              width={200}
+              height={150}
               loading="lazy"
-              style={{ objectFit: "contain" }}
+              className="h-18 w-full object-cover"
             />
           ) : (
             <Image
@@ -73,7 +76,7 @@ const AppSidebar: React.FC = () => {
             {/* Section: Menu */}
             <div>
               <h2
-                className={`mb-4 flex text-xs leading-[20px] text-gray-400 uppercase ${
+                className={`mb-2 flex text-xs leading-[15px] text-gray-400 uppercase ${
                   !isExpanded && !isHovered
                     ? "lg:justify-center"
                     : "justify-start"
@@ -89,24 +92,26 @@ const AppSidebar: React.FC = () => {
                 {!!user && !!isAdmin() && (
                   <>
                     <li>
+                      {/* dashboard */}
                       <Link
                         href="/dashboard"
-                        className={`menu-item flex items-center gap-2 ${
+                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
                           isActive("/dashboard")
                             ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
                             : "p-2"
                         } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
                       >
-                        <GridIcon />
+                        <LayoutDashboard />
                         {(isExpanded || isHovered || isMobileOpen) && (
                           <span>Dashboard</span>
                         )}
                       </Link>
                     </li>
                     <li>
+                      {/* my event */}
                       <Link
                         href="/dashboard/my-event"
-                        className={`menu-item flex items-center gap-2 ${
+                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
                           isActive("/dashboard/my-event")
                             ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
                             : "p-2"
@@ -160,7 +165,7 @@ const AppSidebar: React.FC = () => {
             {/* Section: Account */}
             <div>
               <h2
-                className={`mb-4 flex text-xs leading-[20px] text-gray-400 uppercase ${
+                className={`mb-2 flex text-xs leading-[18px] text-gray-400 uppercase ${
                   !isExpanded && !isHovered
                     ? "lg:justify-center"
                     : "justify-start"
@@ -169,70 +174,106 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Account"
                 ) : (
-                  <UserCircleIcon />
+                  <UserRound />
                 )}
               </h2>
               <ul className="text-md flex flex-col gap-2">
-                <li>
-                  <Link
-                    href="/dashboard/profile"
-                    className={`menu-item flex items-center gap-2 ${
-                      isActive("/dashboard/profile")
-                        ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
-                        : "p-2"
-                    } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
-                  >
-                    <UserCircleIcon />
-                    {(isExpanded || isHovered || isMobileOpen) && (
-                      <span>Account Profile</span>
-                    )}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/dashboard/settings"
-                    className={`menu-item flex items-center gap-2 ${
-                      isActive("/dashboard/settings")
-                        ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
-                        : "p-2"
-                    } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
-                  >
-                    <SettingsIcon />
-                    {(isExpanded || isHovered || isMobileOpen) && (
-                      <span>Settings</span>
-                    )}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/dashboard/legal"
-                    className={`menu-item flex items-center gap-2 ${
-                      isActive("/dashboard/legal")
-                        ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
-                        : "p-2"
-                    } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
-                  >
-                    <FileTextIcon />
-                    {(isExpanded || isHovered || isMobileOpen) && (
-                      <span>Legal Information</span>
-                    )}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/dashboard/bank-account"
-                    className={`menu-item flex items-center gap-2 ${
-                      isActive("/dashboard/bank-account")
-                        ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
-                        : "p-2"
-                    } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
-                  >
-                    <BanknoteIcon />
-                    {(isExpanded || isHovered || isMobileOpen) && (
-                      <span>Bank Account</span>
-                    )}
-                  </Link>
-                </li>
+                {!!user && !!isAdmin() && (
+                  <>
+                    <li>
+                      {/* organizer profile */}
+                      <Link
+                        href="/dashboard/organizer"
+                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
+                          isActive("/dashboard/organizer")
+                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                            : "p-2"
+                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
+                      >
+                        <UserCog />
+                        {(isExpanded || isHovered || isMobileOpen) && (
+                          <span>Organizer Profile</span>
+                        )}
+                      </Link>
+                    </li>
+                  </>
+                )}
+                {!!user && !!isUser() && (
+                  <>
+                    <li>
+                      {/* account profile */}
+                      <Link
+                        href="/dashboard/profile"
+                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
+                          isActive("/dashboard/profile")
+                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                            : "p-2"
+                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
+                      >
+                        <UserCircleIcon />
+                        {(isExpanded || isHovered || isMobileOpen) && (
+                          <span>Account Profile</span>
+                        )}
+                      </Link>
+                    </li>
+                  </>
+                )}
+                {!!user && (!!isUser() || !!isAdmin()) && (
+                  <>
+                    <li>
+                      {/* settings */}
+                      <Link
+                        href="/dashboard/settings"
+                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
+                          isActive("/dashboard/settings")
+                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                            : "p-2"
+                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
+                      >
+                        <SettingsIcon />
+                        {(isExpanded || isHovered || isMobileOpen) && (
+                          <span>Settings</span>
+                        )}
+                      </Link>
+                    </li>
+                  </>
+                )}
+                {!!user && !!isAdmin() && (
+                  <>
+                    <li>
+                      {/* legal information */}
+                      <Link
+                        href="/dashboard/legal"
+                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
+                          isActive("/dashboard/legal")
+                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                            : "p-2"
+                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
+                      >
+                        <FileTextIcon />
+                        {(isExpanded || isHovered || isMobileOpen) && (
+                          <span>Legal Information</span>
+                        )}
+                      </Link>
+                    </li>
+                    <li>
+                      {/* bank account */}
+                      <Link
+                        href="/dashboard/bank-account"
+                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
+                          isActive("/dashboard/bank-account")
+                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                            : "p-2"
+                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
+                      >
+                        <BanknoteIcon />
+                        {(isExpanded || isHovered || isMobileOpen) && (
+                          <span>Bank Account</span>
+                        )}
+                      </Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>

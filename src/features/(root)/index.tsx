@@ -5,6 +5,7 @@ import BannerOrganizer from "./_components/BannerOrganizer";
 import EventCategory from "./_components/EventCategory";
 import RecommendedEvent from "./_components/RecommendedEvent";
 import LocationEvent from "./_components/LocationEvent";
+import Categories from "./_components/Category";
 
 const LandingPage = () => {
   return (
@@ -13,7 +14,8 @@ const LandingPage = () => {
       <TopUpcomingEvent />
       <BannerOrganizer />
       <RecommendedEvent />
-      <EventCategory />
+      {/* <EventCategory /> */}
+      <Categories />
       <LocationEvent />
     </section>
   );

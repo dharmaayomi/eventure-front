@@ -27,14 +27,14 @@ const LocationEvent = () => {
             <div
               aria-haspopup="menu"
               aria-expanded="false"
-              className="flex items-center gap-2 text-[#FF7F00]"
+              className="flex cursor-pointer items-center gap-2 text-[#FF7F00]"
               data-state="closed"
             >
               {selectedLocation} <ChevronDown />
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>Select your location </DropdownMenuLabel>
+            <DropdownMenuLabel>Select your location</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuCheckboxItem
               onClick={() => handleSelectedLocation("YOGYAKARTA")}
