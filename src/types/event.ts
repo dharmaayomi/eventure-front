@@ -12,10 +12,10 @@ export interface Event {
   slug: string;
   name: string;
   desc: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   location: Location;
-  thumbnail?: string;
+  thumbnail: string;
   createdAt: Date;
   updatedAt: Date;
   isDeleted: boolean;
