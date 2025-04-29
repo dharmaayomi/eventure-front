@@ -8,7 +8,9 @@ const useGetEventsLocation = (slug: string) => {
     queryKey: ["events", slug],
     queryFn: async () => {
       const response = await axios.get<PageableResponse<Event>>(
+
         `${process.env.NEXT_PUBLIC_BASE_API_URL}/events/location/${slug}`,
+
       );
       return response.data;
     },
