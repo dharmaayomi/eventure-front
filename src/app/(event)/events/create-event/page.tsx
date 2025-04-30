@@ -1,7 +1,7 @@
-import React from "react";
+import CreateEventForm from "@/features/event/create-event/components/CreateEventForm";
 
 const CreateEvent = () => {
-  return <div>page</div>;
+  return <CreateEventForm />;
 };
 
 export default CreateEvent;

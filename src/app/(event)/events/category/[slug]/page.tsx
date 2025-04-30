@@ -1,7 +1,12 @@
 import React from "react";
 
-const EventCategoryPage = () => {
-  return <div>EventCategory</div>;
+const EventCategory = async ({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) => {
+  const slug = (await params).slug;
+  return <div>CategoryPage</div>;
 };
 
-export default EventCategoryPage;
+export default EventCategory;
