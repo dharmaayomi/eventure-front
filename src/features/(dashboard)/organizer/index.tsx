@@ -1,11 +1,11 @@
 "use client";
 
-import { useAuthStore } from "@/store/auth";
+import { useSession } from "next-auth/react";
 import { OrganizerInfoCard } from "./_components/OrganizeInfoCard";
 import OrganizerCard from "./_components/OrganizerCard";
 
 const OrganizerPage = () => {
-  const { user } = useAuthStore();
+  const session = useSession();
 
   return (
     <div>
@@ -14,7 +14,7 @@ const OrganizerPage = () => {
           <h3 className="mb-5 text-2xl font-semibold text-gray-800 lg:mb-7 dark:text-white/90">
             Organizer Profile
           </h3>
-          {!!user && (
+          {!!session.data?.user && (
             <div className="space-y-6">
               <OrganizerCard />
               <OrganizerInfoCard />

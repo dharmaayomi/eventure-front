@@ -1,23 +1,20 @@
 "use client";
 
-import { useAuthStore } from "@/store/auth";
-import { use, useId, useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useId, useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import useChangePassword from "@/hooks/api/settings/useChangePassword";
+import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import { ChangePasswordSchema } from "../schema";
-import { useFormik } from "formik";
-import { toast } from "sonner";
 
 const ChangePasswordForm = () => {
   const router = useRouter();
 
   const { mutateAsync: changePassword, isPending } = useChangePassword();
-  const { user } = useAuthStore();
 
   const oldPassword = useId();
   const newPassword = useId();

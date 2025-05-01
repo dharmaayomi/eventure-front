@@ -1,23 +1,20 @@
 "use client";
-import { Modal } from "@/components/modal";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useModal } from "@/hooks/useModal";
-import { useAuthStore } from "@/store/auth";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 export default function UserWalletCard() {
   const router = useRouter();
 
-  const { user, clearAuth, isAdmin, isUser } = useAuthStore();
+  const session = useSession();
+  const user = session.data?.user;
   const { isOpen, openModal, closeModal } = useModal();
   const handleSave = () => {
     // Handle save logic here
     console.log("Saving changes...");
     closeModal();
   };
+
   return (
     <div className="rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-800">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">

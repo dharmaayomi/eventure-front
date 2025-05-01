@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import AvatarNav from "@/features/(root)/_components/AvatarNav";
-import { useAuthStore } from "@/store/auth";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,8 +18,9 @@ import { useEffect, useState } from "react";
 const NavbarCreateEvent = () => {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user, clearAuth } = useAuthStore();
 
+  const session = useSession();
+  const user = session.data?.user;
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
