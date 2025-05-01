@@ -10,13 +10,17 @@ import { useFormik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
 import { LoginSchema } from "../schema";
+import { useState } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const { mutateAsync: login, isPending } = useLogin();
-
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const iconColor = (isVisible: boolean) =>
+    isVisible ? "#004DE8" : "rgba(107, 114, 128, 0.7)";
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -88,16 +92,40 @@ export function LoginForm({
                         </p>
                       </Link>
                     </div>
-                    <Input
-                      id="password"
-                      type="password"
-                      name="password"
-                      value={formik.values.password}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="••••••••"
-                      required
-                    />
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type={isPasswordVisible ? "text" : "password"}
+                        name="password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="••••••••"
+                        required
+                        className="pe-9"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setIsPasswordVisible((prev) => !prev)}
+                        className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-colors outline-none hover:text-[#FF7F00] focus-visible:ring-2 focus-visible:ring-[#004DE8] focus-visible:ring-offset-2"
+                        aria-label={
+                          isPasswordVisible ? "Hide password" : "Show password"
+                        }
+                        aria-pressed={isPasswordVisible}
+                      >
+                        {isPasswordVisible ? (
+                          <EyeOffIcon
+                            size={18}
+                            color={iconColor(isPasswordVisible)}
+                          />
+                        ) : (
+                          <EyeIcon
+                            size={18}
+                            color={iconColor(isPasswordVisible)}
+                          />
+                        )}
+                      </button>
+                    </div>
                     {!!formik.touched.password && !!formik.errors.password && (
                       <p className="text-red-500">{formik.errors.password}</p>
                     )}

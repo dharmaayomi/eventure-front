@@ -30,6 +30,7 @@ import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import AvatarNav from "./AvatarNav";
 import { isAdmin, isUser } from "@/utils/AuthRole";
+import { useAuthStore } from "@/store/auth";
 
 const Navbar = () => {
   const router = useRouter();
@@ -43,6 +44,7 @@ const Navbar = () => {
       router.push(`/events?search=${debounceSearch}`);
     }
   };
+  const session = useSession();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,10 +55,6 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  console.log(search);
-
-  console.log(search);
 
   const logout = () => {
     signOut({ redirect: false });

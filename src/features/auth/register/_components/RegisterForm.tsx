@@ -11,12 +11,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { RegisterSchema } from "../schema";
 import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const { mutateAsync: register, isPending } = useRegister();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmVisible, setIsConfirmVisible] = useState(false);
+
+  const iconColor = (isVisible: boolean) =>
+    isVisible ? "#004DE8" : "rgba(107, 114, 128, 0.7)";
 
   const formik = useFormik({
     initialValues: {
@@ -214,17 +221,43 @@ export function RegisterForm({
 
                   {/* Password */}
                   <div className="grid gap-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      name="password"
-                      value={formik.values.password}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="••••••••"
-                      required
-                    />
+                    <div className="flex justify-between">
+                      <Label htmlFor="password">Password</Label>
+                    </div>
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type={isPasswordVisible ? "text" : "password"}
+                        name="password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="••••••••"
+                        required
+                        className="pe-9"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setIsPasswordVisible((prev) => !prev)}
+                        className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-colors outline-none hover:text-[#FF7F00] focus-visible:ring-2 focus-visible:ring-[#004DE8] focus-visible:ring-offset-2"
+                        aria-label={
+                          isPasswordVisible ? "Hide password" : "Show password"
+                        }
+                        aria-pressed={isPasswordVisible}
+                      >
+                        {isPasswordVisible ? (
+                          <EyeOffIcon
+                            size={18}
+                            color={iconColor(isPasswordVisible)}
+                          />
+                        ) : (
+                          <EyeIcon
+                            size={18}
+                            color={iconColor(isPasswordVisible)}
+                          />
+                        )}
+                      </button>
+                    </div>
                     {!!formik.touched.password && !!formik.errors.password && (
                       <p className="text-red-500">{formik.errors.password}</p>
                     )}
@@ -232,17 +265,43 @@ export function RegisterForm({
 
                   {/* Confirm Password */}
                   <div className="grid gap-2">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
-                    <Input
-                      id="confirmPassword"
-                      type="password"
-                      name="confirmPassword"
-                      value={formik.values.confirmPassword}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="••••••••"
-                      required
-                    />
+                    <div className="flex justify-between">
+                      <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    </div>
+                    <div className="relative">
+                      <Input
+                        id="confirmPassword"
+                        type={isConfirmVisible ? "text" : "password"}
+                        name="confirmPassword"
+                        value={formik.values.confirmPassword}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="••••••••"
+                        required
+                        className="pe-9"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setIsConfirmVisible((prev) => !prev)}
+                        className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-colors outline-none hover:text-[#FF7F00] focus-visible:ring-2 focus-visible:ring-[#004DE8] focus-visible:ring-offset-2"
+                        aria-label={
+                          isConfirmVisible ? "Hide password" : "Show password"
+                        }
+                        aria-pressed={isConfirmVisible}
+                      >
+                        {isConfirmVisible ? (
+                          <EyeOffIcon
+                            size={18}
+                            color={iconColor(isConfirmVisible)}
+                          />
+                        ) : (
+                          <EyeIcon
+                            size={18}
+                            color={iconColor(isConfirmVisible)}
+                          />
+                        )}
+                      </button>
+                    </div>
                     {!!formik.touched.confirmPassword &&
                       !!formik.errors.confirmPassword && (
                         <p className="text-red-500">
@@ -250,7 +309,6 @@ export function RegisterForm({
                         </p>
                       )}
                   </div>
-
                   <Button type="submit" disabled={isPending} className="w-full">
                     {isPending ? "Loading" : "Sign Up"}
                   </Button>
