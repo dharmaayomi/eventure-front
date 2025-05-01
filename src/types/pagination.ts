@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 export interface PaginationMeta {
   page: number;
   take: number;

@@ -3,14 +3,20 @@ import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const useGetEvents = (queries?: PaginationQueries) => {
-  return useQuery<PageableResponse<Event>>({
-    queryKey: ["events"],
+interface GetEventsQuery extends PaginationQueries {
+  search?: string;
+}
+
+const useGetEvents = (queries?: GetEventsQuery) => {
+  return useQuery({
+    queryKey: ["events", queries],
     queryFn: async () => {
-      const response = await axios.get<PageableResponse<Event>>(
+      const { data } = await axios.get<PageableResponse<Event>>(
         `${process.env.NEXT_PUBLIC_BASE_API_URL}/events`,
+        { params: queries },
       );
-      return response.data;
+      console.log(data);
+      return data;
     },
   });
 };

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Laptop,
   Music2,
@@ -7,13 +9,15 @@ import {
   WineIcon,
 } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import { useRouter } from "next/navigation";
 
 const Categories = () => {
+  const router = useRouter();
   const categories = [
     {
       id: 1,
-      title: "Music Festivals",
+      title: "Music",
+      slug: "music",
       icon: <Music2 className="mb-4 text-4xl text-blue-600" />,
       image:
         "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1745811193/7434245071f439073223add6df403139_wl7fsd.webp",
@@ -21,7 +25,8 @@ const Categories = () => {
     },
     {
       id: 2,
-      title: "Sports Events",
+      title: "Education",
+      slug: "education",
       icon: <Sprout className="mb-4 text-4xl text-orange-500" />,
       image:
         "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1745811194/394a8514c21be4c0fc80e3d2a9879019_ednxvv.webp",
@@ -29,7 +34,8 @@ const Categories = () => {
     },
     {
       id: 3,
-      title: "Tech Conferences",
+      title: "Culture",
+      slug: "culture",
       icon: <Laptop className="mb-4 text-4xl text-blue-600" />,
       image:
         "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1745811193/58e557ad51382ddf974eb4c641b3eba8_dlzioz.webp",
@@ -37,7 +43,8 @@ const Categories = () => {
     },
     {
       id: 4,
-      title: "Art Exhibitions",
+      title: "Business",
+      slug: "business",
       icon: <PaintBucket className="mb-4 text-4xl text-orange-500" />,
       image:
         "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1745811193/2132e14c1d9d448fda063c9dc8f6da14_la1bx1.webp",
@@ -45,7 +52,8 @@ const Categories = () => {
     },
     {
       id: 5,
-      title: "Food & Wine",
+      title: "Fashion",
+      slug: "fashion",
       icon: <WineIcon className="mb-4 text-4xl text-blue-600" />,
       image:
         "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1745811192/b121419a4f6e16be30b58364b1b5681c_udvvhf.webp",
@@ -53,7 +61,8 @@ const Categories = () => {
     },
     {
       id: 6,
-      title: "Cultural Festivals",
+      title: "Sport",
+      slug: "sport",
       icon: <VenetianMask className="mb-4 text-4xl text-orange-500" />,
       image:
         "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1744600796/samples/food/spices.jpg",
@@ -73,10 +82,7 @@ const Categories = () => {
             className="relative cursor-pointer overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl"
             tabIndex={0}
             role="button"
-            onKeyPress={(e) =>
-              e.key === "Enter" && console.log(`Selected: ${category.title}`)
-            }
-            onClick={() => console.log(`Selected: ${category.title}`)}
+            onClick={() => router.push(`/events/category/${category.slug}`)}
           >
             <div className="relative h-48 overflow-hidden">
               <Image

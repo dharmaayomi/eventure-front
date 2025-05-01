@@ -27,13 +27,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useDebounceValue } from "usehooks-ts";
 import AvatarNav from "./AvatarNav";
 import { isAdmin, isUser } from "@/utils/AuthRole";
 
 const Navbar = () => {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
-  const session = useSession();
+  const { user, clearAuth } = useAuthStore();
+  const [search, setSearch] = useState<string>("");
+  const [debounceSearch] = useDebounceValue(search, 500);
+
+  const handleSearchSubmit = () => {
+    if (debounceSearch.trim()) {
+      router.push(`/events?search=${debounceSearch}`);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,6 +53,10 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  console.log(search);
+
+  console.log(search);
 
   const logout = () => {
     signOut({ redirect: false });
@@ -112,10 +125,18 @@ const Navbar = () => {
           <div className="flex w-full max-w-xl items-center space-x-2">
             <Input
               type="text"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
               placeholder="Search your exciting event here!"
               className="flex-1"
             />
-            <Button type="submit" className="bg-[#083ca3]">
+            <Button
+              type="submit"
+              className="bg-[#083ca3]"
+              onClick={handleSearchSubmit}
+            >
               <SearchIcon />
             </Button>
           </div>
@@ -132,7 +153,7 @@ const Navbar = () => {
           </Link>
           <Link
             className="pointer-events-auto text-sm font-medium hover:text-[#004DE8] hover:underline"
-            href="/about"
+            href="/events/create-event"
           >
             <div className="flex items-center gap-1">
               <CalendarPlus size={24} />
