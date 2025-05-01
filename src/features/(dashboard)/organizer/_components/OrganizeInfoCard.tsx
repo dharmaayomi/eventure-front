@@ -5,32 +5,29 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useUpdateProfile from "@/hooks/api/auth/useUpdateProfile";
 import { useModal } from "@/hooks/useModal";
-import { useAuthStore } from "@/store/auth";
 import { useFormik } from "formik";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { UpdateProfileSchema } from "../../profile/schema";
 
 export const OrganizerInfoCard = () => {
   const router = useRouter();
   const { mutateAsync: updateProfile, isPending } = useUpdateProfile();
-  const { user, clearAuth, isAdmin, isUser } = useAuthStore();
+  const session = useSession();
+  const user = session.data;
   const { isOpen, openModal, closeModal } = useModal();
 
   const formik = useFormik({
     initialValues: {
-      fullName: user?.fullName || "",
-      userName: user?.userName || "",
+      fullName: user?.user.fullName || "",
+      userName: user?.user.userName || "",
     },
-    enableReinitialize: true, // <-- ini penting banget!
-    // validationSchema: UpdateProfileSchema,
+    enableReinitialize: true,
+    validationSchema: UpdateProfileSchema,
     onSubmit: async (values) => {
       await updateProfile(values);
 
-      useAuthStore.setState((state) => ({
-        user: {
-          ...state.user!,
-          ...values,
-        },
-      }));
+      router.refresh();
 
       closeModal();
     },
@@ -52,7 +49,7 @@ export const OrganizerInfoCard = () => {
                 Organizer Name
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user?.organizer?.name}
+                {user?.user.organizerName}
               </p>
             </div>
 
@@ -61,8 +58,8 @@ export const OrganizerInfoCard = () => {
                 Since
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user?.organizer?.createdAt &&
-                  new Date(user.organizer.createdAt).toLocaleDateString(
+                {user?.user.organizerCreatedAt &&
+                  new Date(user.user.organizerCreatedAt).toLocaleDateString(
                     "id-ID",
                     {
                       day: "2-digit",
@@ -78,7 +75,7 @@ export const OrganizerInfoCard = () => {
                 Email address
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user?.email}
+                {user?.user.email}
               </p>
             </div>
             <div>
@@ -86,7 +83,7 @@ export const OrganizerInfoCard = () => {
                 Role
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user?.role}
+                {user?.user.role}
               </p>
             </div>
           </div>
@@ -95,7 +92,7 @@ export const OrganizerInfoCard = () => {
               About Organizer
             </p>
             <p className="text-sm font-light text-gray-800 dark:text-white/90">
-              {user?.organizer?.aboutUs}
+              {session.data?.user.organizerAboutUs}
             </p>
           </div>
         </div>

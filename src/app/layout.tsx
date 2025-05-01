@@ -4,6 +4,9 @@ import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
+import { SessionProvider } from "next-auth/react";
+import NextAuthProviders from "@/providers/NextAuthProviders";
+import TokenProvider from "@/providers/TokenProviders";
 
 export const metadata: Metadata = {
   title: "Eventure",
@@ -20,7 +23,11 @@ export default function RootLayout({
       <body className={` ${lexend.className} bg-[#F9FAFB] antialiased`}>
         <ReactQueryProvider>
           {/* <ThemeProvider> */}
-          <SidebarProvider>{children}</SidebarProvider>
+          <NextAuthProviders>
+            <TokenProvider>
+              <SidebarProvider>{children}</SidebarProvider>
+            </TokenProvider>
+          </NextAuthProviders>
           {/* </ThemeProvider> */}
         </ReactQueryProvider>
         <Toaster richColors position="top-center" />

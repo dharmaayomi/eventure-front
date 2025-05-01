@@ -2,28 +2,23 @@
 
 import { Modal } from "@/components/modal";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import useUpdateProfile from "@/hooks/api/auth/useUpdateProfile";
-import { useModal } from "@/hooks/useModal";
-import { useAuthStore } from "@/store/auth";
-import { profile } from "console";
-import { useFormik } from "formik";
-import Image from "next/image";
-import React, { useState } from "react";
-import { UploadProfilePicSchema } from "../schema";
+import { FileUpload } from "@/components/ui/file-upload";
 import useUploadProfile from "@/hooks/api/auth/useUploadProfile";
+import { useModal } from "@/hooks/useModal";
+import { useFormik } from "formik";
+import { signIn, useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { FileUpload } from "@/components/ui/file-upload";
+import { UploadProfilePicSchema } from "../schema";
 
 const UserCard = () => {
   const router = useRouter();
 
+  const session = useSession();
+  const user = session.data?.user;
   const { mutateAsync: uploadProfilePic, isPending } = useUploadProfile();
   const { isOpen, openModal, closeModal } = useModal();
-
-  const { user } = useAuthStore();
 
   const formik = useFormik({
     initialValues: {
@@ -41,18 +36,14 @@ const UserCard = () => {
         profilePic: values.profilePic,
       });
 
-      useAuthStore.setState((state) => ({
-        user: {
-          ...state.user!,
-          profilePic: response.profilePic,
-        },
-      }));
-
+      router.refresh(); // untuk re-render halaman kalau pakai useSession()
       closeModal();
     },
   });
+
   // console.log(user);
-  const [files, setFiles] = useState<File[]>([]);
+  console.log("ini profilePIC", session);
+
   const handleUploadChange = (files: File[]) => {
     const file = files?.[0] ?? null;
     formik.setFieldValue("profilePic", file);

@@ -1,21 +1,22 @@
 "use client";
+import CopyComponent from "@/components/CopyComponents";
 import { Modal } from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useUpdateProfile from "@/hooks/api/auth/useUpdateProfile";
 import { useModal } from "@/hooks/useModal";
-import { useAuthStore } from "@/store/auth";
 import { useFormik } from "formik";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { FC } from "react";
 import { UpdateProfileSchema } from "../schema";
-import CopyComponent from "@/components/CopyComponents";
 
 export const UserInfoCard = () => {
   const router = useRouter();
   const { mutateAsync: updateProfile, isPending } = useUpdateProfile();
-  const { user, clearAuth, isAdmin, isUser } = useAuthStore();
+  const session = useSession();
+  const user = session.data?.user;
+
   const { isOpen, openModal, closeModal } = useModal();
 
   const formik = useFormik({
@@ -23,21 +24,25 @@ export const UserInfoCard = () => {
       fullName: user?.fullName || "",
       userName: user?.userName || "",
     },
-    enableReinitialize: true, // <-- ini penting banget!
+    enableReinitialize: true,
     validationSchema: UpdateProfileSchema,
     onSubmit: async (values) => {
-      await updateProfile(values);
+      const result = await updateProfile(values);
+      const updatedUser = {
+        ...session?.data, // isi lama
+        ...result.data, // data baru overwrite yg sama
+      };
 
-      useAuthStore.setState((state) => ({
-        user: {
-          ...state.user!,
-          ...values,
-        },
-      }));
-
+      await signIn("credentials", {
+        redirect: false,
+        ...updatedUser,
+        accessToken: result.data.accessToken,
+      });
       closeModal();
+      router.refresh();
     },
   });
+  console.log("ini profile", session);
 
   return (
     <div className="rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-800">
@@ -114,7 +119,6 @@ export const UserInfoCard = () => {
                   {user?.referralNumber}
                 </p>
                 <CopyComponent textToCopy={user?.referralNumber || ""} />{" "}
-                {/* Pass referralNumber to CopyComponent */}
               </div>
               <p className="text-xs font-light text-gray-500 dark:text-gray-400">
                 Share this code with your friends and earn rewards!

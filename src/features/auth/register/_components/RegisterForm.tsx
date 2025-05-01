@@ -63,7 +63,7 @@ export function RegisterForm({
                 </p>
               </div>
               <div
-                className="relative mx-auto mb-5 flex w-[300px] cursor-pointer items-center justify-between rounded-lg bg-gray-100 p-1"
+                className="relative mx-auto mb-5 flex max-w-xs cursor-pointer items-center justify-between rounded-lg bg-gray-100 p-1"
                 onClick={() =>
                   formik.setFieldValue(
                     "role",

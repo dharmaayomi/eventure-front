@@ -1,14 +1,14 @@
 "use client";
 
-import React from "react";
+import { useSession } from "next-auth/react";
 import UserCard from "./_components/UserCard";
-import { User } from "lucide-react";
-import UserWalletCard from "./_components/UserWalletCard";
-import { useAuthStore } from "@/store/auth";
 import { UserInfoCard } from "./_components/UserInfoCard";
+import UserWalletCard from "./_components/UserWalletCard";
 
 const ProfilePage = () => {
-  const { user } = useAuthStore();
+  const session = useSession();
+  const user = session.data?.user;
+  console.log("pliss berisii", session);
 
   return (
     <div>
@@ -21,7 +21,7 @@ const ProfilePage = () => {
             <div className="space-y-6">
               <UserCard />
               <UserInfoCard />
-              <UserWalletCard />
+              {/* <UserWalletCard /> */}
             </div>
           )}
         </div>

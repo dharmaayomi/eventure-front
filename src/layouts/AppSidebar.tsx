@@ -1,29 +1,30 @@
 "use client";
-import React from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React from "react";
 import { useSidebar } from "../context/SidebarContext";
 
-import SidebarWidget from "./SidebarWidget";
+import { isAdmin, isUser } from "@/utils/AuthRole";
 import {
-  FlipHorizontal,
-  GridIcon,
-  UserCircleIcon,
-  SettingsIcon,
-  FileTextIcon,
   BanknoteIcon,
-  Ticket,
-  Search,
   CalendarFold,
+  FileTextIcon,
+  FlipHorizontal,
   LayoutDashboard,
-  UserRound,
+  Search,
+  SettingsIcon,
+  Ticket,
+  UserCircleIcon,
   UserCog,
+  UserRound,
 } from "lucide-react";
-import { useAuthStore } from "@/store/auth";
+import { useSession } from "next-auth/react";
+import SidebarWidget from "./SidebarWidget";
 
 const AppSidebar: React.FC = () => {
-  const { user, clearAuth, isAdmin, isUser } = useAuthStore();
+  const session = useSession();
+  const user = session.data?.user;
 
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
@@ -89,7 +90,7 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               <ul className="text-md flex flex-col gap-2">
-                {!!user && !!isAdmin() && (
+                {!!isAdmin(session.data) && (
                   <>
                     <li>
                       {/* dashboard */}
@@ -125,7 +126,7 @@ const AppSidebar: React.FC = () => {
                     </li>
                   </>
                 )}
-                {!!user && !!isUser() && (
+                {!!isUser(session.data) && (
                   <>
                     <li>
                       <Link
@@ -178,7 +179,7 @@ const AppSidebar: React.FC = () => {
                 )}
               </h2>
               <ul className="text-md flex flex-col gap-2">
-                {!!user && !!isAdmin() && (
+                {!!isAdmin(session.data) && (
                   <>
                     <li>
                       {/* organizer profile */}
@@ -198,7 +199,7 @@ const AppSidebar: React.FC = () => {
                     </li>
                   </>
                 )}
-                {!!user && !!isUser() && (
+                {!!isUser(session.data) && (
                   <>
                     <li>
                       {/* account profile */}
@@ -218,7 +219,7 @@ const AppSidebar: React.FC = () => {
                     </li>
                   </>
                 )}
-                {!!user && (!!isUser() || !!isAdmin()) && (
+                {(!!isUser(session.data) || !!isAdmin(session.data)) && (
                   <>
                     <li>
                       {/* settings */}
@@ -238,24 +239,8 @@ const AppSidebar: React.FC = () => {
                     </li>
                   </>
                 )}
-                {!!user && !!isAdmin() && (
+                {!!isAdmin(session.data) && (
                   <>
-                    <li>
-                      {/* legal information */}
-                      <Link
-                        href="/dashboard/legal"
-                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
-                          isActive("/dashboard/legal")
-                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
-                            : "p-2"
-                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
-                      >
-                        <FileTextIcon />
-                        {(isExpanded || isHovered || isMobileOpen) && (
-                          <span>Legal Information</span>
-                        )}
-                      </Link>
-                    </li>
                     <li>
                       {/* bank account */}
                       <Link
