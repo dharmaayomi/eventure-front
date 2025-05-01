@@ -34,7 +34,8 @@ import { isAdmin, isUser } from "@/utils/AuthRole";
 const Navbar = () => {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user, clearAuth } = useAuthStore();
+  const session = useSession();
+
   const [search, setSearch] = useState<string>("");
   const [debounceSearch] = useDebounceValue(search, 500);
 
