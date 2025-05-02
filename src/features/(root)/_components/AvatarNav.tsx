@@ -2,9 +2,8 @@
 import { Separator } from "@/components/ui/separator";
 import { Dropdown } from "@/features/(dashboard)/_components/dropdown/Dropdown";
 import { DropdownItem } from "@/features/(dashboard)/_components/dropdown/DropdownItem";
-import { useRole } from "@/hooks/api/auth/useRole";
 import Backdrop from "@/layouts/Backdrop";
-import { useAuthStore } from "@/store/auth";
+import { isAdmin, isUser } from "@/utils/AuthRole";
 import {
   BanknoteIcon,
   CalendarFold,
@@ -16,6 +15,7 @@ import {
   Ticket,
   UserRoundPen,
 } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -25,15 +25,16 @@ export default function AvatarNav() {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
-  const { user, clearAuth, isAdmin, isUser } = useAuthStore();
-  const role = useRole();
+
+  const session = useSession();
 
   // console.log("apakah ini admin", isAdmin());
   // console.log("apakah ini user", isUser());
   // console.log("user", user);
+  // console.log("is admin", isAdmin(session.data));
 
   const logout = () => {
-    clearAuth();
+    signOut({ redirect: false });
     router.push("/");
   };
 
@@ -46,7 +47,7 @@ export default function AvatarNav() {
     setIsOpen(false);
   }
 
-  console.log(user);
+  console.log("ini isi session", session);
 
   return (
     <div className="relative">
@@ -55,7 +56,16 @@ export default function AvatarNav() {
         className="dropdown-toggle flex items-center text-gray-700 dark:text-gray-400"
       >
         <span className="mr-3 h-11 w-11 overflow-hidden rounded-full">
-          <img width={44} height={44} src={user?.profilePic || ""} alt="User" />
+          <Image
+            width={50}
+            height={50}
+            src={
+              session.data?.user.profilePic
+                ? session.data?.user.profilePic
+                : "/jendeuk.webp"
+            }
+            alt="User"
+          />
         </span>
 
         <svg
@@ -86,14 +96,14 @@ export default function AvatarNav() {
       >
         <div>
           <span className="text-theme-sm block font-medium text-gray-700 dark:text-gray-400">
-            {user?.fullName}
+            {session.data?.user?.userName}
           </span>
           <span className="text-theme-xs mt-0.5 block text-gray-500 dark:text-gray-400">
-            {user?.email}
+            {session.data?.user?.email}
           </span>
         </div>
         <ul className="flex flex-col gap-1 border-b border-gray-200 pt-4 pb-3 dark:border-gray-800">
-          {!!user && !!isAdmin() && (
+          {isAdmin(session.data) && (
             <>
               <li>
                 <DropdownItem
@@ -120,7 +130,7 @@ export default function AvatarNav() {
             </>
           )}
 
-          {!!user && !!isUser() && (
+          {isUser(session.data) && (
             <>
               <li>
                 <DropdownItem
@@ -148,14 +158,16 @@ export default function AvatarNav() {
           )}
         </ul>
         <ul>
-          {!!user && (isUser() || isAdmin()) && (
+          {(isUser(session.data) || isAdmin(session.data)) && (
             <>
               <li>
                 <DropdownItem
                   onItemClick={closeDropdown}
                   tag="a"
                   href={
-                    isAdmin() ? "/dashboard/organizer" : "/dashboard/profile"
+                    isAdmin(session.data)
+                      ? "/dashboard/organizer"
+                      : "/dashboard/profile"
                   }
                   className="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
                 >
@@ -176,19 +188,8 @@ export default function AvatarNav() {
               </li>
             </>
           )}
-          {!!user && !!isAdmin() && (
+          {isAdmin(session.data) && (
             <>
-              <li>
-                <DropdownItem
-                  onItemClick={closeDropdown}
-                  tag="a"
-                  href="/dashboard/legal"
-                  className="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                >
-                  <FileTextIcon />
-                  Legal Information
-                </DropdownItem>
-              </li>
               <li>
                 <DropdownItem
                   onItemClick={closeDropdown}

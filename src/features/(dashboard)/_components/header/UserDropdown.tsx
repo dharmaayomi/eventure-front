@@ -1,20 +1,20 @@
 "use client";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Dropdown } from "../dropdown/Dropdown";
 import { DropdownItem } from "../dropdown/DropdownItem";
-import { useAuthStore } from "@/store/auth";
-import { useRouter } from "next/navigation";
 
 export default function UserDropdown() {
   const router = useRouter();
 
-  const { user, clearAuth, isAdmin, isUser } = useAuthStore();
+  const session = useSession();
 
   const [isOpen, setIsOpen] = useState(false);
   const logout = () => {
-    clearAuth();
+    signOut({ redirect: false });
     router.push("/");
   };
 
@@ -33,11 +33,20 @@ export default function UserDropdown() {
         className="dropdown-toggle flex items-center text-gray-700 dark:text-gray-400"
       >
         <span className="mr-3 h-11 w-11 overflow-hidden rounded-full">
-          <img width={44} height={44} src={user?.profilePic} alt="User" />
+          <Image
+            width={44}
+            height={44}
+            src={
+              session.data?.user.profilePic
+                ? session.data?.user.profilePic
+                : "/jendeuk.webp"
+            }
+            alt="User"
+          />
         </span>
 
         <span className="text-theme-sm mr-1 block font-medium">
-          {user?.userName}
+          {session.data?.user.userName}
         </span>
 
         <svg
@@ -67,10 +76,10 @@ export default function UserDropdown() {
       >
         <div>
           <span className="text-theme-sm block font-medium text-gray-700 dark:text-gray-400">
-            {user?.fullName}
+            {session.data?.user?.fullName}
           </span>
           <span className="text-theme-xs mt-0.5 block text-gray-500 dark:text-gray-400">
-            {user?.email}
+            {session.data?.user?.email}
           </span>
         </div>
 
@@ -104,7 +113,7 @@ export default function UserDropdown() {
             <DropdownItem
               onItemClick={closeDropdown}
               tag="a"
-              href="/profile"
+              href="/dashboard/settings"
               className="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
               <svg

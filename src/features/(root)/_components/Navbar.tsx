@@ -10,14 +10,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { useAuthStore } from "@/store/auth";
-import { CalendarPlus, Compass, SearchIcon } from "lucide-react";
+import {
+  BanknoteIcon,
+  CalendarFold,
+  CalendarPlus,
+  Compass,
+  LayoutDashboard,
+  Search,
+  SearchIcon,
+  Settings,
+  Ticket,
+  UserRoundPen,
+} from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import AvatarNav from "./AvatarNav";
+import { isAdmin, isUser } from "@/utils/AuthRole";
 
 const Navbar = () => {
   const router = useRouter();
@@ -44,6 +56,12 @@ const Navbar = () => {
 
   console.log(search);
 
+  console.log(search);
+
+  const logout = () => {
+    signOut({ redirect: false });
+    router.push("/");
+  };
   return (
     <nav
       className={`fixed top-0 left-0 z-50 w-full ${
@@ -143,7 +161,9 @@ const Navbar = () => {
             </div>
           </Link>
 
-          {!user ? (
+          {!!session.data?.user ? (
+            <AvatarNav />
+          ) : (
             <>
               <Link href="/register">
                 <Button className="border border-[#083ca3] bg-transparent font-semibold text-[#083ca3] hover:border-transparent hover:bg-[#7ba7ff] hover:text-white">
@@ -156,8 +176,6 @@ const Navbar = () => {
                 </Button>
               </Link>
             </>
-          ) : (
-            <AvatarNav />
           )}
         </div>
 
@@ -167,23 +185,137 @@ const Navbar = () => {
             <DropdownMenuTrigger asChild>
               <button className="rounded border p-2">☰</button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>
-                <Link href="/">Home</Link>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel className="text-[#083ca3]">
+                Menu
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link href="/blogs">Blogs</Link>
+
+              {/* Discover */}
+              <DropdownMenuItem asChild>
+                <Link href="/" className="flex items-center gap-2">
+                  <Compass size={18} />
+                  Discover
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/about">About</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/category">Category</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/contact">Contact</Link>
-              </DropdownMenuItem>
+
+              {/* Create Event - bisa dibedakan berdasarkan role */}
+              {!isUser(session.data) && (
+                <DropdownMenuItem asChild>
+                  <Link href="/about" className="flex items-center gap-2">
+                    <CalendarPlus size={18} />
+                    Create Event
+                  </Link>
+                </DropdownMenuItem>
+              )}
+
+              {/* Tambahan opsional untuk ADMIN */}
+              {isAdmin(session.data) && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard" className="flex items-center gap-2">
+                      <LayoutDashboard size={18} />
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/dashboard/my-event"
+                      className="flex items-center gap-2"
+                    >
+                      <CalendarFold size={18} />
+                      My Events
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
+
+              {isUser(session.data) && (
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/dashboard/my-ticket"
+                      className="flex items-center gap-2"
+                    >
+                      <Ticket size={18} />
+                      My Ticket
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
+
+              {(isUser(session.data) || isAdmin(session.data)) && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href={
+                        isAdmin(session.data)
+                          ? "/dashboard/organizer"
+                          : "/dashboard/profile"
+                      }
+                      className="flex items-center gap-2"
+                    >
+                      <UserRoundPen size={18} />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/dashboard/settings"
+                      className="flex items-center gap-2"
+                    >
+                      <Settings size={18} />
+                      Settings
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
+
+              {isAdmin(session.data) && (
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/dashboard/bank-account"
+                    className="flex items-center gap-2"
+                  >
+                    <BanknoteIcon size={18} />
+                    Bank Account
+                  </Link>
+                </DropdownMenuItem>
+              )}
+
+              {/* Auth Buttons */}
+              {!session.data?.user ? (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/register">
+                      <Button
+                        variant="outline"
+                        className="w-full border-[#083ca3] text-[#083ca3] hover:border-transparent hover:bg-[#7ba7ff] hover:text-white"
+                      >
+                        Sign Up
+                      </Button>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/login">
+                      <Button className="w-full bg-[#FF7F00] hover:bg-[#7ba7ff]">
+                        Sign In
+                      </Button>
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <DropdownMenuItem asChild>
+                  <Link href="/login" onClick={logout}>
+                    <Button className="w-full bg-[#FF7F00] hover:bg-[#7ba7ff]">
+                      Sign out
+                    </Button>
+                  </Link>
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
