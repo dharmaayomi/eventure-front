@@ -10,6 +10,13 @@ interface EventCardProps {
 }
 
 const EventCard: FC<EventCardProps> = ({ event }) => {
+  const rupiah = (price: number) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(price);
+  };
+
   return (
     <Link href={`/events/${event.slug}`}>
       <div>
@@ -38,7 +45,7 @@ const EventCard: FC<EventCardProps> = ({ event }) => {
                   <div className="flex items-center gap-2 text-sm font-semibold">
                     {" "}
                     <Tag size={16} />
-                    {event.tickets?.[0]?.price}
+                    {rupiah(event.tickets?.[0]?.price)}
                   </div>
                   <hr />
                   <div className="flex items-center gap-2">
