@@ -9,7 +9,7 @@ const EventDetail = async ({
   return (
     <main className="container mx-auto">
       <div className="mt-30">
-        <EventDetailPage slug={slug} />;
+        <EventDetailPage slug={slug} />
       </div>
     </main>
   );
