@@ -44,8 +44,10 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`flex py-6 ${
-          !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+        className={`flex ${
+          !isExpanded && !isHovered
+            ? "py-6 lg:justify-center"
+            : "justify-start py-2"
         }`}
       >
         <Link href="/">
@@ -56,7 +58,7 @@ const AppSidebar: React.FC = () => {
               width={200}
               height={150}
               loading="lazy"
-              className="h-18 w-full object-cover"
+              className="mt-auto h-18 w-full object-cover"
             />
           ) : (
             <Image

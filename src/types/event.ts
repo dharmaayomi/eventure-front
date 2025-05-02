@@ -21,4 +21,9 @@ export interface Event {
   isDeleted: boolean;
   vouchers: Voucher[];
   tickets: Ticket[];
+  totalTransactions: number;
+}
+
+export interface EventWithTransaction extends Event {
+  totalTransactions: number;
 }
