@@ -10,13 +10,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { useAuthStore } from "@/store/auth";
+import { isAdmin, isUser } from "@/utils/AuthRole";
 import {
   BanknoteIcon,
   CalendarFold,
   CalendarPlus,
   Compass,
   LayoutDashboard,
-  Search,
   SearchIcon,
   Settings,
   Ticket,
@@ -29,14 +30,13 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import AvatarNav from "./AvatarNav";
-import { isAdmin, isUser } from "@/utils/AuthRole";
 
 const Navbar = () => {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user, clearAuth } = useAuthStore();
   const [search, setSearch] = useState<string>("");
   const [debounceSearch] = useDebounceValue(search, 500);
+  const session = useSession();
 
   const handleSearchSubmit = () => {
     if (debounceSearch.trim()) {
