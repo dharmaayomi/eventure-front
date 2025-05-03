@@ -1,0 +1,637 @@
+// "use client";
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Label } from "@/components/ui/label";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+// import useGetEventOrganizerBySlug from "@/hooks/api/event/useGetEventOrganizerBySlug";
+// import useUpdateEvent from "@/hooks/api/event/useUpdateEvent";
+// import { CategoryName, Location, Event } from "@/types/event";
+// import { getChangedValues } from "@/utils/getChangedValue";
+// import { useFormik } from "formik";
+// import { useSession } from "next-auth/react";
+// import { useRouter } from "next/navigation";
+// import * as React from "react";
+// import { FC } from "react";
+// import { UpdateEventSchema } from "../schema";
+
+// import {
+//   Popover,
+//   PopoverContent,
+//   PopoverTrigger,
+// } from "@/components/ui/popover";
+// import { cn } from "@/lib/utils";
+// import { format } from "date-fns";
+// import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+// import { CalendarIcon } from "lucide-react";
+// import dynamic from "next/dynamic";
+// const TiptapRichtextEditor = dynamic(
+//   () => import("@/components/TiptapRichtextEditor"),
+//   { ssr: false },
+// );
+
+// interface EditFormEventsProps {
+//   slug: string;
+// }
+
+// interface EventFormValues {
+//   name: string;
+//   desc: string;
+//   startDate: string;
+//   endDate: string;
+//   category: CategoryName;
+//   location: Location;
+// }
+
+// export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
+//   const { data: event, isPending: isPendingGet } =
+//     useGetEventOrganizerBySlug(slug);
+//   const eventId = event?.id;
+//   const router = useRouter();
+//   const { mutateAsync: updateEvent, isPending: isPendingUpdate } =
+//     useUpdateEvent(eventId);
+//   const session = useSession();
+//   const user = session.data?.user;
+
+//   const initialValues: EventFormValues = {
+//     name: event?.name || "",
+//     desc: event?.desc || "",
+//     startDate: event?.startDate || "",
+//     endDate: event?.endDate || "",
+//     category: event?.category || CategoryName.BUSINESS,
+//     location: event?.location || Location.JAKARTA,
+//   };
+
+//   const formik = useFormik<EventFormValues>({
+//     initialValues: initialValues,
+//     enableReinitialize: true,
+//     validationSchema: UpdateEventSchema,
+//     onSubmit: async (values) => {
+//       try {
+//         // Ensure we include the event ID in the payload if it exists
+//         const payload = {
+//           ...getChangedValues(values, initialValues),
+//           id: event?.id,
+//           slug: slug,
+//         };
+
+//         await updateEvent(payload);
+//         router.push(`/dashboard/my-event/${slug}`); // Navigate to event page after successful update
+//       } catch (error) {
+//         console.error("Failed to update event:", error);
+//       }
+//     },
+//   });
+//   console.log("formik no bos", formik.values);
+
+//   // Helper function to safely parse dates
+//   const parseDate = (dateString: string | undefined): Date | undefined => {
+//     if (!dateString) return undefined;
+//     const date = new Date(dateString);
+//     return isNaN(date.getTime()) ? undefined : date;
+//   };
+
+//   const startDate = parseDate(formik.values.startDate);
+//   const endDate = parseDate(formik.values.endDate);
+
+//   if (isPendingGet) {
+//     return <div className="p-6">Loading event information...</div>;
+//   }
+
+//   if (!event && !isPendingGet) {
+//     return <div className="p-6">Event not found</div>;
+//   }
+
+//   return (
+//     <div className="rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-800">
+//       <h4 className="mb-6 text-lg font-semibold text-gray-800 dark:text-white/90">
+//         Event Information
+//       </h4>
+
+//       {!!user && (
+//         <form onSubmit={formik.handleSubmit} className="space-y-6">
+//           <div className="space-y-2">
+//             <Label htmlFor="name">Event Name</Label>
+//             <Input
+//               id="name"
+//               name="name"
+//               placeholder="Event Name"
+//               value={formik.values.name}
+//               onChange={formik.handleChange}
+//               onBlur={formik.handleBlur}
+//             />
+//             {formik.touched.name && formik.errors.name && (
+//               <p className="text-sm font-medium text-red-500">
+//                 {formik.errors.name}
+//               </p>
+//             )}
+//             <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+//               Enter the full name of your event as it will appear to attendees.
+//             </p>
+//           </div>
+
+//           {/* <div className="space-y-2">
+//             <Label htmlFor="desc">Description</Label>
+//             <Input
+//               id="desc"
+//               name="desc"
+//               placeholder="Event Description"
+//               value={formik.values.desc}
+//               onChange={formik.handleChange}
+//               onBlur={formik.handleBlur}
+//             />
+//             {formik.touched.desc && formik.errors.desc && (
+//               <p className="text-sm font-medium text-red-500">
+//                 {formik.errors.desc}
+//               </p>
+//             )}
+//             <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+//               Provide a short description of your event.
+//             </p>
+//           </div> */}
+
+//           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
+//             <div className="space-y-2">
+//               <Label htmlFor="location">Location</Label>
+//               <Select
+//                 value={formik.values.location}
+//                 onValueChange={(value: Location) =>
+//                   formik.setFieldValue("location", value)
+//                 }
+//               >
+//                 <SelectTrigger id="location" className="w-full">
+//                   <SelectValue placeholder="Select location" />
+//                 </SelectTrigger>
+//                 <SelectContent>
+//                   {Object.values(Location).map((loc) => (
+//                     <SelectItem key={loc} value={loc}>
+//                       {loc}
+//                     </SelectItem>
+//                   ))}
+//                 </SelectContent>
+//               </Select>
+//               {formik.touched.location && formik.errors.location && (
+//                 <p className="text-sm font-medium text-red-500">
+//                   {formik.errors.location}
+//                 </p>
+//               )}
+//               <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+//                 Select the location where your event will take place.
+//               </p>
+//             </div>
+//             <div className="space-y-2">
+//               <Label htmlFor="category">Category</Label>
+//               <Select
+//                 value={formik.values.category}
+//                 onValueChange={(value: CategoryName) =>
+//                   formik.setFieldValue("category", value)
+//                 }
+//               >
+//                 <SelectTrigger id="category" className="w-full">
+//                   <SelectValue placeholder="Select category" />
+//                 </SelectTrigger>
+//                 <SelectContent>
+//                   {Object.values(CategoryName).map((cat) => (
+//                     <SelectItem key={cat} value={cat}>
+//                       {cat}
+//                     </SelectItem>
+//                   ))}
+//                 </SelectContent>
+//               </Select>
+//               {formik.touched.category && formik.errors.category && (
+//                 <p className="text-sm font-medium text-red-500">
+//                   {formik.errors.category}
+//                 </p>
+//               )}
+//               <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+//                 Choose the category that best describes your event.
+//               </p>
+//             </div>
+
+//             <div className="space-y-2">
+//               <Label htmlFor="startDate">Start Date</Label>
+//               <Popover>
+//                 <PopoverTrigger asChild>
+//                   <Button
+//                     variant="outline"
+//                     className={cn(
+//                       "w-full justify-start text-left font-normal",
+//                       !startDate && "text-muted-foreground",
+//                     )}
+//                     type="button"
+//                   >
+//                     <CalendarIcon className="mr-2 h-4 w-4" />
+//                     {startDate ? (
+//                       format(startDate, "PPP")
+//                     ) : (
+//                       <span>Pick a date</span>
+//                     )}
+//                   </Button>
+//                 </PopoverTrigger>
+//                 <PopoverContent className="w-auto p-0">
+//                   <CalendarComponent
+//                     mode="single"
+//                     selected={startDate}
+//                     onSelect={(date: Date | undefined) => {
+//                       if (date) {
+//                         formik.setFieldValue("startDate", date.toISOString());
+//                       }
+//                     }}
+//                     initialFocus
+//                   />
+//                 </PopoverContent>
+//               </Popover>
+//               {formik.touched.startDate && formik.errors.startDate && (
+//                 <p className="text-sm font-medium text-red-500">
+//                   {formik.errors.startDate}
+//                 </p>
+//               )}
+//             </div>
+
+//             <div className="space-y-2">
+//               <Label htmlFor="endDate">End Date</Label>
+//               <Popover>
+//                 <PopoverTrigger asChild>
+//                   <Button
+//                     variant="outline"
+//                     className={cn(
+//                       "w-full justify-start text-left font-normal",
+//                       !endDate && "text-muted-foreground",
+//                     )}
+//                     type="button"
+//                   >
+//                     <CalendarIcon className="mr-2 h-4 w-4" />
+//                     {endDate ? (
+//                       format(endDate, "PPP")
+//                     ) : (
+//                       <span>Pick a date</span>
+//                     )}
+//                   </Button>
+//                 </PopoverTrigger>
+//                 <PopoverContent className="w-auto p-0">
+//                   <CalendarComponent
+//                     mode="single"
+//                     selected={endDate}
+//                     onSelect={(date: Date | undefined) => {
+//                       if (date) {
+//                         formik.setFieldValue("endDate", date.toISOString());
+//                       }
+//                     }}
+//                     initialFocus
+//                     disabled={(date) => (startDate ? date < startDate : false)}
+//                   />
+//                 </PopoverContent>
+//               </Popover>
+//               {formik.touched.endDate && formik.errors.endDate && (
+//                 <p className="text-sm font-medium text-red-500">
+//                   {formik.errors.endDate}
+//                 </p>
+//               )}
+//             </div>
+//           </div>
+
+//           <TiptapRichtextEditor
+//             key={event?.desc || ""}
+//             label="desc"
+//             field="desc"
+//             isTouch={formik.touched.desc}
+//             content={formik.values.desc}
+//             onChange={(value: string) => formik.setFieldValue("content", value)}
+//             setError={formik.setFieldError}
+//             setTouch={formik.setFieldTouched}
+//           />
+
+//           <div className="flex justify-end gap-3 pt-4">
+//             <Button
+//               type="button"
+//               variant="outline"
+//               onClick={() => {
+//                 formik.resetForm();
+//               }}
+//             >
+//               Cancel
+//             </Button>
+//             <Button
+//               type="submit"
+//               disabled={isPendingUpdate || !formik.isValid || !formik.dirty}
+//             >
+//               {isPendingUpdate ? "Saving..." : "Save Changes"}
+//             </Button>
+//           </div>
+//         </form>
+//       )}
+//     </div>
+//   );
+// };
+
+"use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import useGetEventOrganizerBySlug from "@/hooks/api/event/useGetEventOrganizerBySlug";
+import useUpdateEvent from "@/hooks/api/event/useUpdateEvent";
+import { CategoryName, Location } from "@/types/event";
+import { getChangedValues } from "@/utils/getChangedValue";
+import { useFormik } from "formik";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { FC } from "react";
+import { UpdateEventSchema } from "../schema";
+
+import dynamic from "next/dynamic";
+import DatePicker from "@/components/ui/datepicker";
+const TiptapRichtextEditor = dynamic(
+  () => import("@/components/TiptapRichtextEditor"),
+  { ssr: false },
+);
+
+interface EditFormEventsProps {
+  slug: string;
+}
+
+interface EventFormValues {
+  name: string;
+  desc: string;
+  startDate: string;
+  endDate: string;
+  category: CategoryName;
+  location: Location;
+}
+
+export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
+  const { data: event, isPending: isPendingGet } =
+    useGetEventOrganizerBySlug(slug);
+  const eventId = event?.id;
+  const router = useRouter();
+  const { mutateAsync: updateEvent, isPending: isPendingUpdate } =
+    useUpdateEvent(eventId);
+  const session = useSession();
+  const user = session.data?.user;
+
+  const initialValues: EventFormValues = {
+    name: event?.name || "",
+    desc: event?.desc || "",
+    startDate: event?.startDate || "",
+    endDate: event?.endDate || "",
+    category: event?.category || CategoryName.BUSINESS,
+    location: event?.location || Location.JAKARTA,
+  };
+
+  const formik = useFormik<EventFormValues>({
+    initialValues: initialValues,
+    enableReinitialize: true,
+    validationSchema: UpdateEventSchema,
+    onSubmit: async (values) => {
+      try {
+        // Ensure we include the event ID in the payload if it exists
+        const payload = {
+          ...getChangedValues(values, initialValues),
+          id: event?.id,
+          slug: slug,
+        };
+
+        console.log("Submitting payload:", payload); // Debug log to check what's being sent
+        await updateEvent(payload);
+        router.push(`/dashboard/my-event/${slug}/edit`); // Navigate to event page after successful update
+      } catch (error) {
+        console.error("Failed to update event:", error);
+      }
+    },
+  });
+
+  // Helper function to safely parse dates
+  const parseDate = (dateString: string | undefined): Date | undefined => {
+    if (!dateString) return undefined;
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? undefined : date;
+  };
+
+  const startDate = parseDate(formik.values.startDate);
+  const endDate = parseDate(formik.values.endDate);
+
+  if (isPendingGet) {
+    return (
+      <div className="flex h-64 items-center justify-center p-6">
+        <div className="animate-pulse font-medium text-[#004DE8]">
+          Loading event information...
+        </div>
+      </div>
+    );
+  }
+
+  if (!event && !isPendingGet) {
+    return (
+      <div className="rounded-lg border border-red-100 bg-red-50 p-6 text-center text-red-600">
+        Event not found
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm lg:p-6 dark:border-gray-800 dark:bg-gray-900">
+      <h4 className="mb-6 border-b border-[#004DE8]/10 pb-3 text-lg font-semibold text-[#004DE8] dark:text-[#004DE8]/90">
+        Event Information
+      </h4>
+
+      {!!user && (
+        <form onSubmit={formik.handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="name" className="font-medium text-[#004DE8]/90">
+              Event Name
+            </Label>
+            <Input
+              id="name"
+              name="name"
+              placeholder="Event Name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="border-gray-300 transition-all focus:border-[#004DE8] focus:ring focus:ring-[#004DE8]/20 dark:border-gray-700"
+            />
+            {formik.touched.name && formik.errors.name && (
+              <p className="text-sm font-medium text-red-500">
+                {formik.errors.name}
+              </p>
+            )}
+            <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+              Enter the full name of your event as it will appear to attendees.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
+            <div className="space-y-2">
+              <Label
+                htmlFor="location"
+                className="font-medium text-[#004DE8]/90"
+              >
+                Location
+              </Label>
+              <Select
+                value={formik.values.location}
+                onValueChange={(value: Location) =>
+                  formik.setFieldValue("location", value)
+                }
+              >
+                <SelectTrigger
+                  id="location"
+                  className="w-full border-gray-300 transition-all focus:border-[#004DE8] focus:ring focus:ring-[#004DE8]/20 dark:border-gray-700"
+                >
+                  <SelectValue placeholder="Select location" />
+                </SelectTrigger>
+                <SelectContent className="border-[#004DE8]/20">
+                  {Object.values(Location).map((loc) => (
+                    <SelectItem key={loc} value={loc}>
+                      {loc}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {formik.touched.location && formik.errors.location && (
+                <p className="text-sm font-medium text-red-500">
+                  {formik.errors.location}
+                </p>
+              )}
+              <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+                Select the location where your event will take place.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="category"
+                className="font-medium text-[#004DE8]/90"
+              >
+                Category
+              </Label>
+              <Select
+                value={formik.values.category}
+                onValueChange={(value: CategoryName) =>
+                  formik.setFieldValue("category", value)
+                }
+              >
+                <SelectTrigger
+                  id="category"
+                  className="w-full border-gray-300 transition-all focus:border-[#004DE8] focus:ring focus:ring-[#004DE8]/20 dark:border-gray-700"
+                >
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent className="border-[#004DE8]/20">
+                  {Object.values(CategoryName).map((cat) => (
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {formik.touched.category && formik.errors.category && (
+                <p className="text-sm font-medium text-red-500">
+                  {formik.errors.category}
+                </p>
+              )}
+              <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+                Choose the category that best describes your event.
+              </p>
+            </div>
+            {/* calendar start date */}
+            <div className="space-y-2">
+              {/* <InlineDatepicker /> */}
+              <Label
+                htmlFor="startDate"
+                className="font-medium text-[#004DE8]/90"
+              >
+                Start Date
+              </Label>
+              <Input
+                id="startDate"
+                name="startDate"
+                type="date"
+                value={formik.values.startDate}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className="border-gray-300 transition-all focus:border-[#004DE8] focus:ring focus:ring-[#004DE8]/20 dark:border-gray-700"
+              />
+              {formik.touched.startDate && formik.errors.startDate && (
+                <p className="text-sm font-medium text-red-500">
+                  {formik.errors.startDate}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label
+                htmlFor="endDate"
+                className="font-medium text-[#004DE8]/90"
+              >
+                End Date
+              </Label>
+              <Input
+                id="endDate"
+                name="endDate"
+                type="date"
+                value={formik.values.endDate}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className="border-gray-300 transition-all focus:border-[#004DE8] focus:ring focus:ring-[#004DE8]/20 dark:border-gray-700"
+              />
+              {formik.touched.endDate && formik.errors.endDate && (
+                <p className="text-sm font-medium text-red-500">
+                  {formik.errors.endDate}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800/50">
+            <Label
+              htmlFor="desc"
+              className="mb-2 block font-medium text-[#004DE8]/90"
+            >
+              Description
+            </Label>
+            <TiptapRichtextEditor
+              key={event?.desc || ""}
+              label="desc"
+              field="desc"
+              isTouch={formik.touched.desc}
+              content={formik.values.desc}
+              onChange={(value: string) => formik.setFieldValue("desc", value)}
+              setError={formik.setFieldError}
+              setTouch={formik.setFieldTouched}
+            />
+          </div>
+
+          <div className="flex justify-end gap-3 border-t border-gray-100 pt-6 dark:border-gray-800">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                formik.resetForm();
+              }}
+              className="border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:border-gray-700 dark:hover:bg-gray-800"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={isPendingUpdate || !formik.isValid || !formik.dirty}
+              className="bg-[#004DE8] text-white hover:bg-[#004DE8]/90"
+            >
+              {isPendingUpdate ? "Saving..." : "Save Changes"}
+            </Button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+};

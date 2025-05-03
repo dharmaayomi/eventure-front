@@ -2,14 +2,25 @@ import { cn } from "@/lib/utils";
 import { Event, EventWithTransaction } from "@/types/event";
 import { format } from "date-fns";
 import { Edit, Eye, EyeIcon, Trash, User } from "lucide-react";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { getStatusStyle } from "./getStatusColor";
 import Link from "next/link";
+import PaginationSection from "@/components/PaginationSection";
 
 interface ListViewDetailProps {
   event: EventWithTransaction[];
 }
 const ListViewDetail: FC<ListViewDetailProps> = ({ event }) => {
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 6;
+
+  const startIndex = (page - 1) * itemsPerPage;
+  const paginatedEvents = event.slice(startIndex, startIndex + itemsPerPage);
+  const totalPages = Math.ceil(event.length / itemsPerPage);
+
+  const onChangePage = (pageNumber: number) => {
+    setPage(pageNumber);
+  };
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -20,7 +31,7 @@ const ListViewDetail: FC<ListViewDetailProps> = ({ event }) => {
               "Start Date",
               "End Date",
               "Status",
-              "Attendees",
+              //   "Attendees",
               "Actions",
             ].map((header) => (
               <th
@@ -33,7 +44,7 @@ const ListViewDetail: FC<ListViewDetailProps> = ({ event }) => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {event.map((event) => {
+          {paginatedEvents.map((event) => {
             const status = getStatusStyle(event.isDeleted);
 
             return (
@@ -70,20 +81,20 @@ const ListViewDetail: FC<ListViewDetailProps> = ({ event }) => {
                     {status.text}
                   </span>
                 </td>
-                <td className="px-4 py-4 text-sm text-gray-700">
+                {/* <td className="px-4 py-4 text-sm text-gray-700">
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4" />
                     {event.totalTransactions}
                   </div>
-                </td>
+                </td> */}
                 <td className="px-4 py-4">
                   <div className="flex space-x-2">
-                    <Link href={`/dashboard/my-event/edit`}>
+                    <Link href={`/dashboard/my-event/${event.slug}/edit`}>
                       <button className="transform rounded p-1 transition hover:-translate-y-0.5 hover:scale-105">
                         <Edit className="h-4 w-4 text-gray-600 hover:text-blue-600" />
                       </button>
                     </Link>
-                    <Link href={`/dashboard/my-event/edit`}>
+                    <Link href={`/dashboard/my-event/${event.slug}`}>
                       <button className="transform rounded p-1 transition hover:-translate-y-0.5 hover:scale-105">
                         <EyeIcon
                           size={18}
@@ -103,6 +114,17 @@ const ListViewDetail: FC<ListViewDetailProps> = ({ event }) => {
           })}
         </tbody>
       </table>
+
+      <div className="py-6">
+        {totalPages > 1 && (
+          <PaginationSection
+            page={page}
+            total={event.length}
+            take={itemsPerPage}
+            onChangePage={onChangePage}
+          />
+        )}
+      </div>
     </div>
   );
 };

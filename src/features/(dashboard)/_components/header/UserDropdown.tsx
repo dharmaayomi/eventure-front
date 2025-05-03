@@ -19,7 +19,7 @@ export default function UserDropdown() {
     router.push("/");
   };
 
-  console.log("ini isi session", session);
+  // console.log("ini isi session", session);
 
   function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.stopPropagation();

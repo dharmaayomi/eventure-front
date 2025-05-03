@@ -1,5 +1,5 @@
 import { axiosInstance } from "@/lib/axios";
-import { Event, EventWithTransaction } from "@/types/event";
+import { EventWithTransaction } from "@/types/event";
 import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
@@ -23,6 +23,7 @@ const useGetEventByOrganizer = (queries?: PaginationQueries) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: queries,
       });
       return data;
     },

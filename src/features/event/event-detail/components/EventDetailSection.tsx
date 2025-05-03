@@ -2,6 +2,7 @@ import { Event } from "@/types/event";
 import Image from "next/image";
 import { FC } from "react";
 import FormTransaction from "./FormTransaction";
+import Markdown from "@/components/Markdown";
 
 interface EventDetailSectionProps {
   event: Event;
@@ -21,7 +22,7 @@ const EventDetailSection: FC<EventDetailSectionProps> = ({ event }) => {
       </div>
       <div className="p-4">
         <h1 className="mb-2 text-xl font-semibold text-indigo-600">
-          {event.category.name}
+          {event.category}
         </h1>
         <p className="mb-1 text-sm text-gray-600">
           {new Date(event.startDate).toLocaleDateString()}
@@ -32,7 +33,10 @@ const EventDetailSection: FC<EventDetailSectionProps> = ({ event }) => {
         <p className="mb-2 text-sm text-gray-600">
           <span className="font-medium">{event.organizer.name}</span>
         </p>
-        <div className="prose prose-sm text-gray-700">{event.desc}</div>
+        <div className="prose prose-sm text-gray-700">
+          {" "}
+          <Markdown content={event.desc} />
+        </div>
       </div>
       <div className="border-t border-gray-200 p-4">
         <FormTransaction event={event} />
