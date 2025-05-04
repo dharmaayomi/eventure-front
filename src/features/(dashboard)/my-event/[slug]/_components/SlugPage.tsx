@@ -5,6 +5,8 @@ import ThumbnailCard from "./ThumbnailCard";
 import { EventWithTransaction } from "@/types/event";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
+import DetailEvent from "./DetailEvent";
+import StatEvent from "./StatEvent";
 
 interface SlugPageProps {
   event: EventWithTransaction;
@@ -23,6 +25,8 @@ const SlugPage: FC<SlugPageProps> = ({ event }) => {
       router.push(`/dashboard/my-event/${slug}`); // optional if already here
     }
   };
+  console.log("event", event);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -70,6 +74,7 @@ const SlugPage: FC<SlugPageProps> = ({ event }) => {
       </div>
       {/* Konten hanya ditampilkan jika bukan di /edit */}
       {!isEdit && <ThumbnailCard event={event} />}
+      <DetailEvent />
     </div>
   );
 };

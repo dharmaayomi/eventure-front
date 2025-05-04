@@ -59,11 +59,6 @@ const CardViewDetail: FC<CardDetailProps> = ({ event }) => {
               </div>
 
               <div className="flex items-center gap-1">
-                <Link href={`/dashboard/my-event/${event.slug}/edit`}>
-                  <button className="transform rounded p-1 transition hover:-translate-y-0.5 hover:scale-105">
-                    <Edit className="h-4 w-4 text-gray-600 hover:text-blue-600" />
-                  </button>
-                </Link>
                 <Link href={`/dashboard/my-event/${event.slug}`}>
                   <button className="transform rounded p-1 transition hover:-translate-y-0.5 hover:scale-105">
                     <EyeIcon
@@ -72,6 +67,12 @@ const CardViewDetail: FC<CardDetailProps> = ({ event }) => {
                     />
                   </button>
                 </Link>
+                <Link href={`/dashboard/my-event/${event.slug}/edit`}>
+                  <button className="transform rounded p-1 transition hover:-translate-y-0.5 hover:scale-105">
+                    <Edit className="h-4 w-4 text-gray-600 hover:text-blue-600" />
+                  </button>
+                </Link>
+
                 <Link href={`/dashboard/my-event/edit`}>
                   <button className="transform rounded p-1 transition hover:-translate-y-0.5 hover:scale-105">
                     <Trash size={16} className="text-red-600" />

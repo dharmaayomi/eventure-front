@@ -50,13 +50,12 @@ const EventCard: FC<EventCardProps> = ({ event }) => {
                   <hr />
                   <div className="flex items-center gap-2">
                     <Image
-                      src="/YGEnt.webp"
+                      src={event.organizer.profilePic}
                       alt="thumbnail"
                       height={25}
                       width={25}
                       className="rounded-full border object-cover"
                     />
-
                     <p className="text-sm font-light">{event.organizer.name}</p>
                   </div>
                 </div>

@@ -28,3 +28,9 @@ export interface Transaction {
   voucher?: Voucher;
   voucherId?: number;
 }
+
+export interface TransactionWithTotal extends Transaction {
+  totalCount: number;
+  totalRevenue: number;
+  totalTicket: number;
+}
