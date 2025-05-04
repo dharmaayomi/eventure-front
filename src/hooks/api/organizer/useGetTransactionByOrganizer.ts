@@ -2,6 +2,7 @@
 
 import { axiosInstance } from "@/lib/axios";
 import { TransactionWithTotal } from "@/types/transaction";
+import { TransactionSummaryResponse } from "@/types/transactionSummary";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import React from "react";
@@ -14,7 +15,7 @@ const useGetTransactionByOrganizer = () => {
     queryFn: async () => {
       if (!token) throw new Error("No access token found in session");
 
-      const { data } = await axiosInstance.get<TransactionWithTotal>(
+      const { data } = await axiosInstance.get<TransactionSummaryResponse>(
         `/organizers/transactions`,
         {
           headers: {

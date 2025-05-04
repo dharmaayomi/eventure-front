@@ -22,10 +22,10 @@ const SlugPage: FC<SlugPageProps> = ({ event }) => {
     if (tab === "edit") {
       router.push(`/dashboard/my-event/${slug}/edit`);
     } else {
-      router.push(`/dashboard/my-event/${slug}`); // optional if already here
+      router.push(`/dashboard/my-event/${slug}`);
     }
   };
-  console.log("event", event);
+  // console.log("event", event);
 
   return (
     <div className="space-y-6">
@@ -74,7 +74,6 @@ const SlugPage: FC<SlugPageProps> = ({ event }) => {
       </div>
       {/* Konten hanya ditampilkan jika bukan di /edit */}
       {!isEdit && <ThumbnailCard event={event} />}
-      <DetailEvent />
     </div>
   );
 };

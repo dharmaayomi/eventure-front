@@ -2,6 +2,7 @@ import { ReferralCoupon } from "./referralCoupon";
 import { Review } from "./review";
 import { Status } from "./status";
 import { Ticket } from "./ticket";
+import { TransactionDetail } from "./transactionDetail";
 import { User } from "./user";
 import { Voucher } from "./voucher";
 
@@ -27,9 +28,17 @@ export interface Transaction {
   referralCouponId?: number;
   voucher?: Voucher;
   voucherId?: number;
+  transactionDetails: TransactionDetail[];
 }
 
 export interface TransactionWithTotal extends Transaction {
+  totalCount: number;
+  totalRevenue: number;
+  totalTicket: number;
+}
+
+export interface TransactionSummaryResponse {
+  transactions: Transaction[];
   totalCount: number;
   totalRevenue: number;
   totalTicket: number;

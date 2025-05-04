@@ -4,6 +4,8 @@ import { EventWithTransaction } from "@/types/event";
 import Image from "next/image";
 import { FC, useState } from "react";
 import StatEvent from "./StatEvent";
+import TransactionEventList from "./TransactionEventList";
+import AttendeeList from "./AttendeeList";
 
 interface ThumbnailCardProps {
   event: EventWithTransaction;
@@ -17,6 +19,7 @@ const ThumbnailCard: FC<ThumbnailCardProps> = ({ event }) => {
   return (
     <div className="items-center gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <div className="space-y-4">
+        {/* thumbnail */}
         <div className="relative h-80 w-full overflow-hidden rounded-2xl px-6 py-12 text-white">
           {/* Gambar latar belakang */}
           <div
@@ -84,6 +87,14 @@ const ThumbnailCard: FC<ThumbnailCardProps> = ({ event }) => {
             </button>
           </div>
         </div>
+
+        {/* transactions view */}
+        {activeView === "transactions" && (
+          <TransactionEventList slug={event.slug} />
+        )}
+
+        {/* attendees view */}
+        {activeView === "attendees" && <AttendeeList slug={event.slug} />}
       </div>
     </div>
   );
