@@ -1,5 +1,8 @@
 import { Transaction } from "@/types/transaction";
+import { addHours, format } from "date-fns";
+import Link from "next/link";
 import { FC } from "react";
+import UploadProofForm from "./UploadProofForm";
 
 interface TransactionDetailSectionProps {
   transaction: Transaction;
@@ -14,6 +17,8 @@ const TransactionDetailSection: FC<TransactionDetailSectionProps> = ({
       currency: "IDR",
     }).format(price);
 
+  const expired = addHours(transaction.createdAt, 2);
+
   return (
     <section className="relative overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-gray-200">
       <div className="space-y-6 p-6">
@@ -21,14 +26,30 @@ const TransactionDetailSection: FC<TransactionDetailSectionProps> = ({
           Transaction ID: {transaction.uuid}
         </h1>
 
-        <p className="mb-2 font-bold text-amber-500">
-          Status: {transaction.status}
-        </p>
+        {transaction.status === "EXPIRED" ||
+          transaction.status === "CANCELED" ||
+          (transaction.status === "REJECTED" && (
+            <p className="mb-2 font-bold text-red-500">
+              Status: {transaction.status}
+            </p>
+          ))}
+
+        {transaction.status === "WAITING_FOR_PAYMENT" ||
+          (transaction.status === "WAITING_CONFIRMATION" && (
+            <p className="mb-2 font-bold text-amber-500">
+              Status: {transaction.status}
+            </p>
+          ))}
+
+        {transaction.status === "DONE" && (
+          <p className="mb-2 font-bold text-green-600">
+            Status: {transaction.status}
+          </p>
+        )}
 
         <p className="mb-4 text-base text-gray-600">
           Your transaction details:
         </p>
-
         <ul className="space-y-4 divide-y divide-gray-100 rounded-lg bg-white p-4 shadow-sm ring-1 ring-gray-200">
           {transaction.transactionDetails.map((tx) => (
             <li key={tx.id} className="flex items-center justify-between pt-4">
@@ -47,29 +68,50 @@ const TransactionDetailSection: FC<TransactionDetailSectionProps> = ({
             </li>
           ))}
         </ul>
-
         {transaction.usePoints && (
           <p className="text-right text-sm font-semibold text-gray-700">
             Points Used: {transaction.pointsUsed}
           </p>
         )}
-
         {transaction.referralCouponUsed && (
           <p className="text-right text-sm font-semibold text-gray-700">
             Referral Coupon: {transaction.referralCoupon?.amount}
           </p>
         )}
-
         {transaction.voucherUsed && (
           <p className="text-right text-sm font-semibold text-gray-700">
             Voucher Discount: {transaction.voucher?.discountAmount}
           </p>
         )}
-
         <p className="mt-6 text-right text-lg font-bold text-gray-800">
           Total: {rupiah(transaction.totalAmount)}
         </p>
       </div>
+      {transaction.status === "WAITING_FOR_PAYMENT" && (
+        <div>
+          <p>
+            Upload your payment proof before{" "}
+            {format(expired, "dd MMM yyyy, HH:mm")}
+          </p>
+          <UploadProofForm uuid={transaction.uuid} />
+        </div>
+      )}
+
+      {transaction.status === "WAITING_CONFIRMATION" && (
+        <div className="mt-6 bg-green-200 p-4 shadow-sm">
+          <p className="mb-3 text-sm text-gray-800">
+            Your payment is being reviewed by the event organizer. Please be
+            patient while we confirm it. We will notify you by email once it is
+            done, stay tuned! ✨
+          </p>
+          <Link
+            href="/"
+            className="inline-block text-sm font-medium text-indigo-600 underline transition hover:text-indigo-800"
+          >
+            I wanna buy another event ticket
+          </Link>
+        </div>
+      )}
     </section>
   );
 };

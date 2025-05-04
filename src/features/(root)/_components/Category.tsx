@@ -71,7 +71,7 @@ const Categories = () => {
   ];
 
   return (
-    <div className="container mx-auto p-4 py-12">
+    <div className="container mx-auto p-4 py-5">
       <h2 className="mb-12 text-center text-4xl font-bold text-gray-800">
         Explore Event Categories
       </h2>

@@ -7,8 +7,8 @@ const EventDetail = async ({
 }) => {
   const slug = (await params).slug;
   return (
-    <main className="container mx-auto">
-      <div className="mt-30">
+    <main className="mx-auto mt-30 max-w-7xl px-4 sm:px-6">
+      <div>
         <EventDetailPage slug={slug} />
       </div>
     </main>
