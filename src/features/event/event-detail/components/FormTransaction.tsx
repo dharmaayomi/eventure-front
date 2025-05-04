@@ -46,10 +46,6 @@ const FormTransaction: FC<FormTransactionProps> = ({ event }) => {
     });
   };
 
-  const handleUsePoints = () => {
-    return setUsePoints(!usePoints);
-  };
-
   const handleSubmit = async () => {
     const details = Object.keys(selectedTickets).map((ticketId) => ({
       ticketId: Number(ticketId),
@@ -67,27 +63,26 @@ const FormTransaction: FC<FormTransactionProps> = ({ event }) => {
   };
 
   return (
-    <section className="mt-5 rounded-md border border-gray-300 bg-white p-4 shadow-sm">
+    <section className="mt-5 space-y-6 rounded-md border border-gray-300 bg-white p-4 shadow-sm">
       {event.tickets.length > 0 ? (
         <>
-          <ul className="list-none overflow-hidden rounded-md p-0">
+          <ul className="list-none divide-y divide-gray-200 rounded-md">
             {event.tickets?.map((ticket) => (
               <li
                 key={ticket.id}
-                className="flex items-center justify-between py-2"
+                className="flex items-center justify-between py-3"
               >
                 <div className="flex items-center">
                   <input
                     id="ticketId"
                     name="ticketId"
                     type="checkbox"
-                    className="form-checkbox mr-2 h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                    className="form-checkbox mr-3 h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
                     checked={!!selectedTickets[ticket.id]}
                     onChange={() => {
                       handleSelectTix(ticket.id);
                     }}
                   />
-
                   <p className="font-medium text-gray-700">
                     {ticket.ticketType.toUpperCase()}
                   </p>
@@ -99,63 +94,71 @@ const FormTransaction: FC<FormTransactionProps> = ({ event }) => {
                   </p>
 
                   {selectedTickets[ticket.id] && (
-                    <div className="flex items-center">
-                      <input
-                        id="qty"
-                        name="qty"
-                        type="number"
-                        min="1"
-                        className="w-20 rounded-md border border-gray-300 text-center"
-                        value={selectedTickets[ticket.id] || 0}
-                        onChange={(e) => {
-                          handleQtyTix(ticket.id, e.target.valueAsNumber);
-                        }}
-                      />
-                    </div>
+                    <input
+                      id="qty"
+                      name="qty"
+                      type="number"
+                      min="1"
+                      className="w-20 rounded-md border border-gray-300 text-center"
+                      value={selectedTickets[ticket.id] || 0}
+                      onChange={(e) => {
+                        handleQtyTix(ticket.id, e.target.valueAsNumber);
+                      }}
+                    />
                   )}
                 </div>
               </li>
             ))}
           </ul>
 
-          <div>
-            <input
-              id="usePoints"
-              name="usePoints"
-              type="checkbox"
-              className="form-checkbox mr-2 h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-              onChange={() => {
-                handleUsePoints;
-              }}
-            />
-            <p>Use Points</p>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <input
+                id="usePoints"
+                name="usePoints"
+                type="checkbox"
+                className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                checked={usePoints}
+                onChange={(e) => {
+                  console.log("Checkbox clicked:", e.target.checked);
+                  setUsePoints(e.target.checked);
+                }}
+              />
+              <label htmlFor="usePoints" className="text-sm text-gray-800">
+                Use Points
+              </label>
+            </div>
 
-            <p>Coupon Code</p>
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-gray-700">Coupon Code</p>
+              <input
+                id="referralCouponCode"
+                name="referralCouponCode"
+                type="text"
+                className="w-32 rounded-md border border-gray-300 text-center"
+                value={referralCouponCode || ""}
+                onChange={(e) => {
+                  setReferralCouponCode(e.target.value);
+                }}
+              />
+            </div>
 
-            <input
-              id="referralCouponCode"
-              name="referralCouponCode"
-              type="text"
-              className="w-20 rounded-md border border-gray-300 text-center"
-              value={referralCouponCode || ""}
-              onChange={(e) => {
-                setReferralCouponCode(e.target.value);
-              }}
-            />
-
-            <p>Voucher Code</p>
-            <input
-              id="voucherCode"
-              name="voucherCode"
-              type="text"
-              className="w-20 rounded-md border border-gray-300 text-center"
-              value={voucherCode || ""}
-              onChange={(e) => {
-                setVoucherCode(e.target.value);
-              }}
-            />
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-gray-700">Voucher Code</p>
+              <input
+                id="voucherCode"
+                name="voucherCode"
+                type="text"
+                className="w-32 rounded-md border border-gray-300 text-center"
+                value={voucherCode || ""}
+                onChange={(e) => {
+                  setVoucherCode(e.target.value);
+                }}
+              />
+            </div>
           </div>
-          <div className="mt-4 flex justify-end">
+
+          <div className="mt-6 flex justify-end">
             <Button
               className="focus:shadow-outline rounded bg-indigo-600 px-4 py-2 font-bold text-white hover:bg-indigo-700 focus:outline-none"
               onClick={handleSubmit}

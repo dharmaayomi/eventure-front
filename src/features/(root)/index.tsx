@@ -14,7 +14,6 @@ const LandingPage = () => {
       <TopUpcomingEvent />
       <BannerOrganizer />
       <RecommendedEvent />
-      {/* <EventCategory /> */}
       <Categories />
       <LocationEvent />
     </section>

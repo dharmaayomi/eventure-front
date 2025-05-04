@@ -21,10 +21,12 @@ const EventByLocation: FC<EventByLocationProps> = ({ slug }) => {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-4">
-      {events.map((event) => (
-        <EventCard key={event.id} event={event} />
-      ))}
+    <div className="overflow-x-auto pb-4">
+      <div className="flex flex-row gap-6 pb-4">
+        {events.map((event) => (
+          <EventCard key={event.id} event={event} />
+        ))}
+      </div>
     </div>
   );
 };

@@ -25,12 +25,13 @@ const useCreateTransaction = () => {
           "Content-Type": "application/json",
         },
       });
+      console.log("data diterima:", data);
       return data;
     },
-    onSuccess: async () => {
+    onSuccess: async (data) => {
       toast.success("Create transaction success");
       await queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      router.push("/");
+      router.push(`/transaction-detail/${data.data.uuid}`);
     },
     onError: (error: AxiosError<any>) => {
       toast.error(error.response?.data.message);
