@@ -22,10 +22,12 @@ const EventList = () => {
   }
 
   return (
-    <div className="flex flex-row gap-6">
-      {events.map((event) => (
-        <EventCard key={event.id} event={event} />
-      ))}
+    <div className="overflow-x-auto">
+      <div className="flex flex-row gap-6 pb-4">
+        {events.map((event) => (
+          <EventCard key={event.id} event={event} />
+        ))}
+      </div>
     </div>
   );
 };
