@@ -20,7 +20,7 @@ const TransactionDetailSection: FC<TransactionDetailSectionProps> = ({
   const expired = addHours(transaction.createdAt, 2);
 
   return (
-    <section className="relative overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-gray-200">
+    <section className="relative overflow-hidden rounded-xl bg-white shadow-lg">
       <div className="space-y-6 p-6">
         <h1 className="mb-2 text-2xl font-bold text-indigo-700">
           Transaction ID: {transaction.uuid}
@@ -83,24 +83,25 @@ const TransactionDetailSection: FC<TransactionDetailSectionProps> = ({
             Voucher Discount: {transaction.voucher?.discountAmount}
           </p>
         )}
-        <p className="mt-6 text-right text-lg font-bold text-gray-800">
+        <p className="mt-6 animate-pulse text-right text-lg font-bold text-green-600">
           Total: {rupiah(transaction.totalAmount)}
         </p>
       </div>
       {transaction.status === "WAITING_FOR_PAYMENT" && (
-        <div>
+        <div className="bg-green-50 p-4 text-center">
           <p>
             Upload your payment proof before{" "}
-            {format(expired, "dd MMM yyyy, HH:mm")}
+            {format(expired, "dd MMM yyyy, HH:mm")} to avoid any system
+            cancelation.
           </p>
           <UploadProofForm uuid={transaction.uuid} />
         </div>
       )}
 
       {transaction.status === "WAITING_CONFIRMATION" && (
-        <div className="mt-6 bg-green-200 p-4 shadow-sm">
+        <div className="mt-6 bg-amber-100 p-4 shadow-sm">
           <p className="mb-3 text-sm text-gray-800">
-            Your payment is being reviewed by the event organizer. Please be
+            ⏳ Your payment is being reviewed by the event organizer. Please be
             patient while we confirm it. We will notify you by email once it is
             done, stay tuned! ✨
           </p>
