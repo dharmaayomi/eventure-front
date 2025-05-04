@@ -2,23 +2,26 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { FC } from "react";
+import { EventsByOrganizer } from "./_components/EventsByOrganizer";
+import { EventWithTransaction } from "@/types/event";
 
-const MyEventPage = () => {
+interface MyEventPageProps {
+  event: EventWithTransaction;
+}
+
+const MyEventPage: FC<MyEventPageProps> = ({ event }) => {
   const router = useRouter();
   return (
     <div>
       <div className="rounded-2xl border border-gray-200 bg-white p-5 lg:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 className="mb-5 text-2xl font-semibold text-gray-800 lg:mb-7 dark:text-white/90">
-          My Event
-        </h3>
         <div>
-          <p>edit disini, kalo mau nambahin section masukin di componensts</p>
-          <Button
+          {/* <Button
             onClick={() => router.push(`/dashboard/my-event/create-voucher`)}
           >
             Create Voucher
-          </Button>
+          </Button> */}
+          <EventsByOrganizer event={event} />
         </div>
       </div>
     </div>

@@ -5,8 +5,7 @@ import { Voucher } from "./voucher";
 
 export interface Event {
   id: number;
-  categoryId: number;
-  category: Category;
+  category: CategoryName;
   organizerId: number;
   organizer: Organizer;
   slug: string;
@@ -21,4 +20,26 @@ export interface Event {
   isDeleted: boolean;
   vouchers: Voucher[];
   tickets: Ticket[];
+  totalTransactions: number;
+}
+
+export interface EventWithTransaction extends Event {
+  totalTransactions: number;
+}
+
+export enum CategoryName {
+  MUSIC = "MUSIC",
+  EDUCATION = "EDUCATION",
+  CULTURE = "CULTURE",
+  BUSINESS = "BUSINESS",
+  FASHION = "FASHION",
+  SPORT = "SPORT",
+}
+
+export enum Location {
+  JAKARTA = "JAKARTA",
+  BANDUNG = "BANDUNG",
+  SURABAYA = "SURABAYA",
+  YOGYAKARTA = "YOGYAKARTA",
+  SEMARANG = "SEMARANG",
 }

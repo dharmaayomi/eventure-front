@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Dropdown } from "../dropdown/Dropdown";
 import { DropdownItem } from "../dropdown/DropdownItem";
+import { log } from "console";
 
 export default function UserDropdown() {
   const router = useRouter();
@@ -17,6 +18,8 @@ export default function UserDropdown() {
     signOut({ redirect: false });
     router.push("/");
   };
+
+  // console.log("ini isi session", session);
 
   function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.stopPropagation();

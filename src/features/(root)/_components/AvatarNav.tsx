@@ -47,7 +47,7 @@ export default function AvatarNav() {
     setIsOpen(false);
   }
 
-  console.log("ini isi session", session);
+  // console.log("ini isi session", session);
 
   return (
     <div className="relative">

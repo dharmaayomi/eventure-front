@@ -1,12 +1,11 @@
-import { lexend } from "@/assets/fonts";
+import { lexend, manrope } from "@/assets/fonts";
 import { SidebarProvider } from "@/context/SidebarContext";
+import NextAuthProviders from "@/providers/NextAuthProviders";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import TokenProvider from "@/providers/TokenProviders";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
-import { SessionProvider } from "next-auth/react";
-import NextAuthProviders from "@/providers/NextAuthProviders";
-import TokenProvider from "@/providers/TokenProviders";
 
 export const metadata: Metadata = {
   title: "Eventure",
@@ -20,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={` ${lexend.className} bg-[#F9FAFB] antialiased`}>
+      <body className={` ${manrope.className} bg-[#F9FAFB] antialiased`}>
         <ReactQueryProvider>
           {/* <ThemeProvider> */}
           <NextAuthProviders>
