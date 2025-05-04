@@ -3,13 +3,15 @@
 import useGetEvents from "@/hooks/api/event/useGetEvents";
 import EventCard from "./EventCard";
 
-const EventList = () => {
+const EventListRecommended = () => {
   const {
     data: eventsResponse,
     isPending,
     error,
   } = useGetEvents({
     take: 6,
+    sortBy: "totalTransactions",
+    sortOrder: "desc",
   });
 
   if (isPending) return <div>Loading...</div>;
@@ -23,7 +25,7 @@ const EventList = () => {
 
   return (
     <div className="overflow-x-auto">
-      <div className="flex flex-row">
+      <div className="flex flex-row gap-6 pb-4">
         {events.map((event) => (
           <EventCard key={event.id} event={event} />
         ))}
@@ -32,4 +34,4 @@ const EventList = () => {
   );
 };
 
-export default EventList;
+export default EventListRecommended;

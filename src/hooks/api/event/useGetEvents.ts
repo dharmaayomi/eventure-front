@@ -1,6 +1,5 @@
 import useAxios from "@/hooks/useAxios";
-import { axiosInstance } from "@/lib/axios";
-import { Event } from "@/types/event";
+import { EventWithTransaction } from "@/types/event";
 import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
 
@@ -14,10 +13,9 @@ const useGetEvents = (queries?: GetEventsQuery) => {
   return useQuery({
     queryKey: ["events", queries],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<PageableResponse<Event>>(
-        `${process.env.NEXT_PUBLIC_BASE_API_URL}/events`,
-        { params: queries },
-      );
+      const { data } = await axiosInstance.get<
+        PageableResponse<EventWithTransaction>
+      >(`${process.env.NEXT_PUBLIC_BASE_API_URL}/events`, { params: queries });
       console.log(data);
       return data;
     },

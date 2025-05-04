@@ -34,7 +34,19 @@ const useCreateTransaction = () => {
       router.push(`/transaction-detail/${data.data.uuid}`);
     },
     onError: (error: AxiosError<any>) => {
-      toast.error(error.response?.data.message);
+      const errorMessage = error.response?.data?.message;
+
+      if (
+        errorMessage === "Unauthorized, no token provided" ||
+        errorMessage === "Token expired" ||
+        errorMessage === "Unauthorized, invalid token" ||
+        errorMessage === "forbidden"
+      ) {
+        toast.error("Please register / sign in to checkout");
+        router.push("/login");
+      } else {
+        toast.error(errorMessage || "An unexpected error occurred");
+      }
     },
   });
 };

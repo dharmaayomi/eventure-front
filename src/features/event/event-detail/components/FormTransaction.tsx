@@ -46,7 +46,7 @@ const FormTransaction: FC<FormTransactionProps> = ({ event }) => {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleCheckout = async () => {
     const details = Object.keys(selectedTickets).map((ticketId) => ({
       ticketId: Number(ticketId),
       qty: selectedTickets[Number(ticketId)],
@@ -58,53 +58,63 @@ const FormTransaction: FC<FormTransactionProps> = ({ event }) => {
       voucherCode,
       usePoints,
     };
-    console.log(payload);
+    console.log("sending to backend", payload);
     await createTransaction(payload);
   };
 
   return (
-    <section className="mt-5 space-y-6 rounded-md border border-gray-300 bg-white p-4 shadow-sm">
+    <section className="space-y-6 rounded-xl border border-gray-200 bg-white p-6 shadow-md">
+      <p className="text-lg font-semibold text-indigo-700">
+        🎟️ Available Tickets
+      </p>
+
       {event.tickets.length > 0 ? (
         <>
           <ul className="list-none divide-y divide-gray-200 rounded-md">
             {event.tickets?.map((ticket) => (
               <li
                 key={ticket.id}
-                className="flex items-center justify-between py-3"
+                className="flex flex-col items-start justify-between gap-3 py-4 sm:flex-row sm:items-center"
               >
                 <div className="flex items-center">
                   <input
                     id="ticketId"
                     name="ticketId"
                     type="checkbox"
-                    className="form-checkbox mr-3 h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                    className="form-checkbox mr-3 h-5 w-5 text-indigo-600"
                     checked={!!selectedTickets[ticket.id]}
                     onChange={() => {
                       handleSelectTix(ticket.id);
                     }}
                   />
-                  <p className="font-medium text-gray-700">
-                    {ticket.ticketType.toUpperCase()}
-                  </p>
+                  <div>
+                    <p className="font-semibold text-gray-800">
+                      {ticket.ticketType.toUpperCase()}
+                    </p>
+                    <p className="text-xs text-gray-500">Click to select</p>
+                  </div>
                 </div>
 
-                <div className="flex items-center space-x-4">
-                  <p className="font-bold text-green-600">
+                <div className="flex items-center gap-4">
+                  <p className="text-sm font-bold text-green-600 sm:text-base">
                     {rupiah(ticket.price)}
                   </p>
 
                   {selectedTickets[ticket.id] && (
-                    <input
-                      id="qty"
-                      name="qty"
-                      type="number"
-                      min="1"
-                      className="w-20 rounded-md border border-gray-300 text-center"
-                      value={selectedTickets[ticket.id] || 0}
-                      onChange={(e) => {
-                        handleQtyTix(ticket.id, e.target.valueAsNumber);
-                      }}
-                    />
+                    <div className="flex items-center gap-2">
+                      <input
+                        id="qty"
+                        name="qty"
+                        type="number"
+                        min="1"
+                        className="focus:ring-opacity-50 w-20 rounded-md border border-gray-300 text-center shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
+                        value={selectedTickets[ticket.id] || 0}
+                        onChange={(e) => {
+                          handleQtyTix(ticket.id, e.target.valueAsNumber);
+                        }}
+                      />
+                      <span className="text-xs text-gray-500">Qty</span>
+                    </div>
                   )}
                 </div>
               </li>
@@ -112,59 +122,70 @@ const FormTransaction: FC<FormTransactionProps> = ({ event }) => {
           </ul>
 
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
               <input
                 id="usePoints"
                 name="usePoints"
                 type="checkbox"
-                className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                className="form-checkbox h-5 w-5 text-indigo-600"
                 checked={usePoints}
                 onChange={(e) => {
-                  console.log("Checkbox clicked:", e.target.checked);
                   setUsePoints(e.target.checked);
                 }}
               />
               <label htmlFor="usePoints" className="text-sm text-gray-800">
-                Use Points
+                Use my reward points ✨
               </label>
             </div>
 
-            <div className="space-y-1">
-              <p className="text-sm font-medium text-gray-700">Coupon Code</p>
-              <input
-                id="referralCouponCode"
-                name="referralCouponCode"
-                type="text"
-                className="w-32 rounded-md border border-gray-300 text-center"
-                value={referralCouponCode || ""}
-                onChange={(e) => {
-                  setReferralCouponCode(e.target.value);
-                }}
-              />
-            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-1">
+                <label
+                  htmlFor="referralCouponCode"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Coupon Code
+                </label>
+                <input
+                  id="referralCouponCode"
+                  name="referralCouponCode"
+                  type="text"
+                  className="focus:ring-opacity-50 w-full rounded-md border border-gray-300 text-center shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
+                  value={referralCouponCode || ""}
+                  onChange={(e) => {
+                    setReferralCouponCode(e.target.value);
+                  }}
+                />
+              </div>
 
-            <div className="space-y-1">
-              <p className="text-sm font-medium text-gray-700">Voucher Code</p>
-              <input
-                id="voucherCode"
-                name="voucherCode"
-                type="text"
-                className="w-32 rounded-md border border-gray-300 text-center"
-                value={voucherCode || ""}
-                onChange={(e) => {
-                  setVoucherCode(e.target.value);
-                }}
-              />
+              <div className="space-y-1">
+                <label
+                  htmlFor="voucherCode"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Voucher Code
+                </label>
+                <input
+                  id="voucherCode"
+                  name="voucherCode"
+                  type="text"
+                  className="focus:ring-opacity-50 w-full rounded-md border border-gray-300 text-center shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
+                  value={voucherCode || ""}
+                  onChange={(e) => {
+                    setVoucherCode(e.target.value);
+                  }}
+                />
+              </div>
             </div>
           </div>
 
           <div className="mt-6 flex justify-end">
             <Button
-              className="focus:shadow-outline rounded bg-indigo-600 px-4 py-2 font-bold text-white hover:bg-indigo-700 focus:outline-none"
-              onClick={handleSubmit}
+              className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-400 focus:outline-none disabled:opacity-50"
+              onClick={handleCheckout}
               disabled={isPending}
             >
-              Submit
+              Checkout
             </Button>
           </div>
         </>

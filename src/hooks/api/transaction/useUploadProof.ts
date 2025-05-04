@@ -2,16 +2,14 @@
 
 import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 import { toast } from "sonner";
 
 interface UploadProofPayload {
   paymentProof: File | null;
 }
 
-const useUploadProof = () => {
-  const router = useRouter();
+const useUploadProof = (uuid: string) => {
   const queryClient = useQueryClient();
   const { axiosInstance } = useAxios();
 
@@ -21,16 +19,15 @@ const useUploadProof = () => {
 
       uploadProofForm.append("paymentProof", payload.paymentProof!);
 
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_API_URL}/events`,
-        createEventForm,
+      const { data } = await axiosInstance.patch(
+        `/transactions/detail/${uuid}`,
+        uploadProofForm,
       );
       return data;
     },
     onSuccess: async () => {
-      toast.success("Create event success");
-      await queryClient.invalidateQueries({ queryKey: ["events"] });
-      router.push("/");
+      toast.success("Upload payment proof success");
+      await queryClient.invalidateQueries({ queryKey: ["transaction", uuid] });
     },
     onError: (error: AxiosError<any>) => {
       toast.error(error.response?.data.message);
