@@ -25,15 +25,28 @@ const useCreateTransaction = () => {
           "Content-Type": "application/json",
         },
       });
+      console.log("data diterima:", data);
       return data;
     },
-    onSuccess: async () => {
+    onSuccess: async (data) => {
       toast.success("Create transaction success");
       await queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      router.push("/");
+      router.push(`/transaction-detail/${data.data.uuid}`);
     },
     onError: (error: AxiosError<any>) => {
-      toast.error(error.response?.data.message);
+      const errorMessage = error.response?.data?.message;
+
+      if (
+        errorMessage === "Unauthorized, no token provided" ||
+        errorMessage === "Token expired" ||
+        errorMessage === "Unauthorized, invalid token" ||
+        errorMessage === "forbidden"
+      ) {
+        toast.error("Please register / sign in to checkout");
+        router.push("/login");
+      } else {
+        toast.error(errorMessage || "An unexpected error occurred");
+      }
     },
   });
 };

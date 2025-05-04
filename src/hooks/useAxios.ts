@@ -2,9 +2,14 @@
 
 import { axiosInstance } from "@/lib/axios";
 import { getSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+let isSignOut = false;
+
 const useAxios = () => {
+  const router = useRouter();
+
   useEffect(() => {
     const requestIntercept = axiosInstance.interceptors.request.use(
       async (config) => {
@@ -27,11 +32,14 @@ const useAxios = () => {
       },
       (err) => {
         if (
-          err?.response.data.message === "Unauthorized, no token provided" ||
+          (!isSignOut &&
+            err?.response.data.message === "Unauthorized, no token provided") ||
           err?.response.data.message === "Token expired" ||
           err?.response.data.message === "Unauthorized, invalid token"
         ) {
-          signOut();
+          isSignOut = true;
+          signOut({ redirect: false });
+          router.push("/login");
         }
 
         return Promise.reject(err);

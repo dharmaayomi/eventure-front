@@ -2,6 +2,7 @@ import { Event } from "@/types/event";
 import Image from "next/image";
 import { FC } from "react";
 import FormTransaction from "./FormTransaction";
+
 import Markdown from "@/components/Markdown";
 
 interface EventDetailSectionProps {
@@ -10,36 +11,51 @@ interface EventDetailSectionProps {
 
 const EventDetailSection: FC<EventDetailSectionProps> = ({ event }) => {
   return (
-    <section className="relative overflow-hidden rounded-md bg-white shadow-md">
-      <div className="relative h-56 w-full sm:h-64">
-        <Image
-          src={event.thumbnail}
-          alt="event-image"
-          width={200}
-          height={200}
-          className="h-full w-full object-cover"
-        />
-      </div>
-      <div className="p-4">
-        <h1 className="mb-2 text-xl font-semibold text-indigo-600">
-          {event.category}
-        </h1>
-        <p className="mb-1 text-sm text-gray-600">
-          {new Date(event.startDate).toLocaleDateString()}
-        </p>
-        <p className="mb-1 text-sm text-gray-600">
-          <span className="font-medium">{String(event.location)}</span>{" "}
-        </p>
-        <p className="mb-2 text-sm text-gray-600">
-          <span className="font-medium">{event.organizer.name}</span>
-        </p>
-        <div className="prose prose-sm text-gray-700">
-          {" "}
-          <Markdown content={event.desc} />
+    <section className="py-10">
+      <div className="flex flex-col gap-8 md:flex-row">
+        {/* Event Detail */}
+        <div className="space-y-4 md:w-2/3">
+          <div className="relative h-64 w-full overflow-hidden rounded-lg">
+            <Image
+              src={event.thumbnail}
+              alt="event-image"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 66vw"
+              priority
+            />
+          </div>
+
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold text-indigo-700">
+              {event.name.toUpperCase()}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500">
+              <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-700">
+                {event.category}
+              </span>
+              <span>•</span>
+              <span>{new Date(event.startDate).toLocaleDateString()}</span>
+              <span>•</span>
+              <span className="font-medium">{String(event.location)}</span>
+            </div>
+
+            <p className="text-sm text-gray-600">
+              Organized by{" "}
+              <span className="font-semibold">{event.organizer.name}</span>
+            </p>
+
+            <div className="prose prose-sm max-w-none text-gray-700">
+              <Markdown content={event.desc} />
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="border-t border-gray-200 p-4">
-        <FormTransaction event={event} />
+
+        {/* Form Transaction */}
+        <div className="md:w-1/3">
+          <FormTransaction event={event} />
+        </div>
       </div>
     </section>
   );

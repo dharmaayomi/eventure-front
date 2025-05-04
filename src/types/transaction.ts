@@ -7,27 +7,24 @@ import { User } from "./user";
 import { Voucher } from "./voucher";
 
 export interface Transaction {
-  id: number;
   uuid: string;
   userId: number;
   user: User;
-  ticketId: number;
-  ticket: Ticket;
-  referralCouponCode: string;
-  voucherCode: string;
-  qty: number;
+  referralCouponUsed?: string;
+  referralCoupon?: ReferralCoupon;
+  voucherUsed?: string;
+  voucher?: Voucher;
   totalAmount: number;
   status: Status;
   usePoints: boolean;
+  pointsUsed: number;
   paymentProof?: string;
   createdAt: Date;
   updatedAt: Date;
   isDeleted: boolean;
   review: Review[];
-  referralCoupon?: ReferralCoupon;
-  referralCouponId?: number;
-  voucher?: Voucher;
-  voucherId?: number;
+  tickets?: Ticket;
+  ticketId?: number;
   transactionDetails: TransactionDetail[];
 }
 

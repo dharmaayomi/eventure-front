@@ -3,7 +3,6 @@
 import useGetEvent from "@/hooks/api/event/useGetEvent";
 import { FC } from "react";
 import EventDetailSection from "./components/EventDetailSection";
-import FormTransaction from "./components/FormTransaction";
 
 interface EventDetailPageProps {
   slug: string;
