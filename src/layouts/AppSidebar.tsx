@@ -7,6 +7,7 @@ import { useSidebar } from "../context/SidebarContext";
 
 import { isAdmin, isUser } from "@/utils/AuthRole";
 import {
+  BanknoteArrowUp,
   BanknoteIcon,
   CalendarFold,
   FileTextIcon,
@@ -15,6 +16,7 @@ import {
   Search,
   SettingsIcon,
   Ticket,
+  TicketIcon,
   UserCircleIcon,
   UserCog,
   UserRound,
@@ -123,6 +125,38 @@ const AppSidebar: React.FC = () => {
                         <CalendarFold />
                         {(isExpanded || isHovered || isMobileOpen) && (
                           <span>My Event</span>
+                        )}
+                      </Link>
+                    </li>
+                    <li>
+                      {/* transaction */}
+                      <Link
+                        href="/dashboard/transactions"
+                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
+                          isActive("/dashboard/transactions")
+                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                            : "p-2"
+                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
+                      >
+                        <BanknoteArrowUp />
+                        {(isExpanded || isHovered || isMobileOpen) && (
+                          <span>Transactions</span>
+                        )}
+                      </Link>
+                    </li>
+                    <li>
+                      {/* ticket */}
+                      <Link
+                        href="/dashboard/tickets"
+                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
+                          isActive("/dashboard/tickets")
+                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
+                            : "p-2"
+                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
+                      >
+                        <TicketIcon />
+                        {(isExpanded || isHovered || isMobileOpen) && (
+                          <span>Tickets</span>
                         )}
                       </Link>
                     </li>

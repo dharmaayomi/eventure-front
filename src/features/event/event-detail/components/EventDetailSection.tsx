@@ -2,6 +2,7 @@ import { Event } from "@/types/event";
 import Image from "next/image";
 import { FC } from "react";
 import FormTransaction from "./FormTransaction";
+
 import Markdown from "@/components/Markdown";
 
 interface EventDetailSectionProps {

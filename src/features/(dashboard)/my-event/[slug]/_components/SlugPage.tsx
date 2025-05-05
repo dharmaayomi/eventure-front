@@ -5,6 +5,8 @@ import ThumbnailCard from "./ThumbnailCard";
 import { EventWithTransaction } from "@/types/event";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
+import DetailEvent from "./DetailEvent";
+import StatEvent from "./StatEvent";
 
 interface SlugPageProps {
   event: EventWithTransaction;
@@ -20,9 +22,11 @@ const SlugPage: FC<SlugPageProps> = ({ event }) => {
     if (tab === "edit") {
       router.push(`/dashboard/my-event/${slug}/edit`);
     } else {
-      router.push(`/dashboard/my-event/${slug}`); // optional if already here
+      router.push(`/dashboard/my-event/${slug}`);
     }
   };
+  // console.log("event", event);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">

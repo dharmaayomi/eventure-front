@@ -2,11 +2,22 @@
 import { cn } from "@/lib/utils";
 import { Event } from "@/types/event";
 import { format } from "date-fns";
-import { Edit, Eye, EyeIcon, Trash, User } from "lucide-react";
+import { Edit, EyeIcon, Trash, User } from "lucide-react";
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { getStatusStyle } from "./getStatusColor";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import useDeleteEvent from "@/hooks/api/event/useDeleteEvent";
 
 interface CardDetailProps {
   event: Event;
@@ -14,7 +25,13 @@ interface CardDetailProps {
 
 const CardViewDetail: FC<CardDetailProps> = ({ event }) => {
   const status = getStatusStyle(event.isDeleted);
-  console.log("event muncul", event.totalTransactions);
+  const [isOpen, setIsOpen] = useState(false);
+  const deleteMutation = useDeleteEvent();
+
+  const handleDelete = () => {
+    deleteMutation.mutate(event.id);
+    setIsOpen(false);
+  };
 
   return (
     <section>
@@ -59,11 +76,6 @@ const CardViewDetail: FC<CardDetailProps> = ({ event }) => {
               </div>
 
               <div className="flex items-center gap-1">
-                <Link href={`/dashboard/my-event/${event.slug}/edit`}>
-                  <button className="transform rounded p-1 transition hover:-translate-y-0.5 hover:scale-105">
-                    <Edit className="h-4 w-4 text-gray-600 hover:text-blue-600" />
-                  </button>
-                </Link>
                 <Link href={`/dashboard/my-event/${event.slug}`}>
                   <button className="transform rounded p-1 transition hover:-translate-y-0.5 hover:scale-105">
                     <EyeIcon
@@ -72,11 +84,40 @@ const CardViewDetail: FC<CardDetailProps> = ({ event }) => {
                     />
                   </button>
                 </Link>
-                <Link href={`/dashboard/my-event/edit`}>
+                <Link href={`/dashboard/my-event/${event.slug}/edit`}>
                   <button className="transform rounded p-1 transition hover:-translate-y-0.5 hover:scale-105">
-                    <Trash size={16} className="text-red-600" />
+                    <Edit className="h-4 w-4 text-gray-600 hover:text-blue-600" />
                   </button>
                 </Link>
+
+                {/* Delete Dialog Button */}
+                <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                  <DialogTrigger asChild>
+                    <button className="transform rounded p-1 transition hover:-translate-y-0.5 hover:scale-105">
+                      <Trash size={16} className="text-red-600" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Are you absolutely sure?</DialogTitle>
+                      <DialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete this event and remove its data.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button variant="destructive" onClick={handleDelete}>
+                        Delete
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>

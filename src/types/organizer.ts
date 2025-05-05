@@ -7,7 +7,7 @@ export interface Organizer {
   user: User;
   name: string;
   aboutUs?: string;
-  profilePic?: string;
+  profilePic: string;
   createdAt: Date;
   updatedAt: Date;
   isDeleted: boolean;
