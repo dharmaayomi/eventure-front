@@ -13,7 +13,7 @@ const AttendeeList: FC<Props> = ({ slug }) => {
 
   const now = new Date();
   const filteredTransactions = transactions.filter(
-    (tx) => tx.status === "DONE" && new Date(tx.ticket.event.startDate) < now,
+    (tx) => tx.status === "DONE" && new Date(tx.ticket.event.endDate) < now,
   );
 
   if (isLoading) return <p className="px-6 py-4">Loading...</p>;
