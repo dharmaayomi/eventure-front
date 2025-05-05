@@ -9,19 +9,31 @@ import { useFormik } from "formik";
 import Image from "next/image";
 import { ChangeEvent, useRef, useState } from "react";
 import { CreateEventSchema } from "../schemas";
+import { CategoryName } from "@/types/event";
+import { format } from "date-fns";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import { Location } from "@/types/location";
+import { useSession } from "next-auth/react";
 
 const CreateEventForm = () => {
+  const session = useSession();
+
   const { mutateAsync: createEvent, isPending } = useCreateEvent();
 
   const formik = useFormik({
     initialValues: {
-      categoryId: "",
-      organizerId: "",
-      slug: "",
+      category: "" as CategoryName,
       name: "",
       desc: "",
-      startDate: "",
-      endDate: "",
+      startDate: new Date(),
+      endDate: new Date(),
       thumbnail: null,
       location: "",
     },
@@ -55,46 +67,39 @@ const CreateEventForm = () => {
   return (
     <form className="mt-10 space-y-4" onSubmit={formik.handleSubmit}>
       <div className="grid gap-2">
-        <Label htmlFor="categoryId">categoryId</Label>
-        <Input
-          id="categoryId"
-          name="categoryId"
-          type="text"
-          placeholder="categoryId"
+        <Label htmlFor="category">Category</Label>
+        <select
+          id="category"
+          name="category"
           required
-          value={formik.values.categoryId}
+          value={formik.values.category}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-        />
-        {formik.touched.categoryId && !!formik.errors.categoryId && (
-          <p className="text-xs text-red-500">{formik.errors.categoryId}</p>
+          className="rounded-md border border-gray-200 shadow-2xs"
+        >
+          <option value="" disabled>
+            Select Category
+          </option>
+
+          {Object.entries(CategoryName).map(([key, value]) => (
+            <option key={value} value={value}>
+              {key}
+            </option>
+          ))}
+        </select>
+
+        {formik.touched.category && !!formik.errors.category && (
+          <p className="text-xs text-red-500">{formik.errors.category}</p>
         )}
       </div>
 
       <div className="grid gap-2">
-        <Label htmlFor="organizerId">organizerId</Label>
-        <Input
-          id="organizerId"
-          name="organizerId"
-          type="text"
-          placeholder="organizerId"
-          required
-          value={formik.values.organizerId}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        {formik.touched.organizerId && !!formik.errors.organizerId && (
-          <p className="text-xs text-red-500">{formik.errors.organizerId}</p>
-        )}
-      </div>
-
-      <div className="grid gap-2">
-        <Label htmlFor="name">name</Label>
+        <Label htmlFor="name">Event Name</Label>
         <Input
           id="name"
           name="name"
           type="text"
-          placeholder="name"
+          placeholder="Event Name / Title"
           required
           value={formik.values.name}
           onChange={formik.handleChange}
@@ -106,7 +111,7 @@ const CreateEventForm = () => {
       </div>
 
       <TiptapRichtextEditor
-        label="desc"
+        label="Event Description"
         field="desc"
         isTouch={formik.touched.desc}
         content={formik.values.desc}
@@ -115,52 +120,123 @@ const CreateEventForm = () => {
         setTouch={formik.setFieldTouched}
       />
 
+      {/* START DATE */}
       <div className="grid gap-2">
-        <Label htmlFor="startDate">startDate</Label>
-        <Input
-          id="startDate"
-          name="startDate"
-          type="text"
-          placeholder="startDate"
-          required
-          value={formik.values.startDate}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
+        <Label htmlFor="startDate">Start Date of Event</Label>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !formik.values.startDate && "text-muted-foreground",
+              )}
+              id="startDate"
+              name="startDate"
+              onBlur={() => formik.handleBlur("startDate")}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {formik.values.startDate ? (
+                format(new Date(formik.values.startDate), "PPP")
+              ) : (
+                <span>Pick a date</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={
+                formik.values.startDate
+                  ? new Date(formik.values.startDate)
+                  : undefined
+              }
+              onSelect={(date) => {
+                formik.setFieldValue("startDate", date);
+              }}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+
         {formik.touched.startDate && !!formik.errors.startDate && (
-          <p className="text-xs text-red-500">{formik.errors.startDate}</p>
+          <p className="text-xs text-red-500">
+            {formik.errors.startDate as string}
+          </p>
         )}
       </div>
 
+      {/* END DATE */}
       <div className="grid gap-2">
-        <Label htmlFor="endDate">endDate</Label>
-        <Input
-          id="endDate"
-          name="endDate"
-          type="text"
-          placeholder="endDate"
-          required
-          value={formik.values.endDate}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
+        <Label htmlFor="endDate">End Date of Event</Label>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !formik.values.endDate && "text-muted-foreground",
+              )}
+              id="endDate"
+              name="endDate"
+              onBlur={() => formik.handleBlur("endDate")}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {formik.values.endDate ? (
+                format(new Date(formik.values.endDate), "PPP")
+              ) : (
+                <span>Pick a date</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={
+                formik.values.endDate
+                  ? new Date(formik.values.endDate)
+                  : undefined
+              }
+              onSelect={(date) => {
+                formik.setFieldValue("endDate", date);
+              }}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+
         {formik.touched.endDate && !!formik.errors.endDate && (
-          <p className="text-xs text-red-500">{formik.errors.endDate}</p>
+          <p className="text-xs text-red-500">
+            {formik.errors.endDate as string}
+          </p>
         )}
       </div>
 
+      {/* LOCATION */}
       <div className="grid gap-2">
-        <Label htmlFor="location">location</Label>
-        <Input
+        <Label htmlFor="location">Location</Label>
+        <select
           id="location"
           name="location"
-          type="text"
-          placeholder="location"
           required
           value={formik.values.location}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-        />
+          className="rounded-md border border-gray-200 shadow-2xs"
+        >
+          <option value="" disabled>
+            Select Location
+          </option>
+
+          {Object.entries(Location).map(([key, value]) => (
+            <option key={value} value={value}>
+              {key}
+            </option>
+          ))}
+        </select>
+
         {formik.touched.location && !!formik.errors.location && (
           <p className="text-xs text-red-500">{formik.errors.location}</p>
         )}

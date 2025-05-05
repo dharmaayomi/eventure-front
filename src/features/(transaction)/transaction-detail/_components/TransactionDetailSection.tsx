@@ -34,18 +34,15 @@ const TransactionDetailSection: FC<TransactionDetailSectionProps> = ({
             </p>
           ))}
 
-        {transaction.status === "WAITING_FOR_PAYMENT" ||
-          (transaction.status === "WAITING_CONFIRMATION" && (
-            <p className="mb-2 font-bold text-amber-500">
-              Status: {transaction.status}
-            </p>
-          ))}
-
         {transaction.status === "DONE" && (
           <p className="mb-2 font-bold text-green-600">
             Status: {transaction.status}
           </p>
         )}
+
+        <p className="mb-2 font-bold text-amber-500">
+          Status: {transaction.status}
+        </p>
 
         <p className="mb-4 text-base text-gray-600">
           Your transaction details:

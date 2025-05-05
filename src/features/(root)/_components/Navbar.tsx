@@ -153,7 +153,7 @@ const Navbar = () => {
           </Link>
           <Link
             className="pointer-events-auto text-sm font-medium hover:text-[#004DE8] hover:underline"
-            href="/events/create-event"
+            href="/events/create"
           >
             <div className="flex items-center gap-1">
               <CalendarPlus size={24} />
