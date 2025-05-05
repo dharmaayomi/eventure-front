@@ -118,7 +118,7 @@ const StatEvent: React.FC<StatEventProps> = ({ slug }) => {
           icon={TicketCheck}
           color="green"
           delay={400}
-          description="Total tickets sold across all events."
+          description="Total tickets sold across this events."
         />
       </div>
     </div>

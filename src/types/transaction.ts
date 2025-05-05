@@ -23,7 +23,8 @@ export interface Transaction {
   updatedAt: Date;
   isDeleted: boolean;
   review: Review[];
-  tickets?: Ticket;
+  ticket: Ticket;
+  // tickets?: Ticket;
   ticketId?: number;
   transactionDetails: TransactionDetail[];
 }

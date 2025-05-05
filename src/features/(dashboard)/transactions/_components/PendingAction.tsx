@@ -13,6 +13,7 @@ const PendingTransactionList: FC<Props> = ({ onViewProof }) => {
   const transactions = data?.transactions || [];
 
   if (isLoading) return <p>Loading...</p>;
+  console.log("this is transaction", transactions);
 
   return (
     <div className="overflow-hidden rounded-lg bg-white shadow-sm">
@@ -53,7 +54,7 @@ const PendingTransactionList: FC<Props> = ({ onViewProof }) => {
             {transactions.map((transaction) => (
               <tr key={transaction.uuid}>
                 <td className="px-6 py-4 text-sm text-gray-900">
-                  {transaction.ticket.event.name || "-"}
+                  {transaction.status || "-"}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-900">
                   {transaction.user?.email || "-"}
@@ -95,7 +96,7 @@ const PendingTransactionList: FC<Props> = ({ onViewProof }) => {
                     <Image
                       src="/pending.webp"
                       alt="empty"
-                      width={120} // Ukuran dikurangi
+                      width={120}
                       height={180}
                       className="mb-3"
                     />

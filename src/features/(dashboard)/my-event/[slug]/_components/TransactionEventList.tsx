@@ -187,6 +187,7 @@ const TransactionEventList: FC<Props> = ({ slug }) => {
   };
 
   if (isLoading) return <p>Loading...</p>;
+  console.log("Transactions:", transactions);
 
   return (
     <>

@@ -36,8 +36,9 @@ const AllTransactions: FC = () => {
             {transactions.map((transaction) => (
               <tr key={transaction.uuid}>
                 <td className="px-6 py-4 text-sm text-gray-900">
-                  {transaction.ticket?.event?.name || "-"}
+                  {transaction.ticket?.event?.name}
                 </td>
+
                 <td className="px-6 py-4 text-sm text-gray-900">
                   {transaction.user?.email || "-"}
                 </td>
@@ -48,7 +49,24 @@ const AllTransactions: FC = () => {
                   ) ?? 1}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-900">
-                  {transaction.status}
+                  <span
+                    className={`rounded-full px-2 py-1 text-xs font-medium capitalize ${
+                      transaction.status === "DONE"
+                        ? "bg-green-100 text-green-800"
+                        : transaction.status === "WAITING_CONFIRMATION"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : transaction.status === "WAITING_FOR_PAYMENT"
+                            ? "bg-blue-100 text-blue-800"
+                            : transaction.status === "REJECTED"
+                              ? "bg-red-100 text-red-800"
+                              : transaction.status === "EXPIRED" ||
+                                  transaction.status === "CANCELED"
+                                ? "bg-gray-100 text-gray-800"
+                                : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    {transaction.status}
+                  </span>
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-900">
                   ${transaction.totalAmount?.toLocaleString() || "0"}
