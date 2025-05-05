@@ -46,13 +46,10 @@ const UploadProofForm: FC<UploadProofFormProps> = ({ uuid }) => {
 
   console.log(formik.errors);
   return (
-    <form
-      className="mt-10 space-y-6 bg-white p-6 shadow-sm"
-      onSubmit={formik.handleSubmit}
-    >
+    <form className="mt-5 space-y-6 p-6" onSubmit={formik.handleSubmit}>
       {selectedImage ? (
         <>
-          <div className="relative h-[150px] w-[200px] overflow-hidden rounded-md border border-gray-300 shadow">
+          <div className="relative h-[150px] w-[200px] overflow-hidden rounded-md">
             <Image
               src={selectedImage}
               alt="paymentProof"
