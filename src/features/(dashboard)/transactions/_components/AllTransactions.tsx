@@ -36,7 +36,7 @@ const AllTransactions: FC = () => {
             {transactions.map((transaction) => (
               <tr key={transaction.uuid}>
                 <td className="px-6 py-4 text-sm text-gray-900">
-                  {transaction.tickets?.event?.name}
+                  {transaction.ticket?.event?.name}
                 </td>
 
                 <td className="px-6 py-4 text-sm text-gray-900">
