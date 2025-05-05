@@ -1,18 +1,20 @@
 "use client";
 
+import useAxios from "@/hooks/useAxios";
+import { CategoryName } from "@/types/event";
+import { Organizer } from "@/types/organizer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
+import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 interface CreateEventPayload {
-  categoryId: string;
-  organizerId: string;
-  slug: string;
+  category: CategoryName;
   name: string;
   desc: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   thumbnail: File | null;
   location: string;
 }
@@ -20,25 +22,30 @@ interface CreateEventPayload {
 const useCreateEvent = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { axiosInstance } = useAxios();
 
   return useMutation({
     mutationFn: async (payload: CreateEventPayload) => {
       const createEventForm = new FormData();
+      const startDateString =
+        payload.startDate instanceof Date && !isNaN(payload.startDate.getTime())
+          ? format(payload.startDate, "yyyy-MM-dd")
+          : "";
 
-      createEventForm.append("categoryId", payload.categoryId);
-      createEventForm.append("organizerId", payload.organizerId);
-      createEventForm.append("slug", payload.slug);
-      createEventForm.append("name", payload.name);
+      const endDateString =
+        payload.endDate instanceof Date && !isNaN(payload.endDate.getTime())
+          ? format(payload.endDate, "yyyy-MM-dd")
+          : "";
+
+      createEventForm.append("category", payload.category);
+      createEventForm.append("name", payload.name.toLocaleLowerCase());
       createEventForm.append("desc", payload.desc);
-      createEventForm.append("startDate", payload.startDate);
-      createEventForm.append("endDate", payload.endDate);
+      createEventForm.append("startDate", startDateString);
+      createEventForm.append("endDate", endDateString);
       createEventForm.append("thumbnail", payload.thumbnail!);
       createEventForm.append("location", payload.location);
 
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_API_URL}/events`,
-        createEventForm,
-      );
+      const { data } = await axiosInstance.post(`/events`, createEventForm);
       return data;
     },
     onSuccess: async () => {

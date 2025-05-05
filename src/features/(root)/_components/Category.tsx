@@ -82,7 +82,11 @@ const Categories = () => {
             className="relative cursor-pointer overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl"
             tabIndex={0}
             role="button"
-            onClick={() => router.push(`/events/category/${category.slug}`)}
+            onClick={() =>
+              router.push(
+                `/events/category?category=${category.title.toUpperCase()}`,
+              )
+            }
           >
             <div className="relative h-48 overflow-hidden">
               <Image

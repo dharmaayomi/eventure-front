@@ -1,13 +1,11 @@
 import * as Yup from "yup";
 
 export const CreateEventSchema = Yup.object().shape({
-  categoryId: Yup.string().required("CategoryId is required"),
-  organizerId: Yup.string().required("OrganizerId is required"),
-  slug: Yup.string().nullable().notRequired(),
-  name: Yup.string().required("Name is required"),
-  desc: Yup.string().required("Desc is required"),
-  startDate: Yup.string().required("StartDate is required"),
-  endDate: Yup.string().required("EndDate is required"),
+  category: Yup.string().required("Category is required"),
+  name: Yup.string().required("Event name is required"),
+  desc: Yup.string().required("Event description is required"),
+  startDate: Yup.date().required("Start Date is required"),
+  endDate: Yup.date().required("End Date is required"),
   location: Yup.string().required("Location is required"),
   thumbnail: Yup.mixed().nullable().required("Thumbnail is required"),
 });
