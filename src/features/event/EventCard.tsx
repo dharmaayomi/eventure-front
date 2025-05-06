@@ -35,7 +35,7 @@ const EventCard: FC<EventCardProps> = ({ event }) => {
             <div>
               <div className="grid w-full items-center py-2">
                 <div className="flex flex-col space-y-1.5">
-                  <h3 className="text-lg font-semibold text-gray-800">
+                  <h3 className="line-clamp-1 text-lg font-semibold text-gray-800">
                     {event.name.toUpperCase()}
                   </h3>
                   <div className="flex items-center gap-2 text-xs font-light text-gray-600">

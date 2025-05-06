@@ -19,3 +19,9 @@ export const ChangePasswordSchema = Yup.object().shape({
     .oneOf([Yup.ref("newPassword")], "Password must match!")
     .required("Confirm password is required"),
 });
+
+export const UpdateBankOrganizerSchema = Yup.object().shape({
+  bankName: Yup.string().optional(),
+  bankAccountHolder: Yup.string().optional(),
+  bankAccountNumber: Yup.string().optional(),
+});

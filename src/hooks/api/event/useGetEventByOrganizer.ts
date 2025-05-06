@@ -1,14 +1,15 @@
+"use client";
 import { axiosInstance } from "@/lib/axios";
-import { EventWithTransaction } from "@/types/event";
+import { Event } from "@/types/event";
 import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
-// interface GetEventByOrganizerQuery extends PaginationQueries {
-//   search?: string;
-// }
+interface GetEventByOrganizerQuery extends PaginationQueries {
+  search?: string;
+}
 
-const useGetEventByOrganizer = (queries?: PaginationQueries) => {
+const useGetEventByOrganizer = (queries?: GetEventByOrganizerQuery) => {
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
 
@@ -17,14 +18,15 @@ const useGetEventByOrganizer = (queries?: PaginationQueries) => {
     queryFn: async () => {
       if (!token) throw new Error("No access token found in session");
 
-      const { data } = await axiosInstance.get<
-        PageableResponse<EventWithTransaction>
-      >(`/organizers/events`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const { data } = await axiosInstance.get<PageableResponse<Event>>(
+        `/organizers/events`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: queries,
         },
-        params: queries,
-      });
+      );
       return data;
     },
     enabled: !!token,

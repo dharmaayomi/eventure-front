@@ -1,7 +1,6 @@
 import useGetEventOrganizerBySlug from "@/hooks/api/event/useGetEventOrganizerBySlug";
-import { EventWithTransaction } from "@/types/event";
 import Image from "next/image";
-import { FC, use } from "react";
+import { FC } from "react";
 import { ButtonUploader } from "./ButtonUploader";
 interface ThumbnailEventProps {
   slug: string;

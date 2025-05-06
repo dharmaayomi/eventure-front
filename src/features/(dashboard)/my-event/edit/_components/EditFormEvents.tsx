@@ -9,6 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import useGetEventOrganizerBySlug from "@/hooks/api/event/useGetEventOrganizerBySlug";
 import useUpdateEvent from "@/hooks/api/event/useUpdateEvent";
 // Keep the types import but only use it for TypeScript typing
@@ -30,8 +38,6 @@ interface EditFormEventsProps {
   slug: string;
 }
 
-// Define valid values as constants to ensure consistency
-// These should match the values in the CategoryName and Location enums
 const VALID_CATEGORIES = {
   MUSIC: "MUSIC" as CategoryName,
   EDUCATION: "EDUCATION" as CategoryName,
@@ -58,7 +64,6 @@ interface EventFormValues {
   location: string;
 }
 
-// Helper function to format date to YYYY-MM-DD for input fields
 const formatDateForInput = (dateString: string | undefined): string => {
   if (!dateString) return "";
   const date = new Date(dateString);
@@ -79,12 +84,12 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
 
   const [categoryValue, setCategoryValue] = useState<string>("");
   const [locationValue, setLocationValue] = useState<string>("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const validateCategory = (
     category: string | undefined,
   ): CategoryName | "" => {
     if (!category) return "";
-    // console.log("Category from DB:", category);
     return Object.values(VALID_CATEGORIES).includes(category as CategoryName)
       ? (category as CategoryName)
       : "";
@@ -92,7 +97,6 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
 
   const validateLocation = (location: string | undefined): Location | "" => {
     if (!location) return "";
-    // console.log("Location from DB:", location);
     return Object.values(VALID_LOCATIONS).includes(location as Location)
       ? (location as Location)
       : "";
@@ -113,7 +117,6 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
     validationSchema: UpdateEventSchema,
     onSubmit: async (values) => {
       try {
-        // Format dates to ISO strings for the API
         const formattedValues = {
           ...values,
           startDate: values.startDate
@@ -122,7 +125,6 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
           endDate: values.endDate ? new Date(values.endDate).toISOString() : "",
         };
 
-        // Ensure we include the event ID in the payload if it exists
         const payload = {
           ...getChangedValues(formattedValues, {
             ...initialValues,
@@ -133,12 +135,10 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
           slug,
         };
 
-        // Validate that we're only sending valid category and location values
         let formattedPayload: any = {
           ...payload,
         };
 
-        // Only include category if it's valid and was changed
         if (payload.category) {
           if (
             !Object.values(VALID_CATEGORIES).includes(payload.category as any)
@@ -149,19 +149,18 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
           formattedPayload.category = payload.category as CategoryName;
         }
 
-        // Only include location if it's valid and was changed
         if (payload.location) {
           if (
             !Object.values(VALID_LOCATIONS).includes(payload.location as any)
           ) {
             throw new Error(`Invalid location value: ${payload.location}`);
           }
-          // Ensure it's typed correctly for the API
           formattedPayload.location = payload.location as Location;
         }
 
         console.log("Submitting payload:", formattedPayload);
         await updateEvent(formattedPayload);
+        setIsDialogOpen(false);
         router.push(`/dashboard/my-event/${slug}/edit`);
       } catch (error) {
         console.error("Failed to update event:", error);
@@ -169,7 +168,6 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
     },
   });
 
-  // Handle validation for end date when start date changes
   useEffect(() => {
     if (formik.values.startDate && formik.values.endDate) {
       const startDate = new Date(formik.values.startDate);
@@ -184,14 +182,12 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
     }
   }, [formik.values.startDate]);
 
-  // Add this debugging useEffect to help identify the issue
   useEffect(() => {
     if (event) {
       console.log("Raw event data received:", event);
       console.log("Category from DB:", event.category);
       console.log("Location from DB:", event.location);
 
-      // Set the state values directly from event data
       if (event.category) {
         setCategoryValue(event.category);
       }
@@ -201,6 +197,7 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
       }
     }
   }, [event]);
+
   useEffect(() => {
     if (formik.values.category) {
       setCategoryValue(formik.values.category);
@@ -209,6 +206,12 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
       setLocationValue(formik.values.location);
     }
   }, [formik.values.category, formik.values.location]);
+
+  const handleSaveClick = () => {
+    if (formik.isValid && formik.dirty) {
+      setIsDialogOpen(true);
+    }
+  };
 
   if (isPendingGet) {
     return (
@@ -421,8 +424,9 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
               Cancel
             </Button>
             <Button
-              type="submit"
+              type="button"
               disabled={isPendingUpdate || !formik.isValid || !formik.dirty}
+              onClick={handleSaveClick}
               className="bg-[#004DE8] text-white hover:bg-[#004DE8]/90"
             >
               {isPendingUpdate ? "Saving..." : "Save Changes"}
@@ -430,6 +434,35 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
           </div>
         </form>
       )}
+
+      {/* Confirmation Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Event Update</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to update this event? This will change the
+              event details for all attendees.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsDialogOpen(false)}
+              className="border-gray-300 hover:bg-gray-50"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => formik.handleSubmit()}
+              disabled={isPendingUpdate}
+              className="bg-[#004DE8] text-white hover:bg-[#004DE8]/90"
+            >
+              {isPendingUpdate ? "Saving..." : "Confirm Changes"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -23,19 +23,13 @@ export interface Transaction {
   updatedAt: Date;
   isDeleted: boolean;
   review: Review[];
-  tickets?: Ticket;
+  ticket: Ticket;
+  // tickets?: Ticket;
   ticketId?: number;
   transactionDetails: TransactionDetail[];
 }
 
 export interface TransactionWithTotal extends Transaction {
-  totalCount: number;
-  totalRevenue: number;
-  totalTicket: number;
-}
-
-export interface TransactionSummaryResponse {
-  transactions: Transaction[];
   totalCount: number;
   totalRevenue: number;
   totalTicket: number;

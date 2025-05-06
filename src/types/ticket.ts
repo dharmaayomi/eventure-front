@@ -1,5 +1,6 @@
 import { Event } from "./event";
 import { Transaction } from "./transaction";
+import { TransactionDetail } from "./transactionDetail";
 
 export interface Ticket {
   id: number;
@@ -12,4 +13,5 @@ export interface Ticket {
   updatedAt: Date;
   isDeleted: boolean;
   transactions: Transaction[];
+  transactionDetails: TransactionDetail[];
 }

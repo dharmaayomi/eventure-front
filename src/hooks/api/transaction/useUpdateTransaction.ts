@@ -1,8 +1,6 @@
 import useAxios from "@/hooks/useAxios";
-import { Transaction } from "@/types/transaction";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { ApiError } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
 
 const useUpdateTransaction = (uuid: string) => {

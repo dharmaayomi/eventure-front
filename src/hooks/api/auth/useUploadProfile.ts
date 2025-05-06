@@ -51,6 +51,7 @@ const useUploadProfile = () => {
       });
 
       toast.success("Profile picture uploaded successfully!");
+      router.refresh();
       router.push("/dashboard/profile");
     },
     onError: (error: AxiosError<any>) => {

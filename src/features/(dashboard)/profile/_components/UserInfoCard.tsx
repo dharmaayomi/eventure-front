@@ -10,12 +10,14 @@ import { useFormik } from "formik";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { UpdateProfileSchema } from "../schema";
+import useGetProfile from "@/hooks/api/profile/useGetProfile";
 
 export const UserInfoCard = () => {
   const router = useRouter();
   const { mutateAsync: updateProfile, isPending } = useUpdateProfile();
   const session = useSession();
-  const user = session.data?.user;
+  const userId = session?.data?.user.id;
+  const { data: user } = useGetProfile(userId!);
 
   const { isOpen, openModal, closeModal } = useModal();
 
@@ -29,8 +31,8 @@ export const UserInfoCard = () => {
     onSubmit: async (values) => {
       const result = await updateProfile(values);
       const updatedUser = {
-        ...session?.data, // isi lama
-        ...result.data, // data baru overwrite yg sama
+        ...session?.data,
+        ...result.data,
       };
 
       await signIn("credentials", {
@@ -42,7 +44,9 @@ export const UserInfoCard = () => {
       router.refresh();
     },
   });
-  console.log("ini profile", session);
+  console.log("ini profile", user);
+  const pointAmount = user?.pointDetails?.[0]?.amount ?? 0;
+  const pointExpiredAt = user?.pointDetails?.[0]?.expiredAt;
 
   return (
     <div className="rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-800">
@@ -122,6 +126,33 @@ export const UserInfoCard = () => {
               </div>
               <p className="text-xs font-light text-gray-500 dark:text-gray-400">
                 Share this code with your friends and earn rewards!
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                Your Points
+              </p>
+              <div className="rounded-md border-2 p-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                    {pointAmount.toLocaleString("id-ID")}
+                  </p>
+                  {pointExpiredAt && (
+                    <p className="text-sm font-medium text-gray-300 italic dark:text-white/90">
+                      expired at{" "}
+                      {new Date(pointExpiredAt).toLocaleDateString("id-ID", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+                This can be used whenever you want to checkout by ticking the
+                point button
               </p>
             </div>
           </div>

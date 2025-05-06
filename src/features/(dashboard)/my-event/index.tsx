@@ -1,13 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Event } from "@/types/event";
 import { useRouter } from "next/navigation";
-import React, { FC } from "react";
+import { FC } from "react";
 import { EventsByOrganizer } from "./_components/EventsByOrganizer";
-import { EventWithTransaction } from "@/types/event";
 
 interface MyEventPageProps {
-  event: EventWithTransaction;
+  event: Event;
 }
 
 const MyEventPage: FC<MyEventPageProps> = ({ event }) => {

@@ -1,7 +1,7 @@
 import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 
@@ -9,6 +9,10 @@ const useUploadEventThumbnail = (id?: number) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { axiosInstance } = useAxios();
+
+  const params = useParams();
+
+  const slug = params?.slug as string;
   return useMutation({
     mutationFn: async (payload: { thumbnail: File }) => {
       if (!id) throw new Error("Event ID is required");
@@ -26,7 +30,7 @@ const useUploadEventThumbnail = (id?: number) => {
     onSuccess: async () => {
       toast.success("Thumbnail uploaded successfully");
       await queryClient.invalidateQueries({ queryKey: ["thumbnail event"] });
-      router.refresh();
+      router.push(`/dashboard/my-event/${slug}`);
     },
     onError: (error: AxiosError<any>) => {
       toast.error(error.response?.data.message);

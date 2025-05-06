@@ -9,6 +9,9 @@ export interface Organizer {
   slug: string;
   aboutUs?: string;
   profilePic: string;
+  bankName: string;
+  bankAccountNumber: string;
+  bankAccountHolder: string;
   createdAt: Date;
   updatedAt: Date;
   isDeleted: boolean;

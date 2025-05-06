@@ -1,22 +1,40 @@
 import { axiosInstance } from "@/lib/axios";
-import { TransactionSummaryResponse } from "@/types/transaction";
+import { PaginationQueries } from "@/types/pagination";
+import { TransactionSummaryResponse } from "@/types/transactionSummary";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
-const useGetTransactionByStatus = (status: string) => {
+interface GetTransactionByStatysQuery extends PaginationQueries {
+  search?: string;
+}
+
+interface Response {
+  data: TransactionSummaryResponse;
+  meta: {
+    total: number;
+    take: number;
+    page: number;
+  };
+}
+
+const useGetTransactionByStatus = (
+  status: string,
+  queries?: GetTransactionByStatysQuery,
+) => {
   const session = useSession();
   const token = session?.data?.user?.accessToken;
   return useQuery({
-    queryKey: ["statustransactions", status],
+    queryKey: ["statustransactions", status, queries],
     queryFn: async () => {
       if (!token) throw new Error("No access token found in session");
 
-      const { data } = await axiosInstance.get<TransactionSummaryResponse>(
+      const { data } = await axiosInstance.get<Response>(
         `organizers/transactions?status=${status}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: queries,
         },
       );
       return data;

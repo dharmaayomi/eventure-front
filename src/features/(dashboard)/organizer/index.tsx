@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { OrganizerInfoCard } from "./_components/OrganizeInfoCard";
-import OrganizerCard from "./_components/OrganizerCard";
+import { OrganizerCard } from "./_components/OrganizerCard";
 
 const OrganizerPage = () => {
   const session = useSession();
@@ -16,7 +16,7 @@ const OrganizerPage = () => {
           </h3>
           {!!session.data?.user && (
             <div className="space-y-6">
-              <OrganizerCard />
+              <OrganizerCard id={session.data.user.id} />
               <OrganizerInfoCard />
             </div>
           )}

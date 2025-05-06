@@ -3,6 +3,8 @@
 import { useSession } from "next-auth/react";
 import ChangePasswordForm from "./_components/ChangePasswordForm";
 import DeleteAccount from "./_components/DeleteAccount";
+import BankAccount from "./_components/BankAccount";
+import { isAdmin } from "@/utils/AuthRole";
 
 const SettingPage = () => {
   const session = useSession();
@@ -15,7 +17,7 @@ const SettingPage = () => {
       {!!user && (
         <div className="space-y-6">
           <ChangePasswordForm />
-          <DeleteAccount />
+          {!!isAdmin(session.data) && <BankAccount />}
         </div>
       )}
     </div>
