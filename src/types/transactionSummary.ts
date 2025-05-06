@@ -1,8 +1,8 @@
-import { Transaction } from "./transaction";
+import { Transaction, TransactionWithTotal } from "./transaction";
 
 export interface TransactionSummaryResponse {
-  transactions: Transaction[];
-  totalCount: number;
+  transactions: TransactionWithTotal[];
+  totalTransactions: number;
   totalRevenue: number;
   totalTicket: number;
 }

@@ -2,16 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-import { AreaChart, Area, ResponsiveContainer } from "recharts";
-import useGetTransactionByOrganizer from "@/hooks/api/organizer/useGetTransactionByOrganizer";
-import {
-  ChartNoAxesCombined,
-  DollarSign,
-  Eye,
-  TicketCheck,
-} from "lucide-react";
 import useGetTransactionPerEventSummary from "@/hooks/api/organizer/useGetTransactionPerEventSummary";
-import { useParams } from "next/navigation";
+import { ChartNoAxesCombined, DollarSign, TicketCheck } from "lucide-react";
 
 type MetricCardProps = {
   title: string;
@@ -84,7 +76,7 @@ const StatEvent: React.FC<StatEventProps> = ({ slug }) => {
   }
 
   const totalRevenue = data.totalRevenue || 0;
-  const totalTransactions = data.totalCount || 0;
+  const totalTransactions = data.totalTransactions || 0;
   const totalTickets = data.totalTicket || 0;
   console.log(
     `ini punya event ${slug}`,

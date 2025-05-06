@@ -1,14 +1,13 @@
 "use client";
 
-import { EventWithTransaction } from "@/types/event";
-import Image from "next/image";
+import { Event } from "@/types/event";
 import { FC, useState } from "react";
+import AttendeeList from "./AttendeeList";
 import StatEvent from "./StatEvent";
 import TransactionEventList from "./TransactionEventList";
-import AttendeeList from "./AttendeeList";
 
 interface ThumbnailCardProps {
-  event: EventWithTransaction;
+  event: Event;
 }
 
 const ThumbnailCard: FC<ThumbnailCardProps> = ({ event }) => {
@@ -83,7 +82,7 @@ const ThumbnailCard: FC<ThumbnailCardProps> = ({ event }) => {
                   : "text-gray-600 hover:text-gray-800"
               }`}
             >
-              Attendees View
+              Attendees List
             </button>
           </div>
         </div>

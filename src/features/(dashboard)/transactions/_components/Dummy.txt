@@ -1,0 +1,403 @@
+// "use client";
+
+// import { FC, useState } from "react";
+// import useGetTransactionByOrganizer from "@/hooks/api/organizer/useGetTransactionByOrganizer";
+// import { TransactionSummaryResponse } from "@/types/transaction";
+// import PaginationSection from "@/components/PaginationSection";
+
+// const AllTransactions: FC = () => {
+//   const [page, setPage] = useState(1);
+//   const itemsPerPage = 6;
+//   const { data, isLoading, isError } = useGetTransactionByOrganizer();
+//   const transactionSummary = data as TransactionSummaryResponse | undefined;
+//   const transactions = transactionSummary?.transactions || [];
+//   const totalCount = transactionSummary?.totalTransaction || 0;
+
+//   // Calculate pagination indexes
+//   const startIndex = (page - 1) * itemsPerPage;
+//   const endIndex = startIndex + itemsPerPage;
+
+//   // Create a slice of transactions for the current page
+//   const paginatedTransactions = transactions.slice(startIndex, endIndex);
+
+//   const onChangePage = (newPage: number) => {
+//     setPage(newPage);
+//   };
+
+//   if (isLoading) return <p>Loading...</p>;
+//   if (isError) return <p>Error loading transactions</p>;
+
+//   return (
+//     <div className="overflow-hidden rounded-lg bg-white shadow-sm">
+//       <div className="overflow-x-auto">
+//         <table className="w-full">
+//           <thead>
+//             <tr className="bg-gray-50">
+//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                 Event
+//               </th>
+//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                 Email
+//               </th>
+//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                 Quantity
+//               </th>
+//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                 Status
+//               </th>
+//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                 Total Price
+//               </th>
+//             </tr>
+//           </thead>
+//           <tbody className="divide-y divide-gray-200">
+//             {paginatedTransactions.map((transaction) => (
+//               <tr key={transaction.uuid}>
+//                 <td className="px-6 py-4 text-sm text-gray-900">
+//                   {transaction.transactionDetails[0].ticket.event.name}
+//                 </td>
+
+//                 <td className="px-6 py-4 text-sm text-gray-900">
+//                   {transaction.user?.email || "-"}
+//                 </td>
+//                 <td className="px-6 py-4 text-sm text-gray-900">
+//                   {transaction.transactionDetails?.reduce(
+//                     (acc, td) => acc + td.qty,
+//                     0,
+//                   ) ?? 1}
+//                 </td>
+//                 <td className="px-6 py-4 text-sm text-gray-900">
+//                   <span
+//                     className={`rounded-full px-2 py-1 text-xs font-medium capitalize ${
+//                       transaction.status === "DONE"
+//                         ? "bg-green-100 text-green-800"
+//                         : transaction.status === "WAITING_CONFIRMATION"
+//                           ? "bg-yellow-100 text-yellow-800"
+//                           : transaction.status === "WAITING_FOR_PAYMENT"
+//                             ? "bg-blue-100 text-blue-800"
+//                             : transaction.status === "REJECTED"
+//                               ? "bg-red-100 text-red-800"
+//                               : transaction.status === "EXPIRED" ||
+//                                   transaction.status === "CANCELED"
+//                                 ? "bg-gray-100 text-gray-800"
+//                                 : "bg-gray-100 text-gray-800"
+//                     }`}
+//                   >
+//                     {transaction.status}
+//                   </span>
+//                 </td>
+//                 <td className="px-6 py-4 text-sm text-gray-900">
+//                   ${transaction.totalAmount?.toLocaleString() || "0"}
+//                 </td>
+//               </tr>
+//             ))}
+//             {paginatedTransactions.length === 0 && (
+//               <tr>
+//                 <td
+//                   colSpan={5}
+//                   className="px-6 py-4 text-center text-sm text-gray-500"
+//                 >
+//                   No transactions found
+//                 </td>
+//               </tr>
+//             )}
+//           </tbody>
+//         </table>
+//       </div>
+//       {/* Pagination controls */}
+//       {totalCount > itemsPerPage && (
+//         <div className="flex justify-center py-6">
+//           <PaginationSection
+//             page={page}
+//             total={totalCount}
+//             take={itemsPerPage}
+//             onChangePage={onChangePage}
+//           />
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default AllTransactions;
+"use client";
+
+import { FC, useState, useEffect } from "react";
+import useGetTransactionByOrganizer from "@/hooks/api/organizer/useGetTransactionByOrganizer";
+import PaginationSection from "@/components/PaginationSection";
+import { useQueryState, parseAsInteger } from "nuqs";
+import { useDebounceValue } from "usehooks-ts";
+import { TransactionSummaryResponse } from "@/types/transactionSummary";
+
+const AllTransactions = () => {
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [search, setSearch] = useQueryState("search", { defaultValue: "" });
+  const [debouncedSearch] = useDebounceValue(search, 500);
+
+  const { data, isLoading, isError } = useGetTransactionByOrganizer({
+    take: 6,
+    page: page,
+    sortBy: "createdAt",
+    sortOrder: "desc",
+    search: debouncedSearch,
+  });
+
+  const onChangePage = (page: number) => {
+    setPage(page);
+  };
+  console.log("data", data);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error loading transactions</p>;
+
+  return (
+    <div className="overflow-hidden rounded-lg bg-white shadow-sm">
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-gray-50">
+              <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+                Event
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+                Email
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+                Quantity
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+                Status
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+                Total Price
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {data?.data.transactions.map((transaction) => (
+              <tr key={transaction.uuid}>
+                <td className="px-6 py-4 text-sm text-gray-900">
+                  {transaction.transactionDetails[0]?.ticket?.event?.name ||
+                    "Unknown Event"}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-900">
+                  {transaction.user?.email || "-"}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-900">
+                  {transaction.transactionDetails?.reduce(
+                    (acc, td) => acc + td.qty,
+                    0,
+                  ) ?? 1}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-900">
+                  <span
+                    className={`rounded-full px-2 py-1 text-xs font-medium capitalize ${
+                      transaction.status === "DONE"
+                        ? "bg-green-100 text-green-800"
+                        : transaction.status === "WAITING_CONFIRMATION"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : transaction.status === "WAITING_FOR_PAYMENT"
+                            ? "bg-blue-100 text-blue-800"
+                            : transaction.status === "REJECTED"
+                              ? "bg-red-100 text-red-800"
+                              : transaction.status === "EXPIRED" ||
+                                  transaction.status === "CANCELED"
+                                ? "bg-gray-100 text-gray-800"
+                                : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    {transaction.status}
+                  </span>
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-900">
+                  ${transaction.totalAmount?.toLocaleString() || "0"}
+                </td>
+              </tr>
+            ))}
+
+            <tr>
+              <td
+                colSpan={5}
+                className="px-6 py-4 text-center text-sm text-gray-500"
+              >
+                No transactions found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex justify-center py-6">
+        <PaginationSection
+          page={data?.meta.page || 1}
+          total={data?.meta.total || 0}
+          take={data?.meta.take || 6}
+          onChangePage={onChangePage}
+        />
+      </div>
+
+      {/* Debug info - remove after fixing
+      {process.env.NODE_ENV !== "production" && (
+        <div className="p-2 text-xs text-gray-500">
+          Total: {totalCount}, Items per page: {itemsPerPage}, Current page:{" "}
+          {page}, Transactions: {transactions.length}
+        </div>
+      )} */}
+    </div>
+  );
+};
+
+export default AllTransactions;
+// "use client";
+
+// import { FC, useState, useEffect } from "react";
+// import useGetTransactionByOrganizer from "@/hooks/api/organizer/useGetTransactionByOrganizer";
+// import { TransactionSummaryResponse } from "@/types/transaction";
+// import PaginationSection from "@/components/PaginationSection";
+
+// const AllTransactions: FC = () => {
+//   const [page, setPage] = useState(1);
+//   const itemsPerPage = 6;
+//   const { data, isLoading, isError } = useGetTransactionByOrganizer();
+//   const transactionSummary = data as TransactionSummaryResponse | undefined;
+
+//   // Use the actual transactions array length as a fallback for totalCount
+//   const transactions = transactionSummary?.transactions || [];
+//   const totalCount =
+//     transactionSummary?.totalTransaction ?? transactions.length;
+
+//   // Calculate pagination indexes
+//   const startIndex = (page - 1) * itemsPerPage;
+//   const endIndex = startIndex + itemsPerPage;
+
+//   // Create a slice of transactions for the current page
+//   const paginatedTransactions = transactions.slice(startIndex, endIndex);
+
+//   // Reset to page 1 if current page would be empty
+//   useEffect(() => {
+//     if (
+//       page > 1 &&
+//       paginatedTransactions.length === 0 &&
+//       transactions.length > 0
+//     ) {
+//       setPage(1);
+//     }
+//   }, [transactions, page, paginatedTransactions.length]);
+
+//   const onChangePage = (newPage: number) => {
+//     setPage(newPage);
+//   };
+
+//   // For debugging
+//   console.log({
+//     totalCount,
+//     itemsPerPage,
+//     shouldShowPagination: totalCount > itemsPerPage,
+//     transactionsLength: transactions.length,
+//   });
+
+//   if (isLoading) return <p>Loading...</p>;
+//   if (isError) return <p>Error loading transactions</p>;
+
+//   return (
+//     <div className="overflow-hidden rounded-lg bg-white shadow-sm">
+//       <div className="overflow-x-auto">
+//         <table className="w-full">
+//           <thead>
+//             <tr className="bg-gray-50">
+//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                 Event
+//               </th>
+//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                 Email
+//               </th>
+//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                 Quantity
+//               </th>
+//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                 Status
+//               </th>
+//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                 Total Price
+//               </th>
+//             </tr>
+//           </thead>
+//           <tbody className="divide-y divide-gray-200">
+//             {paginatedTransactions.map((transaction) => (
+//               <tr key={transaction.uuid}>
+//                 <td className="px-6 py-4 text-sm text-gray-900">
+//                   {transaction.transactionDetails[0]?.ticket?.event?.name ||
+//                     "Unknown Event"}
+//                 </td>
+//                 <td className="px-6 py-4 text-sm text-gray-900">
+//                   {transaction.user?.email || "-"}
+//                 </td>
+//                 <td className="px-6 py-4 text-sm text-gray-900">
+//                   {transaction.transactionDetails?.reduce(
+//                     (acc, td) => acc + td.qty,
+//                     0,
+//                   ) ?? 1}
+//                 </td>
+//                 <td className="px-6 py-4 text-sm text-gray-900">
+//                   <span
+//                     className={`rounded-full px-2 py-1 text-xs font-medium capitalize ${
+//                       transaction.status === "DONE"
+//                         ? "bg-green-100 text-green-800"
+//                         : transaction.status === "WAITING_CONFIRMATION"
+//                           ? "bg-yellow-100 text-yellow-800"
+//                           : transaction.status === "WAITING_FOR_PAYMENT"
+//                             ? "bg-blue-100 text-blue-800"
+//                             : transaction.status === "REJECTED"
+//                               ? "bg-red-100 text-red-800"
+//                               : transaction.status === "EXPIRED" ||
+//                                   transaction.status === "CANCELED"
+//                                 ? "bg-gray-100 text-gray-800"
+//                                 : "bg-gray-100 text-gray-800"
+//                     }`}
+//                   >
+//                     {transaction.status}
+//                   </span>
+//                 </td>
+//                 <td className="px-6 py-4 text-sm text-gray-900">
+//                   ${transaction.totalAmount?.toLocaleString() || "0"}
+//                 </td>
+//               </tr>
+//             ))}
+//             {paginatedTransactions.length === 0 && (
+//               <tr>
+//                 <td
+//                   colSpan={5}
+//                   className="px-6 py-4 text-center text-sm text-gray-500"
+//                 >
+//                   No transactions found
+//                 </td>
+//               </tr>
+//             )}
+//           </tbody>
+//         </table>
+//       </div>
+
+//       {/* Pagination controls - modified to show whenever we have transactions */}
+//       {transactions.length > itemsPerPage && (
+//         <div className="flex justify-center py-6">
+//           <PaginationSection
+//             page={page}
+//             total={totalCount}
+//             take={itemsPerPage}
+//             onChangePage={onChangePage}
+//           />
+//         </div>
+//       )}
+
+//       {/* Debug info - remove after fixing */}
+//       {process.env.NODE_ENV !== "production" && (
+//         <div className="p-2 text-xs text-gray-500">
+//           Total: {totalCount}, Items per page: {itemsPerPage}, Current page:{" "}
+//           {page}, Transactions: {transactions.length}
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default AllTransactions;

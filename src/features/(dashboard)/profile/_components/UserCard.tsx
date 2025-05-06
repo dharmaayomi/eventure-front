@@ -11,10 +11,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { UploadProfilePicSchema } from "../schema";
+import useGetProfile from "@/hooks/api/profile/useGetProfile";
 
 const UserCard = () => {
+  // const { data: user } = useGetProfile(1);
   const router = useRouter();
-
   const session = useSession();
   const user = session.data?.user;
   const { mutateAsync: uploadProfilePic, isPending } = useUploadProfile();
@@ -36,7 +37,7 @@ const UserCard = () => {
         profilePic: values.profilePic,
       });
 
-      router.refresh(); // untuk re-render halaman kalau pakai useSession()
+      router.refresh();
       closeModal();
     },
   });
@@ -48,19 +49,26 @@ const UserCard = () => {
     const file = files?.[0] ?? null;
     formik.setFieldValue("profilePic", file);
   };
+
   return (
     <section>
       <div className="rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-800">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex w-full flex-col items-center gap-6 xl:flex-row">
             <div className="h-20 w-20 overflow-hidden rounded-full border border-gray-200 dark:border-gray-800">
-              <Image
-                width={100}
-                height={100}
-                src={user?.profilePic || ""}
-                alt="user"
-                className="object-cover"
-              />
+              {user?.profilePic ? (
+                <Image
+                  width={100}
+                  height={100}
+                  src={user.profilePic}
+                  alt="user"
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-gray-100 text-gray-400">
+                  No Image
+                </div>
+              )}
             </div>
 
             <div className="order-3 xl:order-2">
@@ -118,22 +126,6 @@ const UserCard = () => {
                     <div className="mx-auto min-h-90 w-full max-w-4xl rounded-lg border border-dashed border-neutral-200 bg-white dark:border-neutral-800 dark:bg-black">
                       <FileUpload onChange={handleUploadChange} />
                     </div>
-
-                    {/* <div className="grid grid-cols-1 gap-x-6 gap-y-5">
-                      <div className="col-span-2 space-y-2 lg:col-span-1">
-                        <Label htmlFor="profilePic">Profile Picture</Label>
-                        <Input
-                          id="profilePic"
-                          name="profilePic"
-                          type="file"
-                          onChange={(event) => {
-                            const file = event.currentTarget.files?.[0] ?? null;
-                            formik.setFieldValue("profilePic", file);
-                          }}
-                          className="border-gray-300"
-                        />
-                      </div>
-                    </div> */}
                   </div>
                 </div>
                 <div className="mt-3 flex items-center gap-3 px-2 lg:justify-end">

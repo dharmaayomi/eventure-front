@@ -6,6 +6,7 @@ import TokenProvider from "@/providers/TokenProviders";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
+import NuqsProvider from "@/providers/NuqsProviders";
 
 export const metadata: Metadata = {
   title: "Eventure",
@@ -22,12 +23,14 @@ export default function RootLayout({
       <body className={` ${manrope.className} bg-[#F9FAFB] antialiased`}>
         <ReactQueryProvider>
           {/* <ThemeProvider> */}
-          <NextAuthProviders>
-            <TokenProvider>
-              <SidebarProvider>{children}</SidebarProvider>
-            </TokenProvider>
-          </NextAuthProviders>
-          {/* </ThemeProvider> */}
+          <NuqsProvider>
+            <NextAuthProviders>
+              <TokenProvider>
+                <SidebarProvider>{children}</SidebarProvider>
+              </TokenProvider>
+            </NextAuthProviders>
+            {/* </ThemeProvider> */}
+          </NuqsProvider>
         </ReactQueryProvider>
         <Toaster richColors position="top-center" />
       </body>

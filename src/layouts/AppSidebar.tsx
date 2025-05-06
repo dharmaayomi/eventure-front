@@ -8,9 +8,7 @@ import { useSidebar } from "../context/SidebarContext";
 import { isAdmin, isUser } from "@/utils/AuthRole";
 import {
   BanknoteArrowUp,
-  BanknoteIcon,
   CalendarFold,
-  FileTextIcon,
   FlipHorizontal,
   LayoutDashboard,
   Search,
@@ -181,9 +179,9 @@ const AppSidebar: React.FC = () => {
                     </li>
                     <li>
                       <Link
-                        href="/dashboard/my-event"
+                        href="/events"
                         className={`menu-item flex items-center gap-2 ${
-                          isActive("/my-event")
+                          isActive("/events")
                             ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
                             : "p-2"
                         } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
@@ -270,26 +268,6 @@ const AppSidebar: React.FC = () => {
                         <SettingsIcon />
                         {(isExpanded || isHovered || isMobileOpen) && (
                           <span>Settings</span>
-                        )}
-                      </Link>
-                    </li>
-                  </>
-                )}
-                {!!isAdmin(session.data) && (
-                  <>
-                    <li>
-                      {/* bank account */}
-                      <Link
-                        href="/dashboard/bank-account"
-                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
-                          isActive("/dashboard/bank-account")
-                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
-                            : "p-2"
-                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
-                      >
-                        <BanknoteIcon />
-                        {(isExpanded || isHovered || isMobileOpen) && (
-                          <span>Bank Account</span>
                         )}
                       </Link>
                     </li>

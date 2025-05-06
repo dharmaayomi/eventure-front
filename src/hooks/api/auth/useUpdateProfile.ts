@@ -35,6 +35,7 @@ const useUpdateProfile = () => {
         redirect: false,
       });
       toast.success("Profile updated successfully!");
+      router.refresh();
       router.push("/dashboard/profile");
     },
 

@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/useModal";
 import { cn } from "@/lib/utils";
-import { EventWithTransaction } from "@/types/event";
+import { Event } from "@/types/event";
 import { Grid, List } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import { FC, useState } from "react";
 import CardView from "./CardView";
 import ListView from "./ListView";
 interface EventsByOrganizerProps {
-  event: EventWithTransaction;
+  event: Event;
 }
 
 export const EventsByOrganizer: FC<EventsByOrganizerProps> = ({ event }) => {

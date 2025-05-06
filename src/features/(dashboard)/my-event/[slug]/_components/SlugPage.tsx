@@ -1,15 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import React, { FC, useState } from "react";
-import ThumbnailCard from "./ThumbnailCard";
-import { EventWithTransaction } from "@/types/event";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { Event } from "@/types/event";
 import { ChevronLeft } from "lucide-react";
-import DetailEvent from "./DetailEvent";
-import StatEvent from "./StatEvent";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { FC } from "react";
+import ThumbnailCard from "./ThumbnailCard";
 
 interface SlugPageProps {
-  event: EventWithTransaction;
+  event: Event;
 }
 
 const SlugPage: FC<SlugPageProps> = ({ event }) => {
