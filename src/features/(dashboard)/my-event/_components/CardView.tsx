@@ -50,10 +50,65 @@
 
 // export default CardView;
 
+// "use client";
+// import PaginationSection from "@/components/PaginationSection";
+// import useGetEventByOrganizer from "@/hooks/api/event/useGetEventByOrganizer";
+// import { Event } from "@/types/event";
+// import { parseAsInteger, useQueryState } from "nuqs";
+// import { useDebounceValue } from "usehooks-ts";
+// import CardViewDetail from "./CardViewDetail";
+
+// const CardView = () => {
+//   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+//   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
+//   const [debounchedSearch] = useDebounceValue(search, 500);
+
+//   const {
+//     data: events,
+//     isPending,
+//     error,
+//   } = useGetEventByOrganizer({
+//     take: 6,
+//     page: page,
+//     sortBy: "createdAt",
+//     sortOrder: "desc",
+//     search: debounchedSearch,
+//   });
+
+//   if (isPending) return <div>Loading...</div>;
+//   if (error) return <div>Something went wrong!</div>;
+//   const onChangePage = (page: number) => {
+//     setPage(page);
+//   };
+
+//   return (
+//     <div className="space-y-4">
+//       <div className="flex flex-wrap justify-center gap-4 md:justify-start">
+//         {events.data.map((event: Event) => (
+//           <CardViewDetail key={event.id} event={event} />
+//         ))}
+//       </div>
+//       <div className="pt-7">
+//         <PaginationSection
+//           page={events.meta.page}
+//           total={events.meta.total}
+//           take={events.meta.take}
+//           onChangePage={onChangePage}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default CardView;
+
 "use client";
 import PaginationSection from "@/components/PaginationSection";
 import { Input } from "@/components/ui/input";
+import PaginationSection from "@/components/PaginationSection";
+import { Input } from "@/components/ui/input";
 import useGetEventByOrganizer from "@/hooks/api/event/useGetEventByOrganizer";
+import { Event } from "@/types/event";
 import { Event } from "@/types/event";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
@@ -67,7 +122,12 @@ const CardView = () => {
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [debouncedSearch] = useDebounceValue(search, 500);
 
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [search, setSearch] = useQueryState("search", { defaultValue: "" });
+  const [debouncedSearch] = useDebounceValue(search, 500);
+
   const {
+    data: events,
     data: events,
     isPending,
     error,
@@ -78,10 +138,18 @@ const CardView = () => {
     sortOrder: "desc",
     search: debouncedSearch,
   });
+    page: page,
+    sortBy: "createdAt",
+    sortOrder: "desc",
+    search: debouncedSearch,
+  });
 
   const onChangePage = (page: number) => {
     setPage(page);
+  const onChangePage = (page: number) => {
+    setPage(page);
   };
+
 
   return (
     <div className="space-y-4">

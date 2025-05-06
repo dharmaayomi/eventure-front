@@ -30,6 +30,15 @@ export const EventsByOrganizer: FC<EventsByOrganizerProps> = ({ event }) => {
           <Link href="/dashboard/my-event/create">
             <Button>Create Event</Button>
           </Link>
+
+          <Link href="/dashboard/create-ticket">
+            <Button>Create Ticket</Button>
+          </Link>
+
+          <Link href="/dashboard/create-voucher">
+            <Button>Create Voucher</Button>
+          </Link>
+
           <div className="flex space-x-2 rounded-lg bg-gray-100 p-1">
             <Button
               variant="ghost"

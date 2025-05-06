@@ -1,108 +1,4 @@
-// "use client";
 
-// import useGetTransactionPerEventSummary from "@/hooks/api/organizer/useGetTransactionPerEventSummary";
-// import { TransactionSummaryResponse } from "@/types/transaction";
-// import React, { FC, useState } from "react";
-// import { parseAsInteger, useQueryState } from "nuqs";
-// import { useDebounceValue } from "usehooks-ts";
-
-// interface Props {
-//   slug: string;
-// }
-
-// const AttendeeList: FC<Props> = ({ slug }) => {
-//   const [page, setPage] = useState(1);
-//   const itemsPerPage = 6;
-//   const { data, isLoading, isError } = useGetTransactionPerEventSummary(slug);
-
-//   const transactionSummary = data as TransactionSummaryResponse | undefined;
-//   const transactions = transactionSummary?.transactions || [];
-
-//   const startIndex = (page - 1) * itemsPerPage;
-//   const endIndex = startIndex + itemsPerPage;
-//   const paginatedTransactions = transactions.slice(startIndex, endIndex);
-
-//   const onChangePage = (page: number) => {
-//     setPage(page);
-//   };
-
-//   const now = new Date();
-//   const filteredTransactions = transactions.filter(
-//     (tx) =>
-//       tx.status === "DONE" &&
-//       new Date(tx.transactionDetails[0].ticket.event.endDate) < now,
-//   );
-
-//   if (isLoading) return <p className="px-6 py-4">Loading...</p>;
-
-//   if (filteredTransactions.length === 0) {
-//     return (
-//       <div className="mt-6 rounded-lg bg-white p-6 text-center text-gray-600 shadow-sm">
-//         No attendees yet — either the event hasn’t happened or there are no
-//         completed transactions.
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="mt-6 overflow-hidden rounded-lg bg-white shadow-sm">
-//       <div className="overflow-x-auto">
-//         <table className="w-full">
-//           <thead>
-//             <tr className="bg-gray-50">
-//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
-//                 Name
-//               </th>
-//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
-//                 Email
-//               </th>
-//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
-//                 Ticket
-//               </th>
-//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
-//                 Qty
-//               </th>
-//               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
-//                 Total Paid
-//               </th>
-//             </tr>
-//           </thead>
-//           <tbody className="divide-y divide-gray-200">
-//             {paginatedTransactions.map((tx, index) => {
-//               const totalQty =
-//                 tx.transactionDetails.reduce(
-//                   (sum, detail) => sum + detail.qty,
-//                   0,
-//                 ) || 0;
-
-//               return (
-//                 <tr key={`${tx.ticketId}-${tx.user?.id}-${index}`}>
-//                   <td className="px-6 py-4 text-sm text-gray-900">
-//                     {tx.user?.fullName}
-//                   </td>
-//                   <td className="px-6 py-4 text-sm text-gray-900">
-//                     {tx.user?.email}
-//                   </td>
-//                   <td className="px-6 py-4 text-sm text-gray-900">
-//                     {tx.ticket.ticketType}
-//                   </td>
-//                   <td className="px-6 py-4 text-sm text-gray-900">
-//                     {totalQty}
-//                   </td>
-//                   <td className="px-6 py-4 text-sm text-gray-900">
-//                     ${tx.totalAmount.toLocaleString()}
-//                   </td>
-//                 </tr>
-//               );
-//             })}
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AttendeeList;
 "use client";
 
 import PaginationSection from "@/components/PaginationSection";
@@ -125,6 +21,7 @@ const AttendeeList: FC<Props> = ({ slug }) => {
   const transactionSummary = data as TransactionSummaryResponse | undefined;
   const transactions = transactionSummary?.transactions || [];
 
+  // Filter transactions - events that are done and already past
   const now = new Date();
   const filteredTransactions = transactions.filter(
     (tx) =>
@@ -158,6 +55,9 @@ const AttendeeList: FC<Props> = ({ slug }) => {
 
   if (filteredTransactions.length === 0) {
     return (
+      <div className="mt-6 rounded-lg bg-white p-6 text-center text-gray-600 shadow-sm">
+        No attendees yet — either the event hasn't happened or there are no
+        completed transactions.
       <div className="mt-6 rounded-lg bg-white p-6 text-center text-gray-600 shadow-sm">
         No attendees yet — either the event hasn't happened or there are no
         completed transactions.

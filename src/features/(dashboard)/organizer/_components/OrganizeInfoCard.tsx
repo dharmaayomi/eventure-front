@@ -32,6 +32,10 @@ export const OrganizerInfoCard: FC<OrganizerInfoCardProps> = ({ id }) => {
   const { data: organizer, isPending: isPendingGet } =
     useGetOrganizerByUserId(id);
   const organizerId = organizer?.id;
+export const OrganizerInfoCard: FC<OrganizerInfoCardProps> = ({ id }) => {
+  const { data: organizer, isPending: isPendingGet } =
+    useGetOrganizerByUserId(id);
+  const organizerId = organizer?.id;
   const router = useRouter();
   const { mutateAsync: updateOrganizer, isPending: isPendingUpdate } =
     useUpdateOrganizer();

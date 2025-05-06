@@ -1,5 +1,167 @@
+// "use client";
+
+// import { FC } from "react";
+// import useGetTransactionByOrganizer from "@/hooks/api/organizer/useGetTransactionByOrganizer";
+// import PaginationSection from "@/components/PaginationSection";
+// import { parseAsInteger, useQueryState } from "nuqs";
+// import { useDebounceValue } from "usehooks-ts";
+// import { Input } from "@/components/ui/input";
+// import { Loader } from "lucide-react";
+
+// const AllTransactions: FC = () => {
+//   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+//   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
+//   const [debouncedSearch] = useDebounceValue(search, 500);
+
+//   // Gunakan hook dengan parameter search
+//   const { data, isLoading, isError } = useGetTransactionByOrganizer({
+//     take: 6,
+//     page,
+//     sortBy: "createdAt",
+//     sortOrder: "desc",
+//     search: debouncedSearch,
+//   });
+
+//   console.log("Transaction data:", data);
+
+//   const onChangePage = (newPage: number) => {
+//     setPage(newPage);
+//   };
+
+//   // Ekstrak data dengan benar berdasarkan struktur dari API
+//   const transactions = data?.data?.transactions || [];
+//   const meta = data?.meta || { page: 1, take: 6, total: 0 };
+//   const totalTransactions = data?.data?.totalTransactions || 0;
+
+//   return (
+//     <div className="space-y-4">
+//       <Input
+//         className="mx-auto mt-4 w-full"
+//         placeholder="Search by event name, email..."
+//         value={search}
+//         onChange={(e) => {
+//           setSearch(e.target.value);
+//           setPage(1);
+//         }}
+//       />
+
+//       <div className="overflow-hidden rounded-lg bg-white shadow-sm">
+//         {isLoading && (
+//           <div className="flex h-48 items-center justify-center">
+//             <Loader className="h-8 w-8 animate-spin text-gray-400" />
+//           </div>
+//         )}
+
+//         {isError && (
+//           <div className="flex h-48 items-center justify-center">
+//             <p className="text-red-500">Error loading transactions</p>
+//           </div>
+//         )}
+
+//         {!isLoading && !isError && (
+//           <>
+//             <div className="overflow-x-auto">
+//               <table className="w-full">
+//                 <thead>
+//                   <tr className="bg-gray-50">
+//                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                       Event
+//                     </th>
+//                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                       Email
+//                     </th>
+//                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                       Quantity
+//                     </th>
+//                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                       Status
+//                     </th>
+//                     <th className="px-6 py-4 text-left text-sm font-medium text-gray-500">
+//                       Total Price
+//                     </th>
+//                   </tr>
+//                 </thead>
+//                 <tbody className="divide-y divide-gray-200">
+//                   {transactions && transactions.length > 0 ? (
+//                     transactions.map((transaction) => (
+//                       <tr key={transaction.uuid}>
+//                         <td className="px-6 py-4 text-sm text-gray-900">
+//                           {(transaction.transactionDetails &&
+//                             transaction.transactionDetails[0]?.ticket?.event
+//                               ?.name) ||
+//                             "Unknown Event"}
+//                         </td>
+//                         <td className="px-6 py-4 text-sm text-gray-900">
+//                           {transaction.user?.email || "-"}
+//                         </td>
+//                         <td className="px-6 py-4 text-sm text-gray-900">
+//                           {(transaction.transactionDetails &&
+//                             transaction.transactionDetails.reduce(
+//                               (acc, td) => acc + (td.qty || 0),
+//                               0,
+//                             )) ||
+//                             1}
+//                         </td>
+//                         <td className="px-6 py-4 text-sm text-gray-900">
+//                           <span
+//                             className={`rounded-full px-2 py-1 text-xs font-medium capitalize ${
+//                               transaction.status === "DONE"
+//                                 ? "bg-green-100 text-green-800"
+//                                 : transaction.status === "WAITING_CONFIRMATION"
+//                                   ? "bg-yellow-100 text-yellow-800"
+//                                   : transaction.status === "WAITING_FOR_PAYMENT"
+//                                     ? "bg-blue-100 text-blue-800"
+//                                     : transaction.status === "REJECTED"
+//                                       ? "bg-red-100 text-red-800"
+//                                       : transaction.status === "EXPIRED" ||
+//                                           transaction.status === "CANCELED"
+//                                         ? "bg-gray-100 text-gray-800"
+//                                         : "bg-gray-100 text-gray-800"
+//                             }`}
+//                           >
+//                             {transaction.status || "UNKNOWN"}
+//                           </span>
+//                         </td>
+//                         <td className="px-6 py-4 text-sm text-gray-900">
+//                           ${transaction.totalAmount?.toLocaleString() || "0"}
+//                         </td>
+//                       </tr>
+//                     ))
+//                   ) : (
+//                     <tr>
+//                       <td
+//                         colSpan={5}
+//                         className="px-6 py-4 text-center text-sm text-gray-500"
+//                       >
+//                         No transactions found
+//                       </td>
+//                     </tr>
+//                   )}
+//                 </tbody>
+//               </table>
+//             </div>
+
+//             {totalTransactions > 0 && (
+//               <div className="flex justify-center py-6">
+//                 <PaginationSection
+//                   page={meta.page || 1}
+//                   total={totalTransactions}
+//                   take={meta.take || 6}
+//                   onChangePage={onChangePage}
+//                 />
+//               </div>
+//             )}
+//           </>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default AllTransactions;
 "use client";
 
+import { FC, useState } from "react";
 import { FC, useState } from "react";
 import useGetTransactionByOrganizer from "@/hooks/api/organizer/useGetTransactionByOrganizer";
 import PaginationSection from "@/components/PaginationSection";
@@ -8,8 +170,49 @@ import { useDebounceValue } from "usehooks-ts";
 import { Input } from "@/components/ui/input";
 import { Loader } from "lucide-react";
 import Image from "next/image";
+import PaginationSection from "@/components/PaginationSection";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { useDebounceValue } from "usehooks-ts";
+import { Input } from "@/components/ui/input";
+import { Loader } from "lucide-react";
+import Image from "next/image";
 
 const AllTransactions: FC = () => {
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [search, setSearch] = useQueryState("search", { defaultValue: "" });
+  const [debouncedSearch] = useDebounceValue(search, 500);
+
+  // State to handle transaction modal
+  const [showModal, setShowModal] = useState(false);
+  const [currentTransaction, setCurrentTransaction] = useState<any>(null);
+
+  // Gunakan hook dengan parameter search
+  const { data, isLoading, isError } = useGetTransactionByOrganizer({
+    take: 6,
+    page,
+    sortBy: "createdAt",
+    sortOrder: "desc",
+    search: debouncedSearch,
+  });
+
+  const onChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  // Ekstrak data dengan benar berdasarkan struktur dari API
+  const transactions = data?.data?.transactions || [];
+  const meta = data?.meta || { page: 1, take: 6, total: 0 };
+  const totalTransactions = data?.data?.totalTransactions || 0;
+
+  const handleViewTransaction = (transaction: any) => {
+    setCurrentTransaction(transaction);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setCurrentTransaction(null);
+  };
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [debouncedSearch] = useDebounceValue(search, 500);

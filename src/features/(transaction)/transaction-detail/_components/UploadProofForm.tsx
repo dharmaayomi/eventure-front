@@ -1,11 +1,13 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import useUploadProof from "@/hooks/api/transaction/useUploadProof";
 import { useFormik } from "formik";
-import React, { ChangeEvent, FC, useRef, useState } from "react";
-import { UploadProofSchema } from "../schema";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { ChangeEvent, FC, useRef, useState } from "react";
+import { UploadProofSchema } from "../schema";
 
 interface UploadProofFormProps {
   uuid: string;

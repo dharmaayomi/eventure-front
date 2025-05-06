@@ -1,11 +1,7 @@
 "use client";
 
 import useGetEventOrganizerBySlug from "@/hooks/api/event/useGetEventOrganizerBySlug";
-import { FC, useState } from "react";
-import ThumbnailCard from "./_components/ThumbnailCard";
-import { log } from "util";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { FC } from "react";
 import SlugPage from "./_components/SlugPage";
 
 interface EventDetailOrganizerPageProps {
