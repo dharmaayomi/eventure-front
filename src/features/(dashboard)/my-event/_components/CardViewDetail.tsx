@@ -1,23 +1,23 @@
 "use client";
-import { cn } from "@/lib/utils";
-import { Event } from "@/types/event";
-import { format } from "date-fns";
-import { Edit, EyeIcon, Trash, User } from "lucide-react";
-import Image from "next/image";
-import { FC, useState } from "react";
-import { getStatusStyle } from "./getStatusColor";
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import useDeleteEvent from "@/hooks/api/event/useDeleteEvent";
+import { cn } from "@/lib/utils";
+import { Event } from "@/types/event";
+import { format, isValid, parseISO } from "date-fns";
+import { Edit, EyeIcon, Trash, User } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { FC, useState } from "react";
+import { getStatusStyle } from "./getStatusColor";
 
 interface CardDetailProps {
   event: Event;
@@ -32,6 +32,11 @@ const CardViewDetail: FC<CardDetailProps> = ({ event }) => {
     deleteMutation.mutate(event.id);
     setIsOpen(false);
   };
+  const start = event?.startDate ? parseISO(event.startDate) : null;
+  const end = event?.endDate ? parseISO(event.endDate) : null;
+
+  console.log("ini isi", event);
+  console.log("ini total");
 
   return (
     <section>
@@ -53,11 +58,13 @@ const CardViewDetail: FC<CardDetailProps> = ({ event }) => {
           <div className="space-y-2 px-4 py-3">
             <h3 className="truncate text-sm font-semibold">{event.name}</h3>
 
-            <p className="text-xs text-gray-500">
-              {format(event.startDate, "MMM dd, yyyy")} –{" "}
-              {format(event.endDate, "MMM dd, yyyy")}
-            </p>
-
+            {start && end && isValid(start) && isValid(end) ? (
+              <p className="text-xs text-gray-500">
+                {format(start, "MMM dd, yyyy")} – {format(end, "MMM dd, yyyy")}
+              </p>
+            ) : (
+              <p className="text-xs text-gray-500">Date not available</p>
+            )}
             <span
               className={cn(
                 "inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-medium",

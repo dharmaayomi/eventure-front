@@ -34,10 +34,3 @@ export interface TransactionWithTotal extends Transaction {
   totalRevenue: number;
   totalTicket: number;
 }
-
-export interface TransactionSummaryResponse {
-  transactions: Transaction[];
-  totalCount: number;
-  totalRevenue: number;
-  totalTicket: number;
-}

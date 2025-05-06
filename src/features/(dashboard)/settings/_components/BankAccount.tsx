@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,31 +11,24 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import useGetOrganizerByUserId from "@/hooks/api/organizer/useGetOrganizerByUserId";
+import useUpdateBank from "@/hooks/api/organizer/useUpdateBank";
 import { useFormik } from "formik";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
+import { UpdateBankOrganizerSchema } from "../schema";
 
-import useGetOrganizerByUserId from "@/hooks/api/organizer/useGetOrganizerByUserId";
-import useUpdateOrganizer from "@/hooks/api/organizer/useUpdateOrganizer";
-import dynamic from "next/dynamic";
-import { UpdateOrganizerSchema } from "../schema";
-const TiptapRichtextEditor = dynamic(
-  () => import("@/components/TiptapRichtextEditor"),
-  { ssr: false },
-);
-
-interface OrganizerInfoCardProps {
+interface BankAccountProps {
   id: number;
 }
 
-export const OrganizerInfoCard: FC<OrganizerInfoCardProps> = ({ id }) => {
+const BankAccount: FC<BankAccountProps> = ({ id }) => {
   const { data: organizer, isPending: isPendingGet } =
     useGetOrganizerByUserId(id);
-  const organizerId = organizer?.id;
   const router = useRouter();
-  const { mutateAsync: updateOrganizer, isPending: isPendingUpdate } =
-    useUpdateOrganizer();
+  const { mutateAsync: updateBankOrganizer, isPending: isPendingUpdate } =
+    useUpdateBank();
   const session = useSession();
   const user = session.data?.user;
 
@@ -42,19 +36,24 @@ export const OrganizerInfoCard: FC<OrganizerInfoCardProps> = ({ id }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: organizer?.name || "",
-      aboutUs: organizer?.aboutUs || "",
+      bankName: organizer?.bankName || "",
+      bankAccountNumber: organizer?.bankAccountNumber || "",
+      bankAccountHolder: organizer?.bankAccountHolder || "",
     },
     enableReinitialize: true,
-    validationSchema: UpdateOrganizerSchema,
+    validationSchema: UpdateBankOrganizerSchema,
     onSubmit: async (values) => {
       try {
         console.log("Submitting payload:", values);
-        await updateOrganizer(values);
+        // Make sure we're passing the organizer ID with the update
+        await updateBankOrganizer({
+          ...values,
+          id: organizer?.id,
+        });
         setIsDialogOpen(false);
-        router.push(`/dashboard/organizers`);
+        router.push(`/dashboard/settings`);
       } catch (error) {
-        console.error("Failed to update organizer:", error);
+        console.error("Failed to update bank information:", error);
       }
     },
   });
@@ -69,7 +68,7 @@ export const OrganizerInfoCard: FC<OrganizerInfoCardProps> = ({ id }) => {
     return (
       <div className="flex h-64 items-center justify-center p-6">
         <div className="animate-pulse font-medium text-[#004DE8]">
-          Loading organizer information...
+          Loading bank information...
         </div>
       </div>
     );
@@ -83,112 +82,107 @@ export const OrganizerInfoCard: FC<OrganizerInfoCardProps> = ({ id }) => {
     );
   }
 
+  const hasBankInfo = !!(
+    organizer?.bankName ||
+    organizer?.bankAccountNumber ||
+    organizer?.bankAccountHolder
+  );
+
   return (
     <div className="rounded-2xl border border-gray-200 p-5 lg:p-6 dark:border-gray-800 dark:bg-gray-900">
       <h4 className="mb-6 border-b border-[#004DE8]/10 pb-3 text-lg font-semibold text-gray-500 dark:text-gray-400">
-        Organizer Information
+        Bank Account
       </h4>
+
+      {!hasBankInfo && (
+        <div className="mb-6 rounded-lg bg-yellow-50 p-4 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-200">
+          <p className="font-medium">Please add your bank information</p>
+          <p className="mt-1 text-sm">
+            Complete your bank account details to receive payments for your
+            events.
+          </p>
+        </div>
+      )}
 
       {!!user && (
         <form onSubmit={formik.handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label
-              htmlFor="name"
+              htmlFor="bankName"
               className="font-medium text-gray-500 dark:text-gray-400"
             >
-              Organizer Name
+              Bank Name
             </Label>
             <Input
-              id="name"
-              name="name"
-              placeholder="Organizer Name"
-              value={formik.values.name}
+              id="bankName"
+              name="bankName"
+              placeholder="Enter bank name"
+              value={formik.values.bankName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               className="border-gray-300 transition-all focus:border-[#004DE8] focus:ring focus:ring-[#004DE8]/20 dark:border-gray-700"
             />
-            {formik.touched.name && formik.errors.name && (
+            {formik.touched.bankName && formik.errors.bankName && (
               <p className="text-sm font-medium text-red-500">
-                {formik.errors.name}
+                {formik.errors.bankName}
               </p>
             )}
             <p className="text-xs font-light text-gray-500 dark:text-gray-400">
-              Enter the full name of your organization as it will appear to
-              users.
+              The name of your banking institution.
             </p>
           </div>
 
           <div className="space-y-2">
-            <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-              Email address
-            </p>
-            <div className="rounded-md border-2 p-2">
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                {user?.email}
-              </p>
-            </div>
-            <p className="text-xs font-light text-gray-500 dark:text-gray-400">
-              Contact email for your organization (cannot be changed).
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
-            {/* Member since */}
-            <div className="space-y-2">
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Member Since
-              </p>
-              <div className="rounded-md border-2 p-2">
-                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  {organizer.createdAt
-                    ? new Date(organizer.createdAt).toLocaleDateString()
-                    : "N/A"}
-                </p>
-              </div>
-              <p className="text-xs font-light text-gray-500 dark:text-gray-400">
-                The date your organization was registered on our platform(cannot
-                be changed).
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Role
-              </p>
-              <div className="rounded-md border-2 p-2">
-                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  {user?.role}
-                </p>
-              </div>
-              <p className="text-xs font-light text-gray-500 dark:text-gray-400">
-                Your access level and permissions within the platform(cannot be
-                changed).
-              </p>
-            </div>
-          </div>
-
-          <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800/50">
             <Label
-              htmlFor="aboutUs"
-              className="mb-2 block font-medium text-[#004DE8]/90"
+              htmlFor="bankAccountHolder"
+              className="font-medium text-gray-500 dark:text-gray-400"
             >
-              About Us
+              Account Holder Name
             </Label>
-            <TiptapRichtextEditor
-              key={organizer?.aboutUs || ""}
-              label=""
-              field="aboutUs"
-              isTouch={formik.touched.aboutUs}
-              content={formik.values.aboutUs}
-              onChange={(value: string) =>
-                formik.setFieldValue("aboutUs", value)
-              }
-              setError={formik.setFieldError}
-              setTouch={formik.setFieldTouched}
+            <Input
+              id="bankAccountHolder"
+              name="bankAccountHolder"
+              placeholder="Enter account holder name"
+              value={formik.values.bankAccountHolder}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="border-gray-300 transition-all focus:border-[#004DE8] focus:ring focus:ring-[#004DE8]/20 dark:border-gray-700"
             />
-            <p className="mt-2 text-xs font-light text-gray-500 dark:text-gray-400">
-              Describe your organization, its mission, and what attendees can
-              expect from your events.
+            {formik.touched.bankAccountHolder &&
+              formik.errors.bankAccountHolder && (
+                <p className="text-sm font-medium text-red-500">
+                  {formik.errors.bankAccountHolder}
+                </p>
+              )}
+            <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+              The name registered with this bank account.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label
+              htmlFor="bankAccountNumber"
+              className="font-medium text-gray-500 dark:text-gray-400"
+            >
+              Account Number
+            </Label>
+            <Input
+              id="bankAccountNumber"
+              name="bankAccountNumber"
+              placeholder="Enter account number"
+              value={formik.values.bankAccountNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className="border-gray-300 transition-all focus:border-[#004DE8] focus:ring focus:ring-[#004DE8]/20 dark:border-gray-700"
+            />
+            {formik.touched.bankAccountNumber &&
+              formik.errors.bankAccountNumber && (
+                <p className="text-sm font-medium text-red-500">
+                  {formik.errors.bankAccountNumber}
+                </p>
+              )}
+            <p className="text-xs font-light text-gray-500 dark:text-gray-400">
+              Your bank account number for receiving payments.
             </p>
           </div>
 
@@ -219,10 +213,10 @@ export const OrganizerInfoCard: FC<OrganizerInfoCardProps> = ({ id }) => {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Confirm Organizer Update</DialogTitle>
+            <DialogTitle>Confirm Bank Account Update</DialogTitle>
             <DialogDescription>
-              Are you sure you want to update this organizer information? This
-              will change how your organization appears to all users.
+              Are you sure you want to update your bank account information?
+              This information will be used for all future payment processing.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -246,3 +240,5 @@ export const OrganizerInfoCard: FC<OrganizerInfoCardProps> = ({ id }) => {
     </div>
   );
 };
+
+export default BankAccount;

@@ -7,7 +7,6 @@ import { isAdmin, isUser } from "@/utils/AuthRole";
 import {
   BanknoteIcon,
   CalendarFold,
-  FileTextIcon,
   LayoutDashboard,
   LogOut,
   Search,

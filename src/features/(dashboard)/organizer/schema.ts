@@ -3,10 +3,10 @@ import YupPassword from "yup-password";
 YupPassword(Yup);
 
 export const UpdateOrganizerSchema = Yup.object().shape({
-  fullName: Yup.string().optional(),
-  userName: Yup.string().optional(),
+  name: Yup.string().optional(),
+  aboutUs: Yup.string().optional(),
 });
 
 export const UploadOrganizerPicSchema = Yup.object().shape({
-  profilePic: Yup.mixed().required("Profile picture is required"),
+  profilePic: Yup.mixed().required("Organizer picture is required"),
 });

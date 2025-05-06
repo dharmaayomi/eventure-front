@@ -50,9 +50,7 @@ const TransactionView = () => {
         </div>
       </div>
 
-      {activeView === "transactions" && (
-        <PendingTransactionList onViewProof={() => {}} />
-      )}
+      {activeView === "transactions" && <PendingTransactionList />}
       {activeView === "attendees" && <AllTransactions />}
     </div>
   );

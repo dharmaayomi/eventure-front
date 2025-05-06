@@ -1,52 +1,144 @@
+// "use client";
+// import PaginationSection from "@/components/PaginationSection";
+// import useGetEventByOrganizer from "@/hooks/api/event/useGetEventByOrganizer";
+// import { Event } from "@/types/event";
+// import { parseAsInteger, useQueryState } from "nuqs";
+// import { useDebounceValue } from "usehooks-ts";
+// import CardViewDetail from "./CardViewDetail";
+
+// const CardView = () => {
+//   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+//   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
+//   const [debounchedSearch] = useDebounceValue(search, 500);
+
+//   const {
+//     data: events,
+//     isPending,
+//     error,
+//   } = useGetEventByOrganizer({
+//     take: 6,
+//     page: page,
+//     sortBy: "createdAt",
+//     sortOrder: "desc",
+//     search: debounchedSearch,
+//   });
+
+//   if (isPending) return <div>Loading...</div>;
+//   if (error) return <div>Something went wrong!</div>;
+//   const onChangePage = (page: number) => {
+//     setPage(page);
+//   };
+
+//   return (
+//     <div className="space-y-4">
+//       <div className="flex flex-wrap justify-center gap-4 md:justify-start">
+//         {events.data.map((event: Event) => (
+//           <CardViewDetail key={event.id} event={event} />
+//         ))}
+//       </div>
+//       <div className="pt-7">
+//         <PaginationSection
+//           page={events.meta.page}
+//           total={events.meta.total}
+//           take={events.meta.take}
+//           onChangePage={onChangePage}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default CardView;
+
 "use client";
-import useGetEventByOrganizer from "@/hooks/api/event/useGetEventByOrganizer";
-import CardViewDetail from "./CardViewDetail";
 import PaginationSection from "@/components/PaginationSection";
+import { Input } from "@/components/ui/input";
+import useGetEventByOrganizer from "@/hooks/api/event/useGetEventByOrganizer";
+import { Event } from "@/types/event";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { useState } from "react";
+import { useDebounceValue } from "usehooks-ts";
+import CardViewDetail from "./CardViewDetail";
+import { Loader } from "lucide-react";
+import Image from "next/image";
+
 const CardView = () => {
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 6;
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [search, setSearch] = useQueryState("search", { defaultValue: "" });
+  const [debouncedSearch] = useDebounceValue(search, 500);
+
   const {
-    data: eventsResponse,
+    data: events,
     isPending,
     error,
   } = useGetEventByOrganizer({
     take: 6,
+    page: page,
+    sortBy: "createdAt",
+    sortOrder: "desc",
+    search: debouncedSearch,
   });
 
-  if (isPending) return <div>Loading...</div>;
-  if (error) return <div>Something went wrong!</div>;
-
-  const events = eventsResponse?.data ?? [];
-
-  if (events.length === 0) {
-    return <div>No Events</div>;
-  }
-  const startIndex = (page - 1) * itemsPerPage;
-  const paginatedEvents = events.slice(startIndex, startIndex + itemsPerPage);
-  const totalPages = Math.ceil(events.length / itemsPerPage);
-
-  const onChangePage = (pageNumber: number) => {
-    setPage(pageNumber);
+  const onChangePage = (page: number) => {
+    setPage(page);
   };
+
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap justify-center gap-4 md:justify-start">
-        {paginatedEvents.map((event) => (
-          <CardViewDetail key={event.id} event={event} />
-        ))}
-      </div>
-      <div className="pt-7">
-        {totalPages > 1 && (
-          <PaginationSection
-            page={page}
-            total={events.length}
-            take={itemsPerPage}
-            onChangePage={onChangePage}
-          />
-        )}
-      </div>
+      <Input
+        className="mx-auto mt-10 w-full"
+        placeholder="Search...."
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setPage(1);
+        }}
+      />
+
+      {isPending && (
+        <div className="flex h-[30vh] items-center justify-center">
+          <Loader />
+        </div>
+      )}
+
+      {error && (
+        <div className="flex h-[30vh] items-center justify-center">
+          <h2>Something went wrong!</h2>
+        </div>
+      )}
+
+      {!isPending && !error && !events?.data.length && (
+        <div className="mt-10 flex flex-col items-center justify-center space-y-3 py-10">
+          <div className="space-y-3">
+            <Image
+              src="/noEvent.webp"
+              alt="no event"
+              width={150}
+              height={150}
+              style={{ objectFit: "contain" }}
+              priority
+            />
+            <p className="text-center">No event found</p>
+          </div>
+        </div>
+      )}
+
+      {!isPending && !error && events?.data.length > 0 && (
+        <>
+          <div className="flex flex-wrap justify-center gap-4 md:justify-start">
+            {events.data.map((event: Event) => (
+              <CardViewDetail key={event.id} event={event} />
+            ))}
+          </div>
+          <div className="pt-7">
+            <PaginationSection
+              page={events.meta.page}
+              total={events.meta.total}
+              take={events.meta.take}
+              onChangePage={onChangePage}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

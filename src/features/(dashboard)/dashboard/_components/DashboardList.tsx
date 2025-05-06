@@ -1,7 +1,7 @@
 import { ThisAreaChart } from "./AreaChart";
 import CardMetrics from "./CardMetrics";
-import { ChartAgain } from "./ChartAgain";
-import { ChartTransaction } from "./ChartTransaction";
+import CardTotalEvent from "./CardTotalEvent";
+import RevenueCard from "./RevenueCard";
 
 const DashboardList = () => {
   return (
@@ -14,14 +14,17 @@ const DashboardList = () => {
       <div className="col-span-12 space-y-6 xl:col-span-7">
         <CardMetrics />
         {/* <MonthlySalesChart /> */}
-        <ThisAreaChart />
+        <RevenueCard />
       </div>
 
       <div className="col-span-12 xl:col-span-5">
-        <ChartAgain />
+        {/* <ChartAgain /> */}
+        <CardTotalEvent />
       </div>
 
-      <div className="col-span-12"></div>
+      <div className="col-span-12">
+        <ThisAreaChart />
+      </div>
 
       <div className="col-span-12 xl:col-span-5"></div>
 
