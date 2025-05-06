@@ -6,6 +6,7 @@ export interface Organizer {
   userId: number;
   user: User;
   name: string;
+  slug: string;
   aboutUs?: string;
   profilePic: string;
   createdAt: Date;

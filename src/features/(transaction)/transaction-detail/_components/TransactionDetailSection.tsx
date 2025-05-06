@@ -2,6 +2,7 @@ import { Transaction } from "@/types/transaction";
 import { addHours, format } from "date-fns";
 import Link from "next/link";
 import { FC } from "react";
+import AddReview from "./AddReview";
 import UploadProofForm from "./UploadProofForm";
 
 interface TransactionDetailSectionProps {
@@ -20,19 +21,19 @@ const TransactionDetailSection: FC<TransactionDetailSectionProps> = ({
   const expired = addHours(transaction.createdAt, 2);
 
   return (
-    <section className="relative overflow-hidden rounded-xl bg-white shadow-lg">
-      <div className="space-y-6 p-6">
-        <h1 className="mb-2 text-2xl font-bold text-indigo-700">
+    <section className="relative mx-4 my-10 overflow-hidden rounded-xl bg-white shadow-lg sm:mx-6 md:mx-12 lg:mx-24">
+      <div className="space-y-6 p-4 sm:p-6">
+        <h1 className="mb-2 text-xl font-bold text-indigo-700 sm:text-2xl">
           Transaction ID: {transaction.uuid}
         </h1>
 
-        {transaction.status === "EXPIRED" ||
+        {(transaction.status === "EXPIRED" ||
           transaction.status === "CANCELED" ||
-          (transaction.status === "REJECTED" && (
-            <p className="mb-2 font-bold text-red-500">
-              Status: {transaction.status}
-            </p>
-          ))}
+          transaction.status === "REJECTED") && (
+          <p className="mb-2 font-bold text-red-500">
+            Status: {transaction.status}
+          </p>
+        )}
 
         {transaction.status === "DONE" && (
           <p className="mb-2 font-bold text-green-600">
@@ -40,16 +41,23 @@ const TransactionDetailSection: FC<TransactionDetailSectionProps> = ({
           </p>
         )}
 
-        <p className="mb-2 font-bold text-amber-500">
-          Status: {transaction.status}
-        </p>
+        {(transaction.status === "WAITING_FOR_PAYMENT" ||
+          transaction.status === "WAITING_CONFIRMATION") && (
+          <p className="mb-2 font-bold text-amber-500">
+            Status: {transaction.status}
+          </p>
+        )}
 
         <p className="mb-4 text-base text-gray-600">
           Your transaction details:
         </p>
+
         <ul className="space-y-4 divide-y divide-gray-100 rounded-lg bg-white p-4 shadow-sm ring-1 ring-gray-200">
           {transaction.transactionDetails.map((tx) => (
-            <li key={tx.id} className="flex items-center justify-between pt-4">
+            <li
+              key={tx.id}
+              className="flex flex-col items-start justify-between gap-2 pt-4 sm:flex-row sm:items-center"
+            >
               <div>
                 <p className="text-base font-semibold text-gray-900">
                   {tx.ticket.event.name}
@@ -65,6 +73,7 @@ const TransactionDetailSection: FC<TransactionDetailSectionProps> = ({
             </li>
           ))}
         </ul>
+
         {transaction.usePoints && (
           <p className="text-right text-sm font-semibold text-gray-700">
             Points Used: {transaction.pointsUsed}
@@ -84,9 +93,10 @@ const TransactionDetailSection: FC<TransactionDetailSectionProps> = ({
           Total: {rupiah(transaction.totalAmount)}
         </p>
       </div>
+
       {transaction.status === "WAITING_FOR_PAYMENT" && (
-        <div className="bg-green-50 p-4 text-center">
-          <p>
+        <div className="bg-green-50 p-4 text-center text-sm sm:text-base">
+          <p className="mb-2">
             Upload your payment proof before{" "}
             {format(expired, "dd MMM yyyy, HH:mm")} to avoid any system
             cancelation.
@@ -108,6 +118,12 @@ const TransactionDetailSection: FC<TransactionDetailSectionProps> = ({
           >
             I wanna buy another event ticket
           </Link>
+        </div>
+      )}
+
+      {transaction.status === "DONE" && (
+        <div className="my-12 flex w-full items-center justify-center">
+          <AddReview uuid={transaction.uuid} />
         </div>
       )}
     </section>

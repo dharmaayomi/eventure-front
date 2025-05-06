@@ -1,5 +1,5 @@
 import TransactionDetailPage from "@/features/(transaction)/transaction-detail";
-import React from "react";
+import { Suspense } from "react";
 
 const TransactionDetail = async ({
   params,
@@ -9,9 +9,10 @@ const TransactionDetail = async ({
   const uuid = (await params).id;
   return (
     <main className="container mx-auto">
-      <div className="mt-30">
-        {" "}
-        <TransactionDetailPage uuid={uuid} />
+      <div className="mt-30 p-8">
+        <Suspense>
+          <TransactionDetailPage uuid={uuid} />
+        </Suspense>
       </div>
     </main>
   );

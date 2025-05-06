@@ -16,6 +16,8 @@ const EventCard: FC<EventCardProps> = ({ event }) => {
     }).format(price);
   };
 
+  const price = event.tickets?.[0]?.price;
+
   return (
     <Link href={`/events/${event.slug}`}>
       <div className="group py-2 pl-2">
@@ -42,7 +44,7 @@ const EventCard: FC<EventCardProps> = ({ event }) => {
                   </div>
                   <div className="flex items-center gap-2 text-sm font-semibold text-[#024ee8]">
                     <Tag size={14} />
-                    {rupiah(event.tickets?.[0]?.price)}
+                    {price ? rupiah(price) : "Coming soon"}
                   </div>
                   <hr className="my-2 border-dashed border-gray-300" />
                   <div className="flex items-center gap-2">

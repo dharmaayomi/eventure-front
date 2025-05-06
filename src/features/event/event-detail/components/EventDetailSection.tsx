@@ -4,6 +4,7 @@ import { FC } from "react";
 import FormTransaction from "./FormTransaction";
 
 import Markdown from "@/components/Markdown";
+import Link from "next/link";
 
 interface EventDetailSectionProps {
   event: Event;
@@ -41,10 +42,13 @@ const EventDetailSection: FC<EventDetailSectionProps> = ({ event }) => {
               <span className="font-medium">{String(event.location)}</span>
             </div>
 
-            <p className="text-sm text-gray-600">
+            <Link
+              href={`/organizer/${event.organizer.slug}`}
+              className="text-sm text-gray-600"
+            >
               Organized by{" "}
               <span className="font-semibold">{event.organizer.name}</span>
-            </p>
+            </Link>
 
             <div className="prose prose-sm max-w-none text-gray-700">
               <Markdown content={event.desc} />

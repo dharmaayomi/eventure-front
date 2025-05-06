@@ -2,29 +2,26 @@
 
 import TiptapRichtextEditor from "@/components/TiptapRichtextEditor";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import useCreateEvent from "@/hooks/api/event/useCreateEvent";
-import { useFormik } from "formik";
-import Image from "next/image";
-import { ChangeEvent, useRef, useState } from "react";
-import { CreateEventSchema } from "../schemas";
-import { CategoryName } from "@/types/event";
-import { format } from "date-fns";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
+import useCreateEvent from "@/hooks/api/event/useCreateEvent";
 import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
+import { CategoryName } from "@/types/event";
 import { Location } from "@/types/location";
-import { useSession } from "next-auth/react";
+import { format } from "date-fns";
+import { useFormik } from "formik";
+import { CalendarIcon } from "lucide-react";
+import Image from "next/image";
+import { ChangeEvent, useRef, useState } from "react";
+import { CreateEventSchema } from "../schemas";
 
 const CreateEventForm = () => {
-  const session = useSession();
-
   const { mutateAsync: createEvent, isPending } = useCreateEvent();
 
   const formik = useFormik({

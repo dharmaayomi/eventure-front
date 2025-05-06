@@ -1,10 +1,9 @@
 import * as Yup from "yup";
 
 export const CreateVoucherSchema = Yup.object().shape({
-  eventId: Yup.string().required("eventId is required"),
+  eventName: Yup.string().required("Select at least one event"),
   code: Yup.string().required("Voucher code is required"),
-  discountAmount: Yup.number().required("discountAmount is required"),
-  startDate: Yup.string().required("startDate is required"),
-  endDate: Yup.string().required("endDate is required"),
-  qty: Yup.string().required("qty is required"),
+  discountAmount: Yup.string().required("Discount amount is required"),
+  startDate: Yup.date().required("Start Date is required"),
+  endDate: Yup.date().required("End date is required"),
 });
