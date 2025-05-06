@@ -60,6 +60,7 @@ import { useDebounceValue } from "usehooks-ts";
 import CardViewDetail from "./CardViewDetail";
 import { Loader } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const CardView = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -124,10 +125,12 @@ const CardView = () => {
 
       {!isPending && !error && events?.data.length > 0 && (
         <>
-          <div className="flex flex-wrap justify-center gap-4 md:justify-start">
-            {events.data.map((event: Event) => (
-              <CardViewDetail key={event.id} event={event} />
-            ))}
+          <div>
+            <div className="flex flex-wrap justify-center gap-4 md:justify-start">
+              {events.data.map((event: Event) => (
+                <CardViewDetail key={event.id} event={event} />
+              ))}
+            </div>
           </div>
           <div className="pt-7">
             <PaginationSection

@@ -125,13 +125,13 @@ const AttendeeList: FC<Props> = ({ slug }) => {
   const transactionSummary = data as TransactionSummaryResponse | undefined;
   const transactions = transactionSummary?.transactions || [];
 
-  // Filter transactions - events that are done and already past
   const now = new Date();
   const filteredTransactions = transactions.filter(
-    (tx) => tx.status === "DONE" && new Date(tx.ticket.event.endDate) < now,
+    (tx) =>
+      tx.status === "DONE" &&
+      new Date(tx.transactionDetails[0].ticket.event.endDate) < now,
   );
 
-  // Pagination calculation
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedTransactions = filteredTransactions.slice(
@@ -140,7 +140,6 @@ const AttendeeList: FC<Props> = ({ slug }) => {
   );
   const totalCount = filteredTransactions.length;
 
-  // Reset to page 1 if current page would be empty
   useEffect(() => {
     if (
       page > 1 &&
@@ -206,7 +205,7 @@ const AttendeeList: FC<Props> = ({ slug }) => {
                     {tx.user?.email}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
-                    {tx.ticket.ticketType}
+                    {tx.transactionDetails[0].ticket.ticketType}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {totalQty}

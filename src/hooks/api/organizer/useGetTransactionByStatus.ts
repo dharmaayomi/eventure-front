@@ -24,7 +24,7 @@ const useGetTransactionByStatus = (
   const session = useSession();
   const token = session?.data?.user?.accessToken;
   return useQuery({
-    queryKey: ["statustransactions", status, queries],
+    queryKey: ["status-transactions", status, queries],
     queryFn: async () => {
       if (!token) throw new Error("No access token found in session");
 
