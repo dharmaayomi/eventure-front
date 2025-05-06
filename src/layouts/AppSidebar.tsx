@@ -188,7 +188,9 @@ const AppSidebar: React.FC = () => {
                       >
                         <Search />
                         {(isExpanded || isHovered || isMobileOpen) && (
-                          <span>Discover</span>
+                          <span>
+                            <Link href="/discover">Discover</Link>
+                          </span>
                         )}
                       </Link>
                     </li>

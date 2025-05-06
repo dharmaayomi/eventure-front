@@ -53,10 +53,6 @@ const Navbar = () => {
     };
   }, []);
 
-  console.log(search);
-
-  console.log(search);
-
   const logout = () => {
     signOut({ redirect: false });
     router.push("/");
@@ -75,7 +71,7 @@ const Navbar = () => {
           <div className="ml-auto hidden items-center space-x-4 px-4 py-1 text-sm md:flex">
             <Link
               className="pointer-events-auto text-white hover:text-[#7ba7ff]"
-              href="/"
+              href="/about"
             >
               About Eventure
             </Link>
@@ -83,19 +79,14 @@ const Navbar = () => {
               className="pointer-events-auto text-white hover:text-[#7ba7ff]"
               href="/"
             >
-              Blog
+              Home
             </Link>
             <Link
               className="pointer-events-auto text-white hover:text-[#7ba7ff]"
               href="/become-event-creator"
+
             >
               Become an Event Creator
-            </Link>
-            <Link
-              className="pointer-events-auto text-white hover:text-[#7ba7ff]"
-              href="/"
-            >
-              Pricing
             </Link>
           </div>
         </div>
@@ -142,8 +133,10 @@ const Navbar = () => {
 
           {/* Navigation Links */}
           <Link
-            className="pointer-events-auto text-sm font-medium hover:text-[#004DE8] hover:underline"
+            className="pointer-events-auto text-sm font-medium hover:text-[#004DE8] hover:underlin
+
             href="/events"
+
           >
             <div className="flex items-center gap-1">
               <Compass size={26} />
@@ -152,7 +145,7 @@ const Navbar = () => {
           </Link>
           <Link
             className="pointer-events-auto text-sm font-medium hover:text-[#004DE8] hover:underline"
-            href="/events/create"
+            href="/dashboard/my-event/create"
           >
             <div className="flex items-center gap-1">
               <CalendarPlus size={24} />
@@ -192,6 +185,7 @@ const Navbar = () => {
 
               {/* Discover */}
               <DropdownMenuItem asChild>
+
                 <Link href="/events" className="flex items-center gap-2">
                   <Compass size={18} />
                   Discover
@@ -201,7 +195,10 @@ const Navbar = () => {
               {/* Create Event - bisa dibedakan berdasarkan role */}
               {!isUser(session.data) && (
                 <DropdownMenuItem asChild>
-                  <Link href="/about" className="flex items-center gap-2">
+                  <Link
+                    href="/dashboard/my-event/create"
+                    className="flex items-center gap-2"
+                  >
                     <CalendarPlus size={18} />
                     Create Event
                   </Link>

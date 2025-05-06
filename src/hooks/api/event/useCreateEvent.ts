@@ -2,7 +2,6 @@
 
 import useAxios from "@/hooks/useAxios";
 import { CategoryName } from "@/types/event";
-import { Organizer } from "@/types/organizer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { format } from "date-fns";
@@ -51,7 +50,7 @@ const useCreateEvent = () => {
     onSuccess: async () => {
       toast.success("Create event success");
       await queryClient.invalidateQueries({ queryKey: ["events"] });
-      router.push("/");
+      router.push("/dashboard/create-ticket");
     },
     onError: (error: AxiosError<any>) => {
       toast.error(error.response?.data.message);
