@@ -1,4 +1,3 @@
-
 "use client";
 
 import PaginationSection from "@/components/PaginationSection";
@@ -21,7 +20,6 @@ const AttendeeList: FC<Props> = ({ slug }) => {
   const transactionSummary = data as TransactionSummaryResponse | undefined;
   const transactions = transactionSummary?.transactions || [];
 
-  // Filter transactions - events that are done and already past
   const now = new Date();
   const filteredTransactions = transactions.filter(
     (tx) =>
@@ -53,11 +51,10 @@ const AttendeeList: FC<Props> = ({ slug }) => {
 
   if (isLoading) return <p className="px-6 py-4">Loading...</p>;
 
+  console.log("filteredTransactions:", filteredTransactions);
+
   if (filteredTransactions.length === 0) {
     return (
-      <div className="mt-6 rounded-lg bg-white p-6 text-center text-gray-600 shadow-sm">
-        No attendees yet — either the event hasn't happened or there are no
-        completed transactions.
       <div className="mt-6 rounded-lg bg-white p-6 text-center text-gray-600 shadow-sm">
         No attendees yet — either the event hasn't happened or there are no
         completed transactions.

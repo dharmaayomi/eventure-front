@@ -342,9 +342,7 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { FC, useEffect, useState } from "react";
 import useGetTransactionByStatus from "@/hooks/api/organizer/useGetTransactionByStatus";
-import useUpdateTransaction from "@/hooks/api/transaction/useUpdateTransaction";
 import useUpdateTransaction from "@/hooks/api/transaction/useUpdateTransaction";
 import Image from "next/image";
 import { toast } from "sonner";

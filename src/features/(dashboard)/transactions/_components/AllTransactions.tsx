@@ -162,14 +162,8 @@
 "use client";
 
 import { FC, useState } from "react";
-import { FC, useState } from "react";
 import useGetTransactionByOrganizer from "@/hooks/api/organizer/useGetTransactionByOrganizer";
-import PaginationSection from "@/components/PaginationSection";
-import { parseAsInteger, useQueryState } from "nuqs";
-import { useDebounceValue } from "usehooks-ts";
-import { Input } from "@/components/ui/input";
-import { Loader } from "lucide-react";
-import Image from "next/image";
+
 import PaginationSection from "@/components/PaginationSection";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
@@ -195,10 +189,6 @@ const AllTransactions: FC = () => {
     search: debouncedSearch,
   });
 
-  const onChangePage = (newPage: number) => {
-    setPage(newPage);
-  };
-
   // Ekstrak data dengan benar berdasarkan struktur dari API
   const transactions = data?.data?.transactions || [];
   const meta = data?.meta || { page: 1, take: 6, total: 0 };
@@ -213,40 +203,9 @@ const AllTransactions: FC = () => {
     setShowModal(false);
     setCurrentTransaction(null);
   };
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [search, setSearch] = useQueryState("search", { defaultValue: "" });
-  const [debouncedSearch] = useDebounceValue(search, 500);
-
-  // State to handle transaction modal
-  const [showModal, setShowModal] = useState(false);
-  const [currentTransaction, setCurrentTransaction] = useState<any>(null);
-
-  // Gunakan hook dengan parameter search
-  const { data, isLoading, isError } = useGetTransactionByOrganizer({
-    take: 6,
-    page,
-    sortBy: "createdAt",
-    sortOrder: "desc",
-    search: debouncedSearch,
-  });
 
   const onChangePage = (newPage: number) => {
     setPage(newPage);
-  };
-
-  // Ekstrak data dengan benar berdasarkan struktur dari API
-  const transactions = data?.data?.transactions || [];
-  const meta = data?.meta || { page: 1, take: 6, total: 0 };
-  const totalTransactions = data?.data?.totalTransactions || 0;
-
-  const handleViewTransaction = (transaction: any) => {
-    setCurrentTransaction(transaction);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setCurrentTransaction(null);
   };
 
   return (
