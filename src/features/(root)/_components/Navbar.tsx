@@ -84,7 +84,6 @@ const Navbar = () => {
             <Link
               className="pointer-events-auto text-white hover:text-[#7ba7ff]"
               href="/become-event-creator"
-
             >
               Become an Event Creator
             </Link>
@@ -133,10 +132,8 @@ const Navbar = () => {
 
           {/* Navigation Links */}
           <Link
-            className="pointer-events-auto text-sm font-medium hover:text-[#004DE8] hover:underlin
-
+            className="pointer-events-auto text-sm font-medium hover:text-[#004DE8] hover:underline"
             href="/events"
-
           >
             <div className="flex items-center gap-1">
               <Compass size={26} />
@@ -185,7 +182,6 @@ const Navbar = () => {
 
               {/* Discover */}
               <DropdownMenuItem asChild>
-
                 <Link href="/events" className="flex items-center gap-2">
                   <Compass size={18} />
                   Discover

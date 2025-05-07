@@ -52,7 +52,7 @@ export const OrganizerInfoCard: FC<OrganizerInfoCardProps> = ({ id }) => {
         console.log("Submitting payload:", values);
         await updateOrganizer(values);
         setIsDialogOpen(false);
-        router.push(`/dashboard/organizers`);
+        router.push(`/dashboard/organizer`);
       } catch (error) {
         console.error("Failed to update organizer:", error);
       }

@@ -142,22 +142,6 @@ const AppSidebar: React.FC = () => {
                         )}
                       </Link>
                     </li>
-                    <li>
-                      {/* ticket */}
-                      <Link
-                        href="/dashboard/tickets"
-                        className={`menu-item flex items-center gap-2 rounded-md hover:bg-gray-100 hover:text-gray-700 ${
-                          isActive("/dashboard/tickets")
-                            ? "rounded-md bg-blue-100 p-2 font-semibold text-[#004de8]"
-                            : "p-2"
-                        } ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}`}
-                      >
-                        <TicketIcon />
-                        {(isExpanded || isHovered || isMobileOpen) && (
-                          <span>Tickets</span>
-                        )}
-                      </Link>
-                    </li>
                   </>
                 )}
                 {!!isUser(session.data) && (

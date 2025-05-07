@@ -163,6 +163,7 @@
 
 import { FC, useState } from "react";
 import useGetTransactionByOrganizer from "@/hooks/api/organizer/useGetTransactionByOrganizer";
+
 import PaginationSection from "@/components/PaginationSection";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
@@ -188,10 +189,6 @@ const AllTransactions: FC = () => {
     search: debouncedSearch,
   });
 
-  const onChangePage = (newPage: number) => {
-    setPage(newPage);
-  };
-
   // Ekstrak data dengan benar berdasarkan struktur dari API
   const transactions = data?.data?.transactions || [];
   const meta = data?.meta || { page: 1, take: 6, total: 0 };
@@ -207,11 +204,15 @@ const AllTransactions: FC = () => {
     setCurrentTransaction(null);
   };
 
+  const onChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
+
   return (
     <div className="space-y-4">
       <Input
         className="mx-auto mt-4 w-full"
-        placeholder="Search by event name, email..."
+        placeholder="Search by event name..."
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
