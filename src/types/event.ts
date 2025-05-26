@@ -23,6 +23,10 @@ export interface Event {
   totalTransactions: number;
 }
 
+export interface EventWithTotalTransaction extends Event {
+  totalTransactions: number;
+}
+
 export enum CategoryName {
   MUSIC = "MUSIC",
   EDUCATION = "EDUCATION",

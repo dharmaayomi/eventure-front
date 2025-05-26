@@ -4,14 +4,8 @@ import { ChevronLeft } from "lucide-react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { EditFormEvents } from "./_components/EditFormEvents";
 import { ThumbnailEvent } from "./_components/ThumbnailEvent";
-import { EventWithTransaction } from "@/types/event";
-import { FC } from "react";
 
-interface EditEventPageProps {
-  event: EventWithTransaction;
-}
-
-const EditEventPage: FC<EditEventPageProps> = ({ event }) => {
+const EditEventPage = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();

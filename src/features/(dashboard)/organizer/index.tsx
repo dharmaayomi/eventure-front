@@ -17,7 +17,7 @@ const OrganizerPage = () => {
           {!!session.data?.user && (
             <div className="space-y-6">
               <OrganizerCard id={session.data.user.id} />
-              <OrganizerInfoCard />
+              <OrganizerInfoCard id={session.data.user.id} />
             </div>
           )}
         </div>

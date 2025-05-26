@@ -26,7 +26,6 @@ const CardView = () => {
     search: debouncedSearch,
   });
 
-  console.log("iniiiiiiii events", events);
 
   const onChangePage = (page: number) => {
     setPage(page);

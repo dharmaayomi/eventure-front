@@ -10,7 +10,6 @@ const CreateTicket = async () => {
 
   return (
     <div>
-      <p>Create Ticket</p>
       <CreateTicketForm />
     </div>
   );

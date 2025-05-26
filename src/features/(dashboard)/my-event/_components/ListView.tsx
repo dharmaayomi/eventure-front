@@ -20,11 +20,7 @@ const ListView = () => {
     return <div>No Events</div>;
   }
 
-  return events.length === 0 ? (
-    <div>No Events</div>
-  ) : (
-    <ListViewDetail event={events} />
-  );
+  return events.length === 0 ? <div>No Events</div> : <ListViewDetail />;
 };
 
 export default ListView;
