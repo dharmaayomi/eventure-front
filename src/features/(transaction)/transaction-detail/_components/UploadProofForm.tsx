@@ -82,7 +82,7 @@ const UploadProofForm: FC<UploadProofFormProps> = ({ uuid }) => {
             type="file"
             accept="image/*"
             onChange={onChangeProof}
-            className="file:mr-4 file:rounded-md file:border-0 file:bg-indigo-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-indigo-500"
+            className="file:mr-4 file:rounded-sm file:border-0 file:bg-[#004DE8] file:p-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#004DE8]/80"
           />
           {formik.touched.paymentProof && !!formik.errors.paymentProof && (
             <p className="text-xs text-red-500">{formik.errors.paymentProof}</p>

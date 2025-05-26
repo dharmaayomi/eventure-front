@@ -10,8 +10,7 @@ const CreateVoucher = async () => {
 
   return (
     <main className="container mx-auto">
-      <div className="p-10">
-        Create Voucher
+      <div>
         <CreateVoucherForm />
       </div>
     </main>

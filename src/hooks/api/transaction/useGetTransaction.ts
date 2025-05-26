@@ -1,3 +1,5 @@
+// "use client";
+
 import useAxios from "@/hooks/useAxios";
 import { Transaction } from "@/types/transaction";
 import { useQuery } from "@tanstack/react-query";

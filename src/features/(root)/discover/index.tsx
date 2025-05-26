@@ -5,12 +5,13 @@ import EventCard from "@/features/event/EventCard";
 import useGetEvents from "@/hooks/api/event/useGetEvents";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
+console.log("DiscoverPage rendered");
 
 const DiscoverPage = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const take = 4;
+  const take = 8;
   const {
     data: eventsResponse,
     isPending,
@@ -43,9 +44,11 @@ const DiscoverPage = () => {
     setPage((prev) => Math.min(prev + 1, totalPages));
   };
 
+  console.log(eventsResponse?.meta?.total, "Total Events");
+
   return (
-    <div className="container mx-auto mt-30 px-4 py-8">
-      <h1 className="mb-4 text-2xl font-bold text-[#083ca3]">
+    <div className="container mx-auto mt-30 p-8">
+      <h1 className="mb-4 text-4xl font-bold text-[#083ca3]">
         Discover Events
       </h1>
 
@@ -55,7 +58,7 @@ const DiscoverPage = () => {
         <div>No events found.</div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="flex flex-wrap gap-6">
             {events.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}

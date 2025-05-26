@@ -21,7 +21,7 @@ const EventByLocation: FC<EventByLocationProps> = ({ slug }) => {
   }
 
   return (
-    <div className="overflow-x-auto pb-4">
+    <div className="no-scrollbar overflow-x-auto pb-4">
       <div className="flex flex-row gap-6 pb-4">
         {events.map((event) => (
           <EventCard key={event.id} event={event} />

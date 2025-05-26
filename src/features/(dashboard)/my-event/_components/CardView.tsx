@@ -27,6 +27,7 @@ const CardView = () => {
   });
 
   console.log("iniiiiiiii events", events);
+  console.log("ini error", error);
 
   const onChangePage = (page: number) => {
     setPage(page);

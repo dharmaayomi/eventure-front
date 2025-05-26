@@ -51,11 +51,7 @@ const EventCard: FC<EventCardProps> = ({ event }) => {
                     {/* LOGO ORGANIZER */}
                     <div className="relative h-[30px] w-[30px] overflow-hidden rounded-t-md">
                       <Image
-                        src={
-                          event.organizer.profilePic
-                            ? event.organizer.profilePic
-                            : "/YGEnt.webp"
-                        }
+                        src={event.organizer.profilePic}
                         alt="organizer-logo"
                         fill
                         className="rounded-full object-cover"

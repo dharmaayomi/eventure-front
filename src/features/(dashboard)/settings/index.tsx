@@ -17,7 +17,7 @@ const SettingPage = () => {
       {!!user && (
         <div className="space-y-6">
           <ChangePasswordForm />
-          {!!isAdmin(session.data) && <BankAccount />}
+          {!!isAdmin(session.data) && <BankAccount id={user.id} />}
         </div>
       )}
     </div>

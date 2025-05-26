@@ -16,19 +16,19 @@ const CardTotalEvent = () => {
 
   const motivationalQuotes = [
     {
-      quote: "Great events create unforgettable memories!",
+      quote: "Great events create unforgettable memories that last forever!",
       icon: <Star className="text-yellow-300" size={20} />,
     },
     {
-      quote: "Your creativity makes events extraordinary!",
+      quote: "Your creativity makes events truly extraordinary and special!",
       icon: <Award className="text-yellow-300" size={20} />,
     },
     {
-      quote: "Keep inspiring people with amazing experiences!",
+      quote: "Keep inspiring  people with amazing experiences!",
       icon: <Star className="text-yellow-300" size={20} />,
     },
     {
-      quote: "Each event is a chance to create something special!",
+      quote: "Each event is a chance to  create something special!",
       icon: <Award className="text-yellow-300" size={20} />,
     },
     {

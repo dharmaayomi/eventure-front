@@ -23,7 +23,7 @@ const EventList = () => {
 
   return (
     <div className="no-scrollbar overflow-x-auto">
-      <div className="flex flex-row">
+      <div className="flex flex-row gap-6 pb-4">
         {events.map((event) => (
           <EventCard key={event.id} event={event} />
         ))}

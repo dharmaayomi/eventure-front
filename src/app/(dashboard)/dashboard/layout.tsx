@@ -1,6 +1,6 @@
 "use client";
 
-import { SidebarProvider, useSidebar } from "@/context/SidebarContext";
+import { useSidebar } from "@/context/SidebarContext";
 import AppHeader from "@/layouts/AppHeader";
 import AppSidebar from "@/layouts/AppSidebar";
 import Backdrop from "@/layouts/Backdrop";
