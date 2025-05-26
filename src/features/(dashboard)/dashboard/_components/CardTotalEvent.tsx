@@ -29,6 +29,7 @@ const CardTotalEvent = () => {
     },
     {
       quote: "Each event is a chance to  create something special!",
+
       icon: <Award className="text-yellow-300" size={20} />,
     },
     {
