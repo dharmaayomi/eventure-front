@@ -145,7 +145,6 @@ export const EditFormEvents: FC<EditFormEventsProps> = ({ slug }) => {
           ) {
             throw new Error(`Invalid category value: ${payload.category}`);
           }
-          // Ensure it's typed correctly for the API
           formattedPayload.category = payload.category as CategoryName;
         }
 

@@ -27,7 +27,7 @@ export function RegisterForm({
       organizerName: "",
       password: "",
       confirmPassword: "",
-      role: "user", // 🆕 untuk tracking user/organizer
+      role: "user",
     },
     validationSchema: RegisterSchema,
 
@@ -173,25 +173,26 @@ export function RegisterForm({
                   </div>
 
                   {/* Referral */}
-                  <div className="grid gap-2">
-                    <Label htmlFor="referralUsed">Referral Number</Label>
-                    <Input
-                      id="referralUsed"
-                      name="referralUsed"
-                      value={formik.values.referralUsed}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="Referral Code"
-                    />
-                    {!!formik.touched.referralUsed &&
-                      !!formik.errors.referralUsed && (
-                        <p className="text-red-500">
-                          {formik.errors.referralUsed}
-                        </p>
-                      )}
-                  </div>
+                  {formik.values.role === "user" && (
+                    <div className="grid gap-2">
+                      <Label htmlFor="referralUsed">Referral Number</Label>
+                      <Input
+                        id="referralUsed"
+                        name="referralUsed"
+                        value={formik.values.referralUsed}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="Referral Code"
+                      />
+                      {!!formik.touched.referralUsed &&
+                        !!formik.errors.referralUsed && (
+                          <p className="text-red-500">
+                            {formik.errors.referralUsed}
+                          </p>
+                        )}
+                    </div>
+                  )}
 
-                  {/* Organizer Name - only if organizer */}
                   {formik.values.role === "organizer" && (
                     <div className="grid gap-2">
                       <Label htmlFor="organizerName">Organizer Name</Label>
