@@ -19,8 +19,7 @@ const Categories = () => {
       title: "Music",
       slug: "music",
       icon: <Music2 className="mb-4 text-4xl text-blue-600" />,
-      image:
-        "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1745811193/7434245071f439073223add6df403139_wl7fsd.webp",
+      image: "/category/music.webp",
       description: "Experience live music performances and vibrant festivals",
     },
     {
@@ -28,45 +27,42 @@ const Categories = () => {
       title: "Education",
       slug: "education",
       icon: <Sprout className="mb-4 text-4xl text-orange-500" />,
-      image:
-        "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1745811194/394a8514c21be4c0fc80e3d2a9879019_ednxvv.webp",
-      description: "Watch thrilling sports competitions and championships",
+      image: "/category/education.webp",
+      description:
+        "Learn from experts in various fields through engaging workshops and seminars",
     },
     {
       id: 3,
       title: "Culture",
       slug: "culture",
       icon: <Laptop className="mb-4 text-4xl text-blue-600" />,
-      image:
-        "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1745811193/58e557ad51382ddf974eb4c641b3eba8_dlzioz.webp",
-      description: "Stay updated with latest technology trends and innovations",
+      image: "/category/culture.webp",
+      description: "Explore creative artworks and exhibitions",
     },
     {
       id: 4,
       title: "Business",
       slug: "business",
       icon: <PaintBucket className="mb-4 text-4xl text-orange-500" />,
-      image:
-        "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1745811193/2132e14c1d9d448fda063c9dc8f6da14_la1bx1.webp",
-      description: "Explore creative artworks and exhibitions",
+      image: "/category/business.webp",
+      description:
+        "Engage with inspiring business events and networking opportunities",
     },
     {
       id: 5,
       title: "Fashion",
       slug: "fashion",
       icon: <WineIcon className="mb-4 text-4xl text-blue-600" />,
-      image:
-        "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1745811192/b121419a4f6e16be30b58364b1b5681c_udvvhf.webp",
-      description: "Savor culinary delights and wine tasting events",
+      image: "/category/fashion.webp",
+      description: "Discover the latest fashion trends and styles",
     },
     {
       id: 6,
       title: "Sport",
       slug: "sport",
       icon: <VenetianMask className="mb-4 text-4xl text-orange-500" />,
-      image:
-        "https://res.cloudinary.com/dsxiuvsls/image/upload/c_thumb,w_200,g_face/v1744600796/samples/food/spices.jpg",
-      description: "Celebrate diverse cultures and traditions",
+      image: "/category/sport.webp",
+      description: "Join exciting sports events and competitions",
     },
   ];
 

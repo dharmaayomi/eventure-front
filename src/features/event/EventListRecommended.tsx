@@ -15,7 +15,7 @@ const EventListRecommended = () => {
   });
 
   if (isPending) return <div>Loading...</div>;
-  if (error) return <div>Something went wrong!</div>;
+  if (error) return <div>No Data Found!</div>;
 
   const events = eventsResponse?.data ?? [];
 
